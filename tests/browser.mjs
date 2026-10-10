@@ -193,12 +193,12 @@ try {
   }
   await page.goto(base);
   await page.getByRole("button", { name: "Toggle color theme" }).click();
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.reload();
   await page.waitForFunction(
-    () => document.documentElement.dataset.theme === "light",
+    () => document.documentElement.dataset.theme === "dark",
   );
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.getByRole("button", { name: "Toggle color theme" }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open navigation" }).click();

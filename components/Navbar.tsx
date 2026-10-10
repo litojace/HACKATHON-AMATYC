@@ -9,11 +9,11 @@ export default function Navbar() {
   const path = usePathname(),
     { user, profile, demo, notify } = useApp();
   const [open, setOpen] = useState(false),
-    [theme, setTheme] = useState("dark");
+    [theme, setTheme] = useState("light");
   useEffect(() => {
-    let value = "dark";
+    let value = "light";
     try {
-      value = localStorage.getItem("amatyc-theme") ?? "dark";
+      value = localStorage.getItem("amatyc-theme") ?? "light";
     } catch {
       notify("Theme preference cannot be persisted in this browser.");
     }
@@ -47,7 +47,7 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:py-4">
         <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
           <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-            <rect x="1" y="1" width="30" height="30" rx="8" fill="#10b981" />
+            <rect x="1" y="1" width="30" height="30" rx="8" fill="var(--accent)" />
             <path
               d="M22 9H11l7 7-7 7h11"
               stroke="#fff"

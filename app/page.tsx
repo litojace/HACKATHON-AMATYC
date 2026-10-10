@@ -84,7 +84,7 @@ export default function Home() {
             href={f.href}
             className="panel p-6 transition hover:border-emerald-500"
           >
-            <f.icon size={22} className="text-emerald-400" />
+            <f.icon size={22} style={{ color: "var(--gold)" }} />
             <h2 className="my-3 font-semibold">{f.title}</h2>
             <p className="text-sm leading-6 muted">{f.description}</p>
           </Link>
