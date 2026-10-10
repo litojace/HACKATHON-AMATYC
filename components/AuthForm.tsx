@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
@@ -12,7 +13,8 @@ export default function AuthForm({
   const { user, notify } = useApp(),
     router = useRouter();
   const [busy, setBusy] = useState(false),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),
+    [showPassword, setShowPassword] = useState(false);
   const titles = {
     login: "Welcome back.",
     signup: "Start your next chapter.",
@@ -132,19 +134,30 @@ export default function AuthForm({
               </label>
             )}
             {mode !== "forgot" && (
-              <label className="block text-xs muted">
-                Password
-                <input
-                  type="password"
-                  name="password"
-                  autoComplete={
-                    mode === "login" ? "current-password" : "new-password"
-                  }
-                  className="field mt-2"
-                  minLength={8}
-                  required
-                />
-              </label>
+              <div>
+                <label htmlFor={`${mode}-password`} className="block text-xs muted">Password</label>
+                <div className="relative mt-2">
+                  <input
+                    id={`${mode}-password`}
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    autoComplete={mode === "login" ? "current-password" : "new-password"}
+                    className="field pr-12"
+                    minLength={8}
+                    required
+                  />
+                  <button
+                    type="button"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    aria-controls={`${mode}-password`}
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg muted hover:text-emerald-400 focus-visible:outline-2 focus-visible:outline-emerald-400"
+                  >
+                    {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+                  </button>
+                </div>
+              </div>
             )}
             <button disabled={busy} className="btn w-full">
               {busy
