@@ -43,7 +43,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Evaluate inside out: $2\\#5=-1$, $0\\#(-1)=1$, and $2\\#1=3$. Answer D.",
+    "written_solution": "The symbol $\\#$ is a special rule defined in this question, not ordinary multiplication. For any $m\\#n$, square the first number, then subtract the second.\nFirst, work on the innermost parentheses: $2\\#5=2^2-5=4-5=-1$.\nNext, replace that part with $-1$: $0\\#(-1)=0^2-(-1)=0+1=1$. Subtracting a negative is the same as adding.\nFinally, the expression becomes $2\\#1=2^2-1=4-1=3$. The answer is 3 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -134,7 +134,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "In base 5, each place value is odd, so parity is the parity of the digit sum. To be odd in base 10 the last digit is 1 or 3. The first four digits must have odd sum. Among their $5^4$ strings, the even-minus-odd count is $(3-2)^4=1$, so there are $(625-1)/2=312$ odd-sum strings. The count is $2(312)=624$. Answer A.",
+    "written_solution": "A base-5 string abcde represents $a5^4+b5^3+c5^2+d5+e$. Every power of 5 is odd, so the number is even exactly when its digit sum is even.\nFor the same string to be odd in base 10, the final digit must be 1 or 3. There are two choices, both odd. The first four digits must therefore have an odd sum to make the entire digit sum even.\nEach digit has three even choices (0,2,4) and two odd choices (1,3). Leading zeroes are allowed. An odd sum needs either one odd digit or three odd digits among the first four positions.\nWith exactly one odd digit, choose its position in 4 ways, its value in 2 ways, and the three even values in $3^3$ ways. This gives $4\\cdot2\\cdot3^3=216$ strings.\nWith exactly three odd digits, choose the position of the lone even digit in 4 ways, its value in 3 ways, and the three odd values in $2^3$ ways. This gives $4\\cdot3\\cdot2^3=96$ strings.\nThese cases do not overlap. Add them to obtain 312 choices for the first four digits, then multiply by the two final-digit choices: $2(216+96)=624$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -190,7 +190,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Although the displayed dice outcomes are unordered, each permutation is a distinct equally likely roll of the five dice. Each straight has $5!$ orderings. Thus $P=2(5!)/6^5=5/162\\approx0.0309$. Answer C.",
+    "written_solution": "Although the results are displayed without order, think of the five dice as labeled. This gives $6^5=7776$ equally likely outcomes.\nOne straight uses 1,2,3,4,5, each exactly once. These five numbers can be assigned to the five dice in $5!=120$ ways.\nThe other straight uses 2,3,4,5,6 and has another 120 assignments. The two sets of outcomes do not overlap.\nDivide favorable outcomes by all outcomes: $P=240/7776=5/162\\approx0.0308641975$.\nRounding to four digits after the decimal point gives 0.0309 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -256,7 +256,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "$x^2+2xy+y^2=(x+y)^2$. Over the real plane it is zero exactly on $x+y=0$, a single line. Answer D.",
+    "written_solution": "Recognize the left side as a squared sum: $(x+y)^2=x^2+2xy+y^2$.\nThe equation is therefore $(x+y)^2=0$. A real number has square zero only when that number is itself zero.\nSo the points on the graph satisfy $x+y=0$, or $y=-x$.\nThis is one straight line, not two different lines. The answer is D.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -312,7 +312,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "$\\sum_{i=1}^9 i=45$ and $\\sum_{i=1}^9 i^3=45^2=2025$. Positive powers increase strictly here, so $m=3$ and $n=2$. Their sum is 5. Answer D.",
+    "written_solution": "First add the integers from 1 through 9: their sum is $9(10)/2=45$.\nThe second equation becomes $45^n=2025$. Since $45^2=2025$, n=2.\nFor the first equation, use the identity that the sum of the first nine cubes equals the square of their sum: $1^3+\\cdots+9^3=(1+\\cdots+9)^2=45^2=2025$. Thus m=3.\nThese powers are unique: increasing a positive integer exponent strictly increases the sum because the terms 2 through 9 increase. The same is true of powers of 45.\nTherefore $m+n=3+2=5$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -378,7 +378,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The cube-sum identity gives $\\sum_{i=1}^{9999}i^3=(9999\\cdot10000/2)^2=(9999\\cdot5000)^2$. Because 9999 has no factor of 2 or 5, the power of 5 is 6 and the power of 2 is 8. Exactly 6 trailing zeros result. Answer D.",
+    "written_solution": "A trailing zero comes from a factor of 10, and $10=2\\cdot5$. We need to count how many pairs of factors 2 and 5 the number contains.\nUse the sum-of-cubes identity: $1^3+\\cdots+9999^3=(9999\\cdot10000/2)^2=(9999\\cdot5000)^2$.\nFactor $5000=2^3\\cdot5^4$. The number 9999 is odd and does not end in 0 or 5, so it supplies neither factor 2 nor factor 5.\nSquaring doubles the exponents. The total contains $2^6\\cdot5^8$, multiplied by a number with neither factor.\nOnly six pairs of 2 and 5 can be made, so the number ends in exactly six zeroes (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -434,7 +434,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Reflect $(0,0)$ across $x+y=2$ to get $(a,b)=(2,2)$. Reflect that point across $y-x=4$ to obtain $(c,d)=(-2,6)$. Equidistance from $(0,0)$ and $(-2,6)$ is $x^2+y^2=(x+2)^2+(y-6)^2$, which simplifies to $3y-x=10$. Answer A.",
+    "written_solution": "A perpendicular bisector is the line halfway between two endpoints and perpendicular to the segment joining them. Reflecting either endpoint across that line gives the other.\nThe normal direction to $x+y=2$ is (1,1). The segment from (0,0) to (a,b) follows this direction, so a=b. Its midpoint is (a/2,b/2), which lies on the line, giving $(a+b)/2=2$. Thus (a,b)=(2,2).\nThe normal direction to $y-x=4$ is (-1,1). Write the other endpoint as $(c,d)=(2-t,2+t)$. Its midpoint with (2,2) is $(2-t/2,2+t/2)$.\nSubstitute that midpoint into the bisector equation: $(2+t/2)-(2-t/2)=4$, so t=4 and (c,d)=(-2,6).\nA point (x,y) lies on the final bisector exactly when its squared distances to (0,0) and (-2,6) match: $x^2+y^2=(x+2)^2+(y-6)^2$.\nExpand and cancel the squared terms to obtain $0=4x-12y+40$, or $3y-x=10$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -490,7 +490,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The least two sums must be $a+b=1$ and $a+c=2$. The next two are $a+d$ and $b+c$, in either order. If they are 3 and 4 respectively, the numbers are $(-1/2,3/2,5/2,7/2)$; if they are 4 and 3 respectively, they are $(0,1,2,4)$. Both satisfy the ordering and distinct sums. The smaller possible $d$ is $7/2$. Answer C.",
+    "written_solution": "Because a<b<c<d, the smallest pair sum must be a+b=1, and the next must be a+c=2.\nAfter these two, the next sums are a+d and b+c in some order. Both b+d and c+d are larger than either of them, so they cannot come earlier.\nCase 1: $a+d=3$ and $b+c=4$. From the first two equations, b=1-a and c=2-a. Therefore $3-2a=4$, giving a=-1/2. Then b=3/2, c=5/2, d=7/2.\nCase 2: $a+d=4$ and $b+c=3$. Now $3-2a=3$, so a=0. This gives b=1, c=2, d=4.\nIn Case 1 the six sums are 1,2,3,4,5,6; in Case 2 they are 1,2,3,4,5,6 too. Both cases satisfy the requirement that all sums differ.\nThe smaller possible final value is d=7/2 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -546,7 +546,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Let the circle radius be $r$. Each quadrant sector has area $\\pi r^2/4$, and its chord triangle has area $r^2/2$. Reflecting the circular segment replaces each sector contribution to the central shaded region by $r^2-\\pi r^2/4$. The four quadrants therefore have total shaded area $(4-\\pi)r^2$. The required ratio is $\\pi/(4-\\pi)$. Answer E.",
+    "written_solution": "Let the circle have radius r. Its area is $\\pi r^2$, so our task is to express the shaded area in terms of the same r.\nLook at one quadrant. The two radius segments enclose a square of side r. The quarter-circle sector in that square has area $\\pi r^2/4$.\nThe chord joins the two noncentral corners. Reflection in this chord swaps the center corner and the opposite square corner, so the reflected quarter-circle arc cuts off a congruent quarter-circle sector on the opposite side.\nThe shaded part in this quadrant is what remains of the square after that reflected sector is removed: $r^2-\\pi r^2/4$.\nThere are four identical quadrants. Their combined shaded area is $4(r^2-\\pi r^2/4)=(4-\\pi)r^2$.\nDivide the circle area by the shaded area: $\\pi r^2/((4-\\pi)r^2)=\\pi/(4-\\pi)$. The radius cancels, so the answer is E for every circle size.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -602,7 +602,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "If Y were the knight, the statement \"I am a spy\" would be false, so Y is not the knight. There is more than one consistent assignment: X=spy, Y=knave, Z=knight; and X=knight, Y=knave, Z=spy. Their truth/lie requirements all hold, so the complete assignment is not determined. Answer E.",
+    "written_solution": "The knight must tell the truth, the knave must lie, and the spy is allowed to do either. We need to see whether the statements force one assignment.\nY cannot be the knight: a knight saying \"I am a spy\" would be telling a lie.\nTry X as the spy, Y as the knave, and Z as the knight. X says they are not a spy, which is allowed to be false for a spy. Y falsely claims to be a spy. Z truthfully says Y is lying. This assignment works.\nNow try X as the knight, Y as the knave, and Z as the spy. X truthfully says they are not a spy. Y again lies. Z tells the truth, which a spy is allowed to do. This assignment also works.\nSince two different complete assignments fit all the information, we cannot uniquely identify the three people. The answer is E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -658,7 +658,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Complete the square to write the translated ellipse as $x^2+4(y-h)^2=1$. Its lower boundary first meets $y=x^2$ when $h$ reaches the maximum of $u+\\tfrac12\\sqrt{1-u}$ for $u=x^2\\in[0,1]$. The derivative is $1-1/(4\\sqrt{1-u})$, giving $u=15/16$ and $h=15/16+1/8=17/16$; endpoints give smaller values. Answer D.",
+    "written_solution": "Complete the square in the original ellipse to get $x^2+4(y-2)^2=1$. Its center starts at height 2. After a downward shift, write its center height as h, so the ellipse is $x^2+4(y-h)^2=1$.\nThe lower boundary of that ellipse is $y=h-\\tfrac12\\sqrt{1-x^2}$, with -1≤x≤1. It touches the parabola when this equals $y=x^2$.\nRearrange the equality: $h=x^2+\\tfrac12\\sqrt{1-x^2}$. As the ellipse descends from above, the first contact occurs at the largest possible value of the right side.\nWe can find that largest value without calculus. Let $t=\\sqrt{1-x^2}$, so 0≤t≤1 and $x^2=1-t^2$.\nNow $h=1-t^2+t/2=17/16-(t-1/4)^2$. A square cannot be negative, so this expression is never greater than 17/16.\nEquality is possible when t=1/4, which gives $x^2=15/16$. Thus the first-contact center height is 17/16 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -724,7 +724,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "$2025=3^4 5^2$. Legendre counting gives $v_3(2025!)=675+225+75+25+8+2=1010$ and $v_5(2025!)=405+81+16+3=505$. Thus the maximum exponent is $\\min(\\lfloor1010/4\\rfloor,\\lfloor505/2\\rfloor)=252$. Answer D.",
+    "written_solution": "The factorial 2025! is the product of all integers from 1 through 2025. We do not need to multiply them; we need to count the relevant prime factors.\nSince $2025=3^4\\cdot5^2$, each copy of 2025 uses four factors of 3 and two factors of 5.\nThere are 675 multiples of 3. Multiples of 9 supply an additional factor of 3, multiples of 27 another, and so on. The total is $675+225+75+25+8+2=1010$ factors of 3.\nSimilarly, multiples of 5,25,125,625 supply $405+81+16+3=505$ factors of 5.\nThe factors of 3 allow at most $\\lfloor1010/4\\rfloor=252$ complete copies of 2025. The factors of 5 allow $\\lfloor505/2\\rfloor=252$ copies. Here floor means round down to a whole number.\nBoth resources are sufficient for 252 copies but insufficient for 253. The largest n is 252 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -790,7 +790,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Let $T(0)=1$ and $T(n)=0$ for negative $n$. An ordered partition starts with 1, 2, 3, or 4, so $T(n)=T(n-1)+T(n-2)+T(n-3)+T(n-4)$. For $n=0,\\ldots,10$ the counts are $1,1,2,4,8,15,29,56,108,208,401$. Answer C.",
+    "written_solution": "An ordered partition is a list of positive terms adding to the target, where changing their order can make a new partition. Every allowed term here is 1,2,3,or 4.\nLet T(n) count the partitions of n. Sort them by their first term. Starting with 1 leaves a partition of n-1, starting with 2 leaves n-2, and similarly for 3 and 4.\nThese four cases cannot overlap because their first terms differ. Therefore $T(n)=T(n-1)+T(n-2)+T(n-3)+T(n-4)$.\nUse T(0)=1 to count the one empty continuation when a first term uses the entire remaining total. Use T(n)=0 for negative totals, because those are impossible.\nBuilding the counts for n=1 through 10 gives 1,2,4,8,15,29,56,108,208,401. For example, $T(5)=8+4+2+1=15$.\nFinally, $T(10)=208+108+56+29=401$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -846,7 +846,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "On the x-axis the roots are $19\\pm6\\sqrt{26}$, giving diagonal length $12\\sqrt{26}$. On the y-axis the roots are $33\\pm8\\sqrt{26}$, giving diagonal length $16\\sqrt{26}$. These perpendicular diagonals cross inside the quadrilateral, so area is $\\tfrac12(12\\sqrt{26})(16\\sqrt{26})=2496$. Answer B.",
+    "written_solution": "The two x-intercepts are found by setting y=0. This gives $x^2-38x=575$, or $(x-19)^2=936=36\\cdot26$.\nThus the x-intercepts are $19-6\\sqrt{26}$ and $19+6\\sqrt{26}$. Their horizontal separation is $12\\sqrt{26}$.\nFor the y-intercepts, set x=0: $y^2-66y=575$, or $(y-33)^2=1664=64\\cdot26$. The separation of these two intercepts is $16\\sqrt{26}$.\nThe quadrilateral's diagonals lie on the two coordinate axes. They meet at the origin and are perpendicular. Four right triangles around the intersection show that its area is half the product of the diagonal lengths.\nTherefore $A=(1/2)(12\\sqrt{26})(16\\sqrt{26})=(1/2)(12)(16)(26)=2496$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -912,7 +912,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The quotient of $(x^2-16)/(ax+b)$ has linear part $x/a-b/a^2$. Matching $3x+7$ gives $a=1/3$ and $b=-7/9$. Therefore $f(-3)=(-7)/(-1-7/9)=63/16$. Answer B.",
+    "written_solution": "A slant asymptote is the line that the function approaches for large positive or negative x. Dividing the numerator by the denominator reveals that line.\nFor $f(x)=(x^2-16)/(ax+b)$, the linear part of the quotient is $x/a-b/a^2$. The remaining fraction approaches zero as x grows in magnitude.\nMatch the coefficient of x with the given line 3x+7: $1/a=3$, so a=1/3. Match the constant term: $-b/a^2=7$, so b=-7/9.\nSubstitute x=-3 in the original function. The numerator is $(-3)^2-16=-7$ and the denominator is $(1/3)(-3)-7/9=-16/9$.\nDividing gives $f(-3)=(-7)/(-16/9)=63/16$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -968,7 +968,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Let E be the expected total. The first roll contributes mean $21/6$, and with probability $5/6$ the game restarts with the same expected future total. Thus $E=21/6+(5/6)E$, so $E=21$. Answer E.",
+    "written_solution": "Expected value means the long-run average total if the game is repeated many times. Let E stand for that average total from the start of a game.\nWhatever happens next, the first die roll is added to the total. Its average value is $(1+2+3+4+5+6)/6=21/6$.\nWith probability 1/6, that roll is 6 and the game stops. With probability 5/6, it is not 6 and the player continues from exactly the same situation as at the start.\nThe expected extra total in that continuing case is E again. Thus $E=21/6+(5/6)E$.\nSubtract $(5/6)E$ from both sides: $E/6=21/6$, hence E=21 (E). The final roll of 6 is already included in this calculation.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -1034,7 +1034,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The ten digits sum to 45. Omitting two distinct digits leaves a sum divisible by 9 exactly when their sum is 9; the possibilities are $(0,9),(1,8),(2,7),(3,6),(4,5)$. The first leaves $8!$ arrangements without a zero. Each of the other four leaves $8!-7!$ arrangements after excluding leading zero. Total $8!+4(8!-7!)=181440$. Answer E.",
+    "written_solution": "A number is divisible by 9 exactly when its digit sum is divisible by 9. The ten available digits 0 through 9 sum to 45.\nAn eight-digit number uses eight of those digits, so we leave out two distinct digits. Their sum must be a multiple of 9 so that the remaining sum also is.\nThe omitted sum ranges from 1 to 17, so the only possible multiple of 9 is 9. The five omitted pairs are (0,9),(1,8),(2,7),(3,6),(4,5).\nWhen we omit (0,9), no zero remains, and the eight chosen digits have $8!=40320$ arrangements.\nFor each of the other four pairs, zero remains. There are 8! total arrangements, but 7! start with zero: fix zero first and arrange the other seven digits. Those are not eight-digit numbers.\nThe final count is $8!+4(8!-7!)=40320+4(40320-5040)=181440$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -1100,7 +1100,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The recurrence produces $5,2,-3,-5,-2,3$ and then repeats. Its six-term block sums to zero. There are 2026 terms, namely 337 full blocks plus the first four terms, which sum to $5+2-3-5=-1$. Answer B.",
+    "written_solution": "The rule says each new term equals the previous term minus the term before that. Starting from 5 and 2, the next terms are $2-5=-3$, $-3-2=-5$, $-5-(-3)=-2$, and $-2-(-5)=3$.\nThe next two terms are $3-(-2)=5$ and $5-3=2$. We have returned to the initial pair (5,2), so the same six-term block repeats forever.\nOne complete block sums to $5+2-3-5-2+3=0$.\nThe indices 0 through 2025 give 2026 terms, not 2025 terms. Since $2026=6(337)+4$, there are 337 complete blocks and four extra terms.\nThe full blocks contribute zero. The four extras sum to $5+2-3-5=-1$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -1166,7 +1166,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Write the ellipse as $x^2/(ab)+y^2/a=1$. Its semiaxes are $\\sqrt{ab}$ and $\\sqrt a$. The centered inscribed and circumscribed circles have radii equal to the smaller and larger semiaxes, respectively, so their product is $a\\sqrt b$, regardless of which axis is larger. Answer A.",
+    "written_solution": "Divide the ellipse equation by ab to put it in standard form: $x^2/(ab)+y^2/a=1$.\nAn ellipse written as $x^2/A^2+y^2/B^2=1$ reaches A units from its center horizontally and B units vertically. Here those two half-widths, called semiaxes, are $\\sqrt{ab}$ and $\\sqrt a$.\nThe largest circle fitting inside has radius equal to the shorter semiaxis. The smallest circle surrounding the ellipse has radius equal to the longer semiaxis.\nMultiplying those radii multiplies the two semiaxes, regardless of which is shorter: $r_1r_2=\\sqrt{ab}\\sqrt a=a\\sqrt b$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1222,7 +1222,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Place $Q=(0,0)$ and $S=(2,0)$. The two triangles sharing QS give $R=(1,1)$ and, on the other side, $P=(1/2,-\\sqrt3/2)$. The vector from P toward R has slope $2+\\sqrt3=\\tan75^\\circ$. At T, TS points along the positive x-axis, so $\\angle RTS=75^\\circ$. Answer D.",
+    "written_solution": "Choose coordinates along the shared diagonal: Q=(0,0) and S=(2,0). This does not change any lengths or angles.\nSince QR=RS=√2, R is above the midpoint of QS. Its horizontal coordinate is 1, and its height satisfies $1^2+y^2=2$, so R=(1,1).\nLet P=(x,y) below QS. From PQ=1 and PS=√3, we have $x^2+y^2=1$ and $(x-2)^2+y^2=3$. Subtracting gives -4x+4=2, so x=1/2 and y=-√3/2.\nThe slope from P to R is $(1+\\sqrt3/2)/(1-1/2)=2+\\sqrt3$. This is the tangent of 75 degrees: the tangent addition formula for 45+30 degrees gives the same value.\nT lies on both diagonals. The ray TS points right along the horizontal axis, and TR points up and right along PR. Therefore the angle between them is 75 degrees (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -1960,7 +1960,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2024−1a^4−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 7, 40). The source key gives C. The sum is 3+7+40=50 (C).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^4+1b^3+1c^2=2024$. Each term is positive, so each term must be smaller than 2024. This bounds a by 6, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2024, then divide by 1. The remaining value must equal $c^2$: $c^2=(2024-1a^4-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 7, 40).\nFor example, the first listed triple checks as $1×3^4 + 1×7^3 + 1×40^2=2024$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 3+7+40=50 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -4094,7 +4094,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2023−1a^3−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (5, 7, 43), (5, 23, 37), (11, 4, 26). The source key gives C. The repeated integer is 5 (C).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^2+1c^2=2023$. Each term is positive, so each term must be smaller than 2023. This bounds a by 12, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2023, then divide by 1. The remaining value must equal $c^2$: $c^2=(2023-1a^3-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (5, 7, 43), (5, 23, 37), (11, 4, 26).\nFor example, the first listed triple checks as $1×5^3 + 1×7^2 + 1×43^2=2023$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe repeated integer is 5 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -5897,7 +5897,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2022−2a^4−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 11, 23). The source key gives A. The sum is 3+11+23=37 (A).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $2a^4+1b^3+1c^2=2022$. Each term is positive, so each term must be smaller than 2022. This bounds a by 5, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2022, then divide by 1. The remaining value must equal $c^2$: $c^2=(2022-2a^4-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 11, 23).\nFor example, the first listed triple checks as $2×3^4 + 1×11^3 + 1×23^2=2022$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 3+11+23=37 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -7643,7 +7643,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2022−1a^4−2b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (2, 11, 42), (2, 29, 18), (4, 1, 42), (6, 5, 26), (6, 11, 22), (6, 19, 2). The source key gives C. The repeated b value is 11 (C).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^4+2b^2+1c^2=2022$. Each term is positive, so each term must be smaller than 2022. This bounds a by 6, b by 31, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2022, then divide by 1. The remaining value must equal $c^2$: $c^2=(2022-1a^4-2b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (2, 11, 42), (2, 29, 18), (4, 1, 42), (6, 5, 26), (6, 11, 22), (6, 19, 2).\nFor example, the first listed triple checks as $1×2^4 + 2×11^2 + 1×42^2=2022$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe repeated b value is 11 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -9277,7 +9277,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^4=(2020−1a^2−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (20, 18, 6). The source key gives E. The sum is 20+18+6=44 (E).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^2+1b^2+1c^4=2020$. Each term is positive, so each term must be smaller than 2020. This bounds a by 44, b by 44, and c by 6. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2020, then divide by 1. The remaining value must equal $c^4$: $c^4=(2020-1a^2-1b^2)/1$.\nIf this remainder is not a positive integer perfect 4-th power, discard that pair. Otherwise take its 4-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (20, 18, 6).\nFor example, the first listed triple checks as $1×20^2 + 1×18^2 + 1×6^4=2020$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 20+18+6=44 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -10442,7 +10442,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^5=(2019−1a^2−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (43, 13, 1). The source key gives B. The sum is 43+13+1=57 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^2+1b^2+1c^5=2019$. Each term is positive, so each term must be smaller than 2019. This bounds a by 44, b by 44, and c by 4. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2019, then divide by 1. The remaining value must equal $c^5$: $c^5=(2019-1a^2-1b^2)/1$.\nIf this remainder is not a positive integer perfect 5-th power, discard that pair. Otherwise take its 5-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (43, 13, 1).\nFor example, the first listed triple checks as $1×43^2 + 1×13^2 + 1×1^5=2019$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 43+13+1=57 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -12916,7 +12916,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^3=(2018−1a^6−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (1, 17, 12), (2, 35, 9), (3, 17, 10), (3, 35, 4). The source key gives E. There are four ordered solutions (E).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^6+1b^2+1c^3=2018$. Each term is positive, so each term must be smaller than 2018. This bounds a by 3, b by 44, and c by 12. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2018, then divide by 1. The remaining value must equal $c^3$: $c^3=(2018-1a^6-1b^2)/1$.\nIf this remainder is not a positive integer perfect 3-th power, discard that pair. Otherwise take its 3-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (1, 17, 12), (2, 35, 9), (3, 17, 10), (3, 35, 4).\nFor example, the first listed triple checks as $1×1^6 + 1×17^2 + 1×12^3=2018$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThere are four ordered solutions (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -15089,7 +15089,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^7=(2017−1a^2−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (17, 40, 2), (40, 17, 2). The source key gives A. Both symmetric solutions have sum 17+40+2=59 (A).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^2+1b^2+1c^7=2017$. Each term is positive, so each term must be smaller than 2017. This bounds a by 44, b by 44, and c by 2. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2017, then divide by 1. The remaining value must equal $c^7$: $c^7=(2017-1a^2-1b^2)/1$.\nIf this remainder is not a positive integer perfect 7-th power, discard that pair. Otherwise take its 7-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (17, 40, 2), (40, 17, 2).\nFor example, the first listed triple checks as $1×17^2 + 1×40^2 + 1×2^7=2017$. Trying every a and b within the bounds ensures that no positive solution is missed.\nBoth symmetric solutions have sum 17+40+2=59 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -20084,7 +20084,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2015−1a^5−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 2, 42). The source key gives E. The quotient c/(ab) is 42/(3×2)=7 (E).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^5+1b^3+1c^2=2015$. Each term is positive, so each term must be smaller than 2015. This bounds a by 4, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2015, then divide by 1. The remaining value must equal $c^2$: $c^2=(2015-1a^5-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 2, 42).\nFor example, the first listed triple checks as $1×3^5 + 1×2^3 + 1×42^2=2015$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe quotient c/(ab) is 42/(3×2)=7 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -20878,7 +20878,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2015−1a^3−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (11, 2, 26). The source key gives B. The sum is 11+2+26=39 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^3+1c^2=2015$. Each term is positive, so each term must be smaller than 2015. This bounds a by 12, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2015, then divide by 1. The remaining value must equal $c^2$: $c^2=(2015-1a^3-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (11, 2, 26).\nFor example, the first listed triple checks as $1×11^3 + 1×2^3 + 1×26^2=2015$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 11+2+26=39 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -22078,7 +22078,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2014−1a^6−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 31, 18). The source key gives B. The sum is 3+31+18=52 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^6+1b^2+1c^2=2014$. Each term is positive, so each term must be smaller than 2014. This bounds a by 3, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2014, then divide by 1. The remaining value must equal $c^2$: $c^2=(2014-1a^6-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 31, 18).\nFor example, the first listed triple checks as $1×3^6 + 1×31^2 + 1×18^2=2014$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 3+31+18=52 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -23096,7 +23096,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2014−1a^4−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 13, 42), (3, 42, 13). The source key gives B. Swapping b and c leaves the sum 3+13+42=58 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^4+1b^2+1c^2=2014$. Each term is positive, so each term must be smaller than 2014. This bounds a by 6, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2014, then divide by 1. The remaining value must equal $c^2$: $c^2=(2014-1a^4-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 13, 42), (3, 42, 13).\nFor example, the first listed triple checks as $1×3^4 + 1×13^2 + 1×42^2=2014$. Trying every a and b within the bounds ensures that no positive solution is missed.\nSwapping b and c leaves the sum 3+13+42=58 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -24205,7 +24205,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2013−1a^4−2b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (5, 26, 6). The source key gives B. The sum is 5+26+6=37 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^4+2b^2+1c^2=2013$. Each term is positive, so each term must be smaller than 2013. This bounds a by 6, b by 31, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2013, then divide by 1. The remaining value must equal $c^2$: $c^2=(2013-1a^4-2b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (5, 26, 6).\nFor example, the first listed triple checks as $1×5^4 + 2×26^2 + 1×6^2=2013$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 5+26+6=37 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -25090,7 +25090,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2013−1a^3−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (4, 10, 43). The source key gives B. The sum is 4+10+43=57 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^2+1c^2=2013$. Each term is positive, so each term must be smaller than 2013. This bounds a by 12, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2013, then divide by 1. The remaining value must equal $c^2$: $c^2=(2013-1a^3-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (4, 10, 43).\nFor example, the first listed triple checks as $1×4^3 + 1×10^2 + 1×43^2=2013$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 4+10+43=57 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -26147,7 +26147,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2012−1a^5−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 37, 20). The source key gives E. The sum is 3+37+20=60 (E).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^5+1b^2+1c^2=2012$. Each term is positive, so each term must be smaller than 2012. This bounds a by 4, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2012, then divide by 1. The remaining value must equal $c^2$: $c^2=(2012-1a^5-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 37, 20).\nFor example, the first listed triple checks as $1×3^5 + 1×37^2 + 1×20^2=2012$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 3+37+20=60 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -27333,7 +27333,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2012−1a^3−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (8, 11, 13), (11, 8, 13). The source key gives C. Both symmetric solutions have sum 8+11+13=32 (C).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^3+1c^2=2012$. Each term is positive, so each term must be smaller than 2012. This bounds a by 12, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2012, then divide by 1. The remaining value must equal $c^2$: $c^2=(2012-1a^3-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (8, 11, 13), (11, 8, 13).\nFor example, the first listed triple checks as $1×8^3 + 1×11^3 + 1×13^2=2012$. Trying every a and b within the bounds ensures that no positive solution is missed.\nBoth symmetric solutions have sum 8+11+13=32 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -28299,7 +28299,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2011−1a^6−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 21, 29), (3, 29, 21). The source key gives D. Both symmetric solutions have sum 3+21+29=53 (D).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^6+1b^2+1c^2=2011$. Each term is positive, so each term must be smaller than 2011. This bounds a by 3, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2011, then divide by 1. The remaining value must equal $c^2$: $c^2=(2011-1a^6-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 21, 29), (3, 29, 21).\nFor example, the first listed triple checks as $1×3^6 + 1×21^2 + 1×29^2=2011$. Trying every a and b within the bounds ensures that no positive solution is missed.\nBoth symmetric solutions have sum 3+21+29=53 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -29933,7 +29933,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2011−1a^5−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 2, 42), (3, 42, 2). The source key gives C. The primes are 2 and 3; the nonprime value is 42 (C).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^5+1b^2+1c^2=2011$. Each term is positive, so each term must be smaller than 2011. This bounds a by 4, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2011, then divide by 1. The remaining value must equal $c^2$: $c^2=(2011-1a^5-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 2, 42), (3, 42, 2).\nFor example, the first listed triple checks as $1×3^5 + 1×2^2 + 1×42^2=2011$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe primes are 2 and 3; the nonprime value is 42 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -31063,7 +31063,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2010−1a^5−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (1, 28, 35), (1, 35, 28). The source key gives D. The common divisor is gcd(28,35)=7 (D).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^5+1b^2+1c^2=2010$. Each term is positive, so each term must be smaller than 2010. This bounds a by 4, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2010, then divide by 1. The remaining value must equal $c^2$: $c^2=(2010-1a^5-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (1, 28, 35), (1, 35, 28).\nFor example, the first listed triple checks as $1×1^5 + 1×28^2 + 1×35^2=2010$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe common divisor is gcd(28,35)=7 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -31801,7 +31801,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2010−1a^3−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (5, 9, 34), (9, 5, 34). The source key gives D. Both solutions have a+b=5+9=14 (D).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^3+1c^2=2010$. Each term is positive, so each term must be smaller than 2010. This bounds a by 12, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2010, then divide by 1. The remaining value must equal $c^2$: $c^2=(2010-1a^3-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (5, 9, 34), (9, 5, 34).\nFor example, the first listed triple checks as $1×5^3 + 1×9^3 + 1×34^2=2010$. Trying every a and b within the bounds ensures that no positive solution is missed.\nBoth solutions have a+b=5+9=14 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -32910,7 +32910,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2009−1a^4−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (4, 9, 32). The source key gives D. The sum is 4+9+32=45 (D).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^4+1b^3+1c^2=2009$. Each term is positive, so each term must be smaller than 2009. This bounds a by 6, b by 12, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2009, then divide by 1. The remaining value must equal $c^2$: $c^2=(2009-1a^4-1b^3)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (4, 9, 32).\nFor example, the first listed triple checks as $1×4^4 + 1×9^3 + 1×32^2=2009$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe sum is 4+9+32=45 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -35480,7 +35480,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^2=(2009−1a^6−1b^2)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (3, 16, 32), (3, 32, 16). The source key gives E. The two powers of 2 are 16 and 32; the sum is 51 (E).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^6+1b^2+1c^2=2009$. Each term is positive, so each term must be smaller than 2009. This bounds a by 3, b by 44, and c by 44. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2009, then divide by 1. The remaining value must equal $c^2$: $c^2=(2009-1a^6-1b^2)/1$.\nIf this remainder is not a positive integer perfect 2-th power, discard that pair. Otherwise take its 2-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (3, 16, 32), (3, 32, 16).\nFor example, the first listed triple checks as $1×3^6 + 1×16^2 + 1×32^2=2009$. Trying every a and b within the bounds ensures that no positive solution is missed.\nThe two powers of 2 are 16 and 32; the sum is 51 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,
@@ -36110,7 +36110,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by c^3=(2008−1a^3−1b^3)/1. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are (4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4). The source key gives B. Every permutation has sum 4+6+12=22 (B).",
+    "written_solution": "We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\nThe equation is $1a^3+1b^3+1c^3=2008$. Each term is positive, so each term must be smaller than 2008. This bounds a by 12, b by 12, and c by 12. Thus only finitely many choices need checking.\nFor each allowed value of a, try each allowed b. Subtract their contributions from 2008, then divide by 1. The remaining value must equal $c^3$: $c^3=(2008-1a^3-1b^3)/1$.\nIf this remainder is not a positive integer perfect 3-th power, discard that pair. Otherwise take its 3-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\nNext apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are (4, 6, 12), (4, 12, 6), (6, 4, 12), (6, 12, 4), (12, 4, 6), (12, 6, 4).\nFor example, the first listed triple checks as $1×4^3 + 1×6^3 + 1×12^3=2008$. Trying every a and b within the bounds ensures that no positive solution is missed.\nEvery permutation has sum 4+6+12=22 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,

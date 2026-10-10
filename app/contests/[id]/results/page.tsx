@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { api } from "@/lib/client";
 import type { ExamAttempt } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
+import { ChevronDown } from "lucide-react";
 import Chart from "@/components/Charts";
 export default function Results() {
   return (
@@ -32,17 +33,16 @@ function Content() {
     const local = demo
       ? activity.contests.find((a) => a.id === aid && a.status === "finalized")
       : undefined;
-    if (local) {
-      setResult(local);
-      return;
-    }
+    if (local) setResult(local);
+    // Keep archived local results readable, but refresh available server review
+    // content so improved explanations appear on the current attempt too.
     api<ExamAttempt>("attempts/" + aid)
       .then((a) => {
         if (a.status !== "finalized")
           setError("This exam is still active. Return to the exam to finish.");
         else setResult(a);
       })
-      .catch((e) => setError(e.message));
+      .catch((e) => { if (!local) setError(e.message); });
   }, [demo, activity.contests]);
   if (error)
     return (
@@ -133,7 +133,8 @@ function Content() {
               </thead>
               <tbody>
                 {breakdown.map((q, i) => (
-                  <tr key={q.id} className="border-b border-edge">
+                  <Fragment key={q.id}>
+                  <tr className="border-b border-edge">
                     <td className="p-4">
                       {i + 1}. {q.title}
                     </td>
@@ -144,29 +145,32 @@ function Content() {
                     <td className="p-4 font-mono">{q.points}</td>
                     <td className="p-4">
                       <button
-                        className="text-emerald-400"
-                        onClick={() => setReview(i)}
+                        className="btn-secondary whitespace-nowrap !px-3 !py-2"
+                        aria-expanded={review === i}
+                        aria-controls={`solution-${q.id}`}
+                        disabled={!q.explanation}
+                        onClick={() => setReview(review === i ? null : i)}
                       >
-                        View solution
+                        {review === i ? "Hide solution" : "View solution"}
+                        <ChevronDown size={16} className={review === i ? "rotate-180" : ""} />
                       </button>
                     </td>
                   </tr>
+                  {review === i && (
+                    <tr>
+                      <td colSpan={5} className="border-b border-edge bg-ink/40 p-4 sm:p-6">
+                        <div id={`solution-${q.id}`} role="region" aria-label={`Solution for question ${i + 1}`}>
+                          <ProblemArena problem={q} exam locked answer={q.selected_answer} explanation={q.explanation} />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </Fragment>
                 ))}
               </tbody>
             </table>
           </div>
-          {review !== null && (
-            <div className="mt-8">
-              <ProblemArena
-                key={breakdown[review].id}
-                problem={breakdown[review]}
-                exam
-                locked
-                answer={breakdown[review].selected_answer}
-                explanation={breakdown[review].explanation}
-              />
-            </div>
-          )}
+
         </>
       )}
       <div className="mt-8 flex flex-wrap gap-3">

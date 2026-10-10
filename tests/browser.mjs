@@ -171,6 +171,12 @@ try {
     .first()
     .click();
   await page.getByRole("heading", { name: "Mathematical Solution" }).waitFor();
+  const expanded = page.getByRole("region", { name: "Solution for question 1", exact: true });
+  await expanded.waitFor();
+  assert.equal(await expanded.locator("xpath=ancestor::tr/preceding-sibling::tr[1]").getByRole("button", {name: "Hide solution", exact: true}).getAttribute("aria-expanded"), "true");
+  await page.getByRole("button", {name: "Hide solution", exact: true}).click();
+  assert.equal(await expanded.count(), 0);
+
   await page
     .getByRole("link", { name: "View your progress", exact: true })
     .click();

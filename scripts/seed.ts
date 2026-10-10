@@ -30,8 +30,9 @@ async function main() {
     }).eq("id", p.id);
     if (updated.error) throw Error(updated.error.message);
   }
-  for (const p of demo) {
+  for (const p of questions.filter(p => p.written_solution)) {
     const updated = await db.from("problem_solutions").update({
+      written_solution: p.written_solution,
       calculator_trick: p.calculator_trick,
     }).eq("problem_id", p.id).eq("correct_answer", p.correct_answer);
     if (updated.error) throw Error(updated.error.message);

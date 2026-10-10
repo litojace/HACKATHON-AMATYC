@@ -98,9 +98,27 @@ for suffix,(target,exponents,coeffs) in dios.items():
  assert candidates,(suffix,candidates)
  formula=f'(({target}−{ac}×A^{aexp}−{bc}×X^{bexp})÷{cc})^(1÷{cexp})'
  p['calculator_trick']=guide('TABLE with a stored parameter',f'Use TABLE to search for integer triples for {ac}a^{aexp}+{bc}b^{bexp}+{cc}c^{cexp}={target}. TABLE calculates candidate c values for a run of b values; it does not prove integrality or replace the printed restrictions.',[f'Bound a and b using positivity. In COMP store a trial value of a in A: value [SHIFT] [RCL] (STO), then the key marked A. Start with a=1 and repeat for every positive a with {ac}a^{aexp}<{target}.',f'Select [MODE] [7] (TABLE) and enter f(X)={formula}. X represents b. Scan positive b in blocks of at most 30 rows, with Step=1, stopping before the radicand becomes nonpositive.',f'For each near-integer table value, verify {ac}a^{aexp}+{bc}b^{bexp}+{cc}c^{cexp}={target} exactly in COMP. Apply every extra restriction in the printed question. Candidate triples passing the restrictions: '+', '.join(str(t) for t in candidates)+'. Then evaluate the quantity asked for.'],['Store a → A',formula,'Check exact powers; do not trust rounded decimals'])
- p['written_solution']='Bound the positive variables by the displayed power equation. For each allowable a and b, the remaining c is fixed by '+f'c^{cexp}=({target}−{ac}a^{aexp}−{bc}b^{bexp})/{cc}'+'. Check perfect powers exactly and apply the printed extra conditions. The complete surviving triples are '+', '.join(str(t) for t in candidates)+'. The source key gives '+', '.join(p['accepted_answers'])+'. '+results[suffix]
+ # Explain the exhaustive search rather than presenting an unexplained list.
+ first=candidates[0]
+ example=' + '.join(f'{coef}×{value}^{exponent}' for coef,value,exponent in zip(coeffs,first,exponents))
+ bounds=[]
+ for exponent,coefficient in zip(exponents,coeffs):
+  upper=1
+  while coefficient*(upper+1)**exponent<target:upper+=1
+  bounds.append(upper)
+ p['written_solution']=(
+  'We need positive integers, meaning whole numbers greater than zero. A perfect power is a number obtained by raising a whole number to the required exponent.\n'
+  f'The equation is ${ac}a^{aexp}+{bc}b^{bexp}+{cc}c^{cexp}={target}$. Each term is positive, so each term must be smaller than {target}. This bounds a by {bounds[0]}, b by {bounds[1]}, and c by {bounds[2]}. Thus only finitely many choices need checking.\n'
+  f'For each allowed value of a, try each allowed b. Subtract their contributions from {target}, then divide by {cc}. The remaining value must equal $c^{cexp}$: $c^{cexp}=({target}-{ac}a^{aexp}-{bc}b^{bexp})/{cc}$.\n'
+  f'If this remainder is not a positive integer perfect {cexp}-th power, discard that pair. Otherwise take its {cexp}-th root to get c. Check the original equation exactly; a rounded decimal close to a whole number is not sufficient.\n'
+  'Next apply the additional conditions in the printed question, such as ordering, evenness, primality, or a shared factor. The complete triples satisfying both the equation and those conditions are '+', '.join(str(t) for t in candidates)+'.\n'
+  f'For example, the first listed triple checks as ${example}={target}$. Trying every a and b within the bounds ensures that no positive solution is missed.\n'
+  +results[suffix]
+ )
+
  # Answer independently checked by exact enumeration; solution outlines the exhaustive method.
  p['verification_status']='fully_verified'
 path.write_text(json.dumps(ps,indent=2,ensure_ascii=False)+'\n')
 (root/'data/historical/power-search-fixtures.json').write_text(json.dumps({k:{'target':v[0],'exponents':v[1],'coefficients':v[2]} for k,v in dios.items()},indent=2)+'\n')
+__import__('subprocess').check_call([__import__('sys').executable, str(Path(__file__).with_name('apply_editorials.py'))])
 print('Enriched',len(solutions),'Spring 2025 solutions and',len(dios),'power-search workflows.')
