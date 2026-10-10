@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 export const metadata: Metadata = {
   title: "AMATYC Code — Train your mathematical edge",
   description:
-    "Math competition practice, calculator strategies, and timed mock exams for college students.",
+    "Math competition practice, mathematical solutions, and timed mock exams for college students.",
 };
 export default function RootLayout({
   children,

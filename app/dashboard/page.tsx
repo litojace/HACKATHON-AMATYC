@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import Chart from "@/components/Charts";
@@ -15,6 +16,7 @@ export default function Dashboard() {
 }
 function Content() {
   const { activity, problems, profile, demo, loading } = useApp();
+  const [distributionMode, setDistributionMode] = useState<"difficulty" | "rating">("difficulty");
   if (loading) return <Loading />;
   const practice = activity.practice,
     solved = new Set(
@@ -56,6 +58,18 @@ function Content() {
     problems.find(
       (p) => !solved.has(p.id) && (!weak || p.category === weak.name),
     ) ?? problems.find((p) => !solved.has(p.id));
+  const solvedProblems = problems.filter((p) => solved.has(p.id));
+  const ratingCounts = new Map<number | null, number>();
+  for (const problem of problems) {
+    ratingCounts.set(problem.difficulty_rating ?? null, 0);
+  }
+  for (const problem of solvedProblems) {
+    const rating = problem.difficulty_rating ?? null;
+    ratingCounts.set(rating, (ratingCounts.get(rating) ?? 0) + 1);
+  }
+  const ratingData = [...ratingCounts.entries()]
+    .sort(([a], [b]) => a === null ? 1 : b === null ? -1 : a - b)
+    .map(([rating, value]) => ({ name: rating === null ? "Unrated" : String(rating), value }));
   return (
     <>
       <PageTitle
@@ -115,8 +129,23 @@ function Content() {
           }))}
         />
         <Chart
-          label="Solved difficulty distribution"
-          data={["Easy", "Medium", "Hard"].map((name) => ({
+          label={distributionMode === "difficulty" ? "Solved difficulty distribution" : "Solved rating distribution"}
+          controls={
+            <div role="group" aria-label="Solved distribution mode" className="flex gap-2">
+              {(["difficulty", "rating"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  aria-pressed={distributionMode === mode}
+                  onClick={() => setDistributionMode(mode)}
+                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium ${distributionMode === mode ? "border-emerald-500 bg-emerald-500/15 text-emerald-400" : "border-edge muted hover:text-emerald-400"}`}
+                >
+                  {mode === "difficulty" ? "Difficulty" : "Rating"}
+                </button>
+              ))}
+            </div>
+          }
+          data={distributionMode === "rating" ? ratingData : ["Easy", "Medium", "Hard"].map((name) => ({
             name,
             value: problems.filter(
               (p) => p.difficulty === name && solved.has(p.id),

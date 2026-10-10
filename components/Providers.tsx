@@ -67,12 +67,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const refreshAccount = useCallback(async () => {
     if (!supabase) return;
     try {
-      const [p, a] = await Promise.all([
+      const [p, a, library] = await Promise.all([
         api<Profile>("me"),
         api<Activity>("activity"),
+        api<PublicProblem[]>("problems"),
       ]);
       setProfile(p);
       setActivity(a);
+      setProblems(library);
     } catch (e) {
       notify((e as Error).message);
     }

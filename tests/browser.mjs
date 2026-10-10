@@ -77,19 +77,28 @@ try {
   );
   await page.keyboard.press("4");
   await page.keyboard.press("Enter");
-  await page.getByRole("tab", { name: "Mathematical Solution" }).waitFor();
+  await page.getByRole("heading", { name: "Mathematical Solution" }).waitFor();
   await page.getByText("+2.0 pts", { exact: true }).waitFor();
-  await page.getByRole("tab", { name: "Casio Calculator Strategy" }).click();
-  await page.getByRole("button", { name: "Next step", exact: true }).click();
-  await page.getByText("STEP 2 OF 3", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "Restart", exact: true }).click();
-  await page.getByText("STEP 1 OF 3", { exact: true }).waitFor();
+  await page.waitForFunction(() => {
+    const stats = Object.fromEntries([...document.querySelectorAll("dl > div")].map(el => [el.querySelector("dt")?.textContent, el.querySelector("dd")?.textContent]));
+    return stats.Accepted === "1" && stats.Attempts === "1" && stats["Acceptance rate"] === "100.0%";
+  });
+  assert.equal(await page.getByRole("tab", { name: "Casio Calculator Strategy" }).count(), 0);
   await page.getByRole("button", { name: "Try again", exact: true }).click();
   await submit.click();
   await page.getByText("0.0 pts", { exact: true }).waitFor();
+  await page.waitForFunction(() => {
+    const stats = Object.fromEntries([...document.querySelectorAll("dl > div")].map(el => [el.querySelector("dt")?.textContent, el.querySelector("dd")?.textContent]));
+    return stats.Accepted === "1" && stats.Attempts === "2" && stats["Acceptance rate"] === "50.0%";
+  });
   await page.getByRole("link", { name: "Dashboard", exact: true }).click();
   await page.getByRole("heading", { name: /Your progress/ }).waitFor();
   await page.getByText("Recent activity", { exact: true }).waitFor();
+  await page.getByRole("button", { name: "Rating", exact: true }).click();
+  await page.getByRole("heading", { name: "Solved rating distribution" }).waitFor();
+  assert.equal(await page.getByRole("img", { name: "Solved rating distribution chart" }).count(), 1);
+  await page.getByRole("button", { name: "Difficulty", exact: true }).click();
+  await page.getByRole("heading", { name: "Solved difficulty distribution" }).waitFor();
   assert.ok(
     await page
       .getByText("Nested Operations · Solved", { exact: false })
@@ -161,7 +170,7 @@ try {
     .getByRole("button", { name: "View solution", exact: true })
     .first()
     .click();
-  await page.getByRole("tab", { name: "Mathematical Solution" }).waitFor();
+  await page.getByRole("heading", { name: "Mathematical Solution" }).waitFor();
   await page
     .getByRole("link", { name: "View your progress", exact: true })
     .click();
@@ -202,7 +211,7 @@ try {
   });
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: demo journey, public answer confidentiality, bookmarks, combined filters, practice/blank submission/retry, calculator guide, dashboard, server-timed exam saves/flags/refresh/finalization, immutable results, profiles, account pages, theme persistence, mobile layout; no browser errors.",
+    "PASS: demo journey, public answer confidentiality, bookmarks, combined filters, practice/blank submission/retry, submission statistics, dashboard, server-timed exam saves/flags/refresh/finalization, immutable results, profiles, account pages, theme persistence, mobile layout; no browser errors.",
   );
 } finally {
   await browser.close();

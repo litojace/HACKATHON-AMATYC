@@ -1,4 +1,5 @@
 "use client";
+import type { ReactNode } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -14,14 +15,19 @@ export default function Chart({
   data,
   label,
   line = false,
+  controls,
 }: {
   data: Record<string, string | number>[];
   label: string;
   line?: boolean;
+  controls?: ReactNode;
 }) {
   return (
     <div className="panel min-w-0 p-5">
-      <h2 className="mb-5 font-semibold">{label}</h2>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-semibold">{label}</h2>
+        {controls}
+      </div>
       {data.length ? (
         <div role="img" aria-label={label + " chart"}>
           <div className="h-56">

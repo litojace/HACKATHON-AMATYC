@@ -18,7 +18,6 @@ import { api } from "@/lib/client";
 import MathRenderer from "./MathRenderer";
 import SolutionRenderer from "./SolutionRenderer";
 import { difficultyColor } from "@/lib/domain";
-import CasioKeypadGuide from "./CasioKeypadGuide";
 import Dialog from "./ui/Dialog";
 export default function ProblemArena({
   problem,
@@ -47,11 +46,16 @@ export default function ProblemArena({
       request_id: string;
       started_at: string;
     } | null>(null),
-    [tab, setTab] = useState("math"),
     [help, setHelp] = useState(false),
     [zoom, setZoom] = useState(false);
   const value = exam ? (answer ?? null) : selected,
     solution = exam ? explanation : result;
+  const attempts = activity.practice.filter((a) => a.problem_id === problem.id);
+  const attemptCount = demo ? attempts.length : problem.attempt_count;
+  const acceptedCount = demo ? attempts.filter((a) => a.is_correct).length : problem.accepted_count;
+  const acceptanceRate = attemptCount != null && acceptedCount != null
+    ? attemptCount ? (100 * acceptedCount / attemptCount).toFixed(1) + "%" : "—"
+    : problem.acceptance_rate != null ? problem.acceptance_rate + "%" : "—";
   useEffect(() => {
     if (exam || (!demo && !user)) return;
     let active = true;
@@ -197,6 +201,19 @@ export default function ProblemArena({
           {problem.contest_name} · Question {problem.question_number}
         </p>
         <h1 className="mt-3 text-2xl font-semibold">{problem.title}</h1>
+        {!exam && (
+          <div className="my-4">
+            <dl className="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+              {[["Accepted", acceptedCount?.toLocaleString() ?? "—"], ["Attempts", attemptCount?.toLocaleString() ?? "—"], ["Acceptance rate", acceptanceRate]].map(([label, count]) => (
+                <div key={label}>
+                  <dt className="text-xs muted">{label}</dt>
+                  <dd className="mt-1 font-semibold">{count}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-2 text-xs muted">{demo ? "Practice submissions in this browser" : "All practice submissions"}</p>
+          </div>
+        )}
         {problem.difficulty_rationale && <details className="mb-4 text-sm muted"><summary>Estimated difficulty: why this rating?</summary><p className="mt-2">{problem.difficulty_rationale}</p></details>}
       {problem.source_image_path ? <div className="my-7">
           <button className="block w-full rounded-xl border border-edge bg-white p-2" onClick={() => setZoom(true)} aria-label="Zoom original exam question">
@@ -317,28 +334,7 @@ export default function ProblemArena({
       </div>
       {solution && (
         <div className="panel mt-5 p-6">
-          <div
-            className="mb-6 flex gap-5 border-b border-edge"
-            role="tablist"
-            aria-label="Solution types"
-          >
-            {[
-              ["math", "Mathematical Solution"],
-              ["calculator", "Casio Calculator Strategy"],
-            ].map(([id, label]) => (
-              <button
-                key={id}
-                role="tab"
-                aria-selected={tab === id}
-                onClick={() => setTab(id)}
-                className={`pb-3 text-sm ${tab === id ? "border-b-2 border-emerald-500 text-emerald-400" : "muted"}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <div role="tabpanel">
-            {tab === "math" ? (
+          <h2 className="mb-6 font-semibold">Mathematical Solution</h2>
               <div className="leading-8">
                 <SolutionRenderer
                   text={
@@ -347,12 +343,6 @@ export default function ProblemArena({
                   }
                 />
               </div>
-            ) : (
-              <CasioKeypadGuide
-                trick={solution.calculator_trick ?? undefined}
-              />
-            )}
-          </div>
         </div>
       )}
       {(help || zoom) && (

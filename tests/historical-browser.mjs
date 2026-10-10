@@ -19,11 +19,7 @@ try {
   await page.getByRole("button", {name: /B Printed option B/}).click();
   await page.getByRole("button", {name: "Submit Answer", exact: true}).click();
   await page.getByText("Correct!", {exact: false}).waitFor();
-  await page.getByRole("tab", {name: "Casio Calculator Strategy"}).click();
-  await page.getByText("Function: EQN for axis intercepts", {exact: true}).waitFor();
-  assert.ok((await page.getByLabel("Expected calculator display").innerText()).includes("−38"));
-  await page.getByRole("button", {name: "Next step", exact: true}).click();
-  assert.ok((await page.getByLabel("Expected calculator display").innerText()).includes("−66"));
+  assert.equal(await page.getByRole("tab", {name: "Casio Calculator Strategy"}).count(), 0);
   await page.goto(base + "/problems/amatyc-2004-fall-q03");
   await page.getByRole("textbox", {name: "Your answer"}).fill("ctayam");
   await page.getByRole("button", {name: "Submit Answer", exact: true}).click();
@@ -47,5 +43,5 @@ try {
   await page.reload();
   await page.getByRole("button", {name: "Zoom original exam question"}).waitFor();
   assert.deepEqual(errors, []);
-  console.log("Historical browser checks passed: originals, short-answer grading, EQN display steps, privacy, Expert blue, starting 800, exam refresh.");
+  console.log("Historical browser checks passed: originals, short-answer grading, Casio removed, privacy, Expert blue, starting 800, exam refresh.");
 } finally { await browser.close(); }

@@ -26,7 +26,7 @@ On Linux/macOS, `PORT=3001 npm start` selects another port. On Windows PowerShel
 
 - `/`: independent logo, real or explicitly labeled demo statistics, functional practice/contest links.
 - `/problems`: title/keyword search, topic, difficulty, rating range, source, solved status, bookmarks, sorting, pagination, URL-shareable combined filters.
-- `/problems/[id]`: centered math arena, A–E selection, blank submission, retry, scoring, solution tabs, instructional calculator key walkthrough, diagram zoom, keyboard help.
+- `/problems/[id]`: centered math arena, A–E selection, blank submission, retry, scoring, mathematical solutions, submission statistics, diagram zoom, keyboard help.
 - `/contests`: configured contest cards, completion and best scores.
 - `/contests/[id]`: rules, configurable duration/scoring, start/resume.
 - `/contests/[id]/take`: server deadline, automatic answer saves, flags, navigation, answered/blank counts, confirmation, refresh recovery, immutable finalization.
@@ -52,7 +52,7 @@ When either public Supabase setting is supplied, the application expects a worki
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply migrations 004 and 005, then rerun the seed. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 006, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 1. Run these migrations in order in the SQL editor:
    - `supabase/migrations/001_platform.sql`
@@ -60,6 +60,7 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/003_practice_review.sql`
    - `supabase/migrations/004_initial_rating.sql`
    - `supabase/migrations/005_historical_formats.sql`
+   - `supabase/migrations/006_problem_submission_stats.sql`
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
 4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and original sample calculator guides on existing v2 records. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.

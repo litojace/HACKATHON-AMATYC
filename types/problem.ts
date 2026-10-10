@@ -28,6 +28,8 @@ export interface PublicProblem {
   figure_image_path: string | null;
   verification_status: string;
   acceptance_rate?: number | null;
+  accepted_count?: number;
+  attempt_count?: number;
   answer_format?: "multiple_choice" | "short_answer";
   source_image_path?: string | null;
   difficulty_rationale?: string;

@@ -48,4 +48,10 @@ do $$ declare a jsonb;aid uuid;begin
  perform public.finalize_expired_attempts();
  if (select status from public.contest_attempts where id=aid)<>'finalized' then raise exception 'Expiry sweep failed';end if;
 end $$;
-select 'PASS: public answer confidentiality, authorization, server scoring, profile protection, answer saves, flags, timers, duplicate prevention, immutable finalization, private history and expiry sweep';
+do $$ declare p jsonb; expected_attempts bigint; expected_accepted bigint;begin
+ p:=public.problem_json('demo-01');
+ select count(*),count(*) filter(where is_correct) into expected_attempts,expected_accepted from public.practice_attempts where problem_id='demo-01';
+ if (p->>'attempt_count')::bigint is distinct from expected_attempts or (p->>'accepted_count')::bigint is distinct from expected_accepted then raise exception 'Submission statistics do not match stored attempts';end if;
+ if (p->>'acceptance_rate')::numeric is distinct from round(100.0*expected_accepted/nullif(expected_attempts,0),1) then raise exception 'Acceptance rate does not match submission counts';end if;
+end $$;
+select 'PASS: public answer confidentiality, authorization, server scoring, profile protection, answer saves, flags, timers, duplicate prevention, immutable finalization, private history, expiry sweep and submission statistics';

@@ -3,7 +3,6 @@ import {
   ArrowRight,
   BookOpen,
   Clock3,
-  Calculator,
   LineChart,
   Trophy,
   Lightbulb,
@@ -63,13 +62,6 @@ export default function Home() {
             title: "Understand every answer",
             description:
               "Unlock mathematical reasoning after your attempt, then try again.",
-            href: "/problems",
-          },
-          {
-            icon: Calculator,
-            title: "Use your calculator wisely",
-            description:
-              "Step through original, carefully scoped scientific calculator guides.",
             href: "/problems",
           },
           {
