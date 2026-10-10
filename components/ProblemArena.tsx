@@ -50,6 +50,8 @@ export default function ProblemArena({
     [zoom, setZoom] = useState(false);
   const value = exam ? (answer ?? null) : selected,
     solution = exam ? explanation : result;
+  const printedOptions = !!problem.source_image_path && problem.options.length > 0 &&
+    problem.options.every((option) => option.text.trim() === `Printed option ${option.label}`);
   const attempts = activity.practice.filter((a) => a.problem_id === problem.id);
   const attemptCount = demo ? attempts.length : problem.attempt_count;
   const acceptedCount = demo ? attempts.filter((a) => a.is_correct).length : problem.accepted_count;
@@ -217,8 +219,6 @@ export default function ProblemArena({
           <button className="block w-full rounded-xl border border-edge bg-white p-2" onClick={() => setZoom(true)} aria-label="Zoom original exam question">
             <img src={problem.source_image_path} alt={`Original printed question ${problem.question_number} from ${problem.contest_name}, including notation and answer choices`} className="w-full" />
           </button>
-          <p className="mt-2 text-xs muted">Original exam question · {problem.answer_format === "short_answer" ? "Enter the original short response below." : "Choose the letter of the printed option below."}</p>
-          <details className="mt-3 text-sm muted"><summary>Search transcript (PDF text / OCR)</summary><p className="mt-2">{problem.question_latex}</p><p>Use the original image for mathematical notation; extracted text may contain errors.</p></details>
         </div> : <div className="my-7 rounded-xl bg-white p-5 text-lg leading-9 text-zinc-900 sm:p-6">
           <MathRenderer text={problem.question_latex} />
         </div>}
@@ -236,21 +236,23 @@ export default function ProblemArena({
             <ZoomIn size={16} className="absolute bottom-3 right-3" />
           </button>
         )}
-        <div className="space-y-3">
+        {problem.source_image_path && <p className="mb-3 text-sm muted">{problem.answer_format === "short_answer" ? "Enter your answer below." : "Select your answer from the choices in the image."}</p>}
+        <div className={printedOptions ? "grid grid-cols-3 gap-3 sm:grid-cols-5" : "space-y-3"}>
           {problem.answer_format === "short_answer" && <label className="block text-sm">Your answer<input className="field mt-2 w-full" aria-label="Your answer" value={value ?? ""} maxLength={80} disabled={locked || busy || !!result} onChange={e => choose(e.target.value || null)} placeholder="Enter a number, time, or text response" /></label>}
           {problem.options.map((o, i) => (
             <button
               key={o.label}
+              aria-label={printedOptions ? `Choose option ${o.label}` : undefined}
               aria-pressed={value === o.label}
               disabled={locked || busy || !!result}
               onClick={() => choose(o.label)}
-              className={`flex min-h-14 w-full items-center gap-4 rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "border-emerald-500 bg-emerald-500/10" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
+              className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center" : "gap-4"} rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "border-emerald-500 bg-emerald-500/10" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-ink font-mono text-sm">
                 {o.label}
               </span>
-              <MathRenderer text={o.text} />
-              <span className="ml-auto text-xs muted">{i + 1}</span>
+              {!printedOptions && <MathRenderer text={o.text} />}
+              {!printedOptions && <span className="ml-auto text-xs muted">{i + 1}</span>}
             </button>
           ))}
         </div>

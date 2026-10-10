@@ -16,7 +16,10 @@ try {
   await source.click();
   await page.getByRole("dialog").waitFor();
   await page.keyboard.press("Escape");
-  await page.getByRole("button", {name: /B Printed option B/}).click();
+  assert.equal(await page.getByText("Search transcript (PDF text / OCR)").count(), 0);
+  assert.equal(await page.getByText(/Printed option/).count(), 0);
+  assert.equal(await page.getByRole("button", {name: /^Choose option [A-E]$/}).count(), 5);
+  await page.getByRole("button", {name: "Choose option B", exact: true}).click();
   await page.getByRole("button", {name: "Submit Answer", exact: true}).click();
   await page.getByText("Correct!", {exact: false}).waitFor();
   assert.equal(await page.getByRole("tab", {name: "Casio Calculator Strategy"}).count(), 0);
