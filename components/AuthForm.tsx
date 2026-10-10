@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
@@ -14,7 +14,10 @@ export default function AuthForm({
     router = useRouter();
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState(""),
-    [showPassword, setShowPassword] = useState(false);
+    [showPassword, setShowPassword] = useState(false),
+    [showConfirmation, setShowConfirmation] = useState(false),
+    [confirmationError, setConfirmationError] = useState(false);
+  const confirmationInput = useRef<HTMLInputElement>(null);
   const titles = {
     login: "Welcome back.",
     signup: "Start your next chapter.",
@@ -27,6 +30,13 @@ export default function AuthForm({
     const fields = new FormData(e.currentTarget);
     const email = String(fields.get("email") ?? ""),
       password = String(fields.get("password") ?? "");
+    if ((mode === "signup" || mode === "reset") && password !== String(fields.get("confirm_password") ?? "")) {
+      setConfirmationError(true);
+      setMessage("");
+      confirmationInput.current?.focus();
+      return;
+    }
+    setConfirmationError(false);
     setBusy(true);
     setMessage("");
     try {
@@ -141,6 +151,7 @@ export default function AuthForm({
                     id={`${mode}-password`}
                     type={showPassword ? "text" : "password"}
                     name="password"
+                    onChange={() => setConfirmationError(false)}
                     autoComplete={mode === "login" ? "current-password" : "new-password"}
                     className="field pr-12"
                     minLength={8}
@@ -157,6 +168,35 @@ export default function AuthForm({
                     {showPassword ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
                   </button>
                 </div>
+              </div>
+            )}
+            {(mode === "signup" || mode === "reset") && (
+              <div>
+                <label htmlFor={`${mode}-confirm-password`} className="block text-xs muted">Confirm password</label>
+                <div className="relative mt-2">
+                  <input
+                    ref={confirmationInput}
+                    id={`${mode}-confirm-password`}
+                    name="confirm_password"
+                    type={showConfirmation ? "text" : "password"}
+                    autoComplete="new-password"
+                    className="field pr-12"
+                    minLength={8}
+                    required
+                    aria-invalid={confirmationError}
+                    aria-describedby={confirmationError ? "password-match-error" : undefined}
+                    onChange={() => setConfirmationError(false)}
+                  />
+                  <button type="button"
+                    aria-label={showConfirmation ? "Hide confirm password" : "Show confirm password"}
+                    aria-pressed={showConfirmation}
+                    aria-controls={`${mode}-confirm-password`}
+                    onClick={() => setShowConfirmation(!showConfirmation)}
+                    className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-lg muted hover:text-emerald-400 focus-visible:outline-2 focus-visible:outline-emerald-400">
+                    {showConfirmation ? <EyeOff size={18} aria-hidden="true" /> : <Eye size={18} aria-hidden="true" />}
+                  </button>
+                </div>
+                {confirmationError && <p id="password-match-error" role="alert" className="mt-2 text-xs text-red-500">Passwords do not match. Enter the same password in both fields.</p>}
               </div>
             )}
             <button disabled={busy} className="btn w-full">
@@ -179,9 +219,7 @@ export default function AuthForm({
         )}
         <div className="mt-6 space-y-3 text-xs muted">
           {mode !== "login" && (
-            <Link className="block" href="/login">
-              Already registered? Log in
-            </Link>
+            <p>Already registered? <Link className="underline underline-offset-4 hover:text-emerald-400" href="/login">Log in</Link></p>
           )}
           {mode === "login" && (
             <>
