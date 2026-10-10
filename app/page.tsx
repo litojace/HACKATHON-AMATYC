@@ -8,10 +8,11 @@ import {
   Lightbulb,
 } from "lucide-react";
 import Statistics from "@/components/Statistics";
+import HomeCommunityGallery from "@/components/HomeCommunityGallery";
 export default function Home() {
   return (
     <main className="mx-auto max-w-7xl px-5">
-      <section className="py-14">
+      <section className="grid items-center gap-10 py-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12 lg:py-14">
         <div>
           <p className="mb-5 text-xs tracking-widest text-emerald-400">
             PRACTICE SMARTER. COMPETE STRONGER.
@@ -39,6 +40,7 @@ export default function Home() {
             practice
           </p>
         </div>
+        <HomeCommunityGallery />
       </section>
       <Statistics />
       <section className="grid gap-5 md:grid-cols-3">
