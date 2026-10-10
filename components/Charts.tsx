@@ -34,27 +34,27 @@ export default function Chart({
             <ResponsiveContainer width="100%" height="100%">
               {line ? (
                 <LineChart data={data}>
-                  <CartesianGrid stroke="#303847" strokeDasharray="3 3" />
+                  <CartesianGrid stroke="var(--edge)" strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
-                    tick={{ fill: "#94a3b8", fontSize: 11 }}
+                    tick={{ fill: "var(--muted)", fontSize: 11 }}
                   />
                   <YAxis
-                    tick={{ fill: "#94a3b8", fontSize: 11 }}
+                    tick={{ fill: "var(--muted)", fontSize: 11 }}
                     domain={["auto", "auto"]}
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "#181c25",
-                      color: "#f8fafc",
-                      borderColor: "#303847",
+                      background: "var(--panel)",
+                      color: "var(--text)",
+                      borderColor: "var(--edge)",
                     }}
                   />
                   <Line
                     type="monotone"
                     dataKey="value"
                     name={label}
-                    stroke="#10b981"
+                    stroke="var(--accent)"
                     strokeWidth={2}
                   />
                 </LineChart>
@@ -62,16 +62,16 @@ export default function Chart({
                 <BarChart data={data}>
                   <XAxis
                     dataKey="name"
-                    tick={{ fill: "#94a3b8", fontSize: 10 }}
+                    tick={{ fill: "var(--muted)", fontSize: 10 }}
                   />
-                  <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} />
+                  <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ background: "#181c25", color: "#f8fafc" }}
+                    contentStyle={{ background: "var(--panel)", color: "var(--text)" }}
                   />
                   <Bar
                     dataKey="value"
                     name={label}
-                    fill="#10b981"
+                    fill="var(--accent)"
                     radius={[4, 4, 0, 0]}
                   />
                 </BarChart>

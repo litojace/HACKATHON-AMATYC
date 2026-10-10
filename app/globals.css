@@ -1,20 +1,33 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
-:root {
-  color-scheme: dark;
-  --ink: #0f1117;
-  --panel: #181c25;
-  --edge: #303847;
-  --text: #f8fafc;
-  --muted: #94a3b8;
+/* Reuse the existing accent utilities with the poster's orange palette. */
+@theme inline {
+  --color-emerald-300: var(--accent-text);
+  --color-emerald-400: var(--accent-text);
+  --color-emerald-500: var(--accent);
 }
-:root[data-theme="light"] {
+:root {
   color-scheme: light;
-  --ink: #f5f7fa;
-  --panel: #ffffff;
-  --edge: #d6dee7;
-  --text: #172033;
-  --muted: #53627a;
+  --ink: #f6f5e9;
+  --panel: #fffdf5;
+  --edge: #ddd5bf;
+  --text: #26231c;
+  --muted: #686252;
+  --accent: #f15a29;
+  --accent-text: #ad3915;
+  --accent-hover: #dc491b;
+  --gold: #c09a32;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #1c1915;
+  --panel: #29241e;
+  --edge: #504638;
+  --text: #faf5e6;
+  --muted: #c3b8a3;
+  --accent-text: #ff9b71;
+  --accent-hover: #ff7542;
+  --gold: #e6be56;
 }
 body {
   background: var(--ink);
@@ -39,7 +52,7 @@ button:disabled {
   cursor: not-allowed;
 }
 :focus-visible {
-  outline: 2px solid #10b981;
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 summary {
@@ -57,7 +70,9 @@ select {
     color: var(--muted);
   }
   .btn {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-[#052e24] transition hover:bg-emerald-400;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold transition;
+    color: #261509;
+    &:hover { background: var(--accent-hover); }
   }
   .btn-secondary {
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-panel px-5 py-3 text-sm transition hover:border-emerald-500;
@@ -72,7 +87,7 @@ select {
 }
 :root[data-theme="light"] .text-emerald-400,
 :root[data-theme="light"] .text-emerald-300 {
-  color: #047857;
+  color: var(--accent-text);
 }
 :root[data-theme="light"] .text-red-400 {
   color: #b91c1c;
@@ -107,4 +122,7 @@ select {
 }
 :root[data-theme="light"] .text-zinc-400 {
   color: #52525b;
+}
+:root[data-theme="light"] .text-yellow-500 {
+  color: #86630e;
 }
