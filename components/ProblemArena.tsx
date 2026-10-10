@@ -211,17 +211,15 @@ export default function ProblemArena({
                 </div>
               ))}
             </dl>
-            <p className="mt-2 text-xs muted">{demo ? "Practice submissions in this browser" : "All practice submissions"}</p>
           </div>
         )}
-        {problem.difficulty_rationale && <details className="mb-4 text-sm muted"><summary>Estimated difficulty: why this rating?</summary><p className="mt-2">{problem.difficulty_rationale}</p></details>}
       {problem.source_image_path ? <div className="my-7">
           <button className="block w-full rounded-xl border border-edge bg-white p-2" onClick={() => setZoom(true)} aria-label="Zoom original exam question">
             <img src={problem.source_image_path} alt={`Original printed question ${problem.question_number} from ${problem.contest_name}, including notation and answer choices`} className="w-full" />
           </button>
           <p className="mt-2 text-xs muted">Original exam question · {problem.answer_format === "short_answer" ? "Enter the original short response below." : "Choose the letter of the printed option below."}</p>
           <details className="mt-3 text-sm muted"><summary>Search transcript (PDF text / OCR)</summary><p className="mt-2">{problem.question_latex}</p><p>Use the original image for mathematical notation; extracted text may contain errors.</p></details>
-        </div> : <div className="my-7 text-lg leading-9">
+        </div> : <div className="my-7 rounded-xl bg-white p-5 text-lg leading-9 text-zinc-900 sm:p-6">
           <MathRenderer text={problem.question_latex} />
         </div>}
         {problem.figure_required && problem.figure_image_path && (
