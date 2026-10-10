@@ -1,0 +1,16 @@
+# Historical examination review workflow
+
+The supplied official archives have been processed into `data/historical` and `public/images/exams`; the archives themselves are kept outside the public application. The inventory tool never assumes 41 or 42 documents; it reports the files actually supplied. Do not publish inferred or invented historical content.
+
+1. Place source archives outside the public directory and Git checkout when licensing requires it.
+2. Run `npm run import:pdf -- '/path/QUESTIONS(1).zip' /path/KEYS.zip --output /tmp/amatyc-review`. Python 3 is required. If `pdftotext` is installed (Poppler), layout-preserving text is also produced. Scanned PDFs require a separate reviewed OCR step; OCR is not silently invented.
+3. Inspect `inventory.json`. SHA-256 hashes track provenance; archive extraction rejects oversized PDFs and avoids archive path traversal. Year/semester matching is tentative, filename-based, and can be ambiguous. Resolve unmatched/duplicate documents by hand.
+4. Split statements into questions and their printed choices or short-response format, and compare every record against the source PDF. Keep original crops when a corrected LaTeX transcription is unavailable. Never assume text extraction preserves fractions, superscripts, matrices, or page ordering.
+5. Extract diagrams from original source material without inventing geometry. Store them under `public/images/problems` or the Storage bucket, with meaningful alt descriptions. The historical model preserves the entire printed question in a source image. The standalone figure model supports one figure per question; additional figures can be composed into a reviewed source-derived figure asset or added to a future normalized figure table.
+6. Match the official key to each examination, resolve question-number discrepancies, and keep both source filenames on each record. Flag uncertainty with `verification_status: unreviewed`; use `answer_verified` only when the key match was checked, and `fully_verified` only after the statement, options, figure, answer, explanation, and any calculator procedure were independently reviewed.
+7. Create structured JSON using `data/demo/questions.json` as the field-shape example. Historical `contest_name` must describe the actual source; demo data is not historical content. Correct answers are private import fields.
+8. Validate without writes: `npm run import:json -- /path/reviewed.json --validate-only`.
+9. Import unpublished drafts: `npm run import:json -- /path/reviewed.json`. Trusted scripts require the project URL and service-role key in the shell; never paste secrets in chat or commit them.
+10. Publish only after review: `npm run import:json -- /path/reviewed.json --publish`. Unverified records cannot be published through the importer. Answer-verified records require the original source image and key provenance; a missing worked explanation is explicitly shown as unavailable. Already-published records are immutable through the importer; use a new ID for content revisions. All records in a batch import transaction succeed or roll back together.
+
+This is a prepared inventory, extraction, matching, and human review pipeline—not an automatic math-PDF parser. For the imported archive, see `historical-library.md` for coverage, key corrections, and remaining editorial work.

@@ -1,0 +1,151 @@
+# AMATYC Code
+
+**Practice Smarter. Compete Stronger.** A working mathematics competition learning platform built with Next.js 16, React 19, strict TypeScript, Tailwind 4, KaTeX, Recharts, Zod, and Supabase. Independent educational project; no affiliation with AMATYC or Codeforces is claimed.
+
+## Run on your computer
+
+Install Node.js **22.13+** (or current Node 24 LTS), extract the project, and open a terminal inside `HACKATHON-AMATYC-`:
+
+```sh
+npm ci
+npm run dev
+```
+
+Open http://localhost:3000 in your local browser. Stop with Ctrl+C. No credentials are required to practice the bundled historical exams and original samples. Each cloud task already has an isolated checkout; use it rather than creating a Git worktree.
+
+For a production server:
+
+```sh
+npm run build
+npm start
+```
+
+On Linux/macOS, `PORT=3001 npm start` selects another port. On Windows PowerShell, use `$env:PORT="3001"; npm start`. `npm start` uses a portable Node launcher, binds all interfaces, and serves the standalone build with its copied public/static assets.
+
+## Features and routes
+
+- `/`: independent logo, real or explicitly labeled demo statistics, functional practice/contest links.
+- `/problems`: title/keyword search, topic, difficulty, rating range, source, solved status, bookmarks, sorting, pagination, URL-shareable combined filters.
+- `/problems/[id]`: centered math arena, A–E selection, blank submission, retry, scoring, solution tabs, instructional calculator key walkthrough, diagram zoom, keyboard help.
+- `/contests`: configured contest cards, completion and best scores.
+- `/contests/[id]`: rules, configurable duration/scoring, start/resume.
+- `/contests/[id]/take`: server deadline, automatic answer saves, flags, navigation, answered/blank counts, confirmation, refresh recovery, immutable finalization.
+- `/contests/[id]/results`: score, answer counts, accuracy, elapsed time, charts, topic analysis, full solution review when permitted.
+- `/dashboard`: private authenticated analytics in configured mode; actual browser-local demo activity otherwise. Ratings, solved status, accuracy, activity/difficulty/topic charts, recent attempts, and clearly explained rule-based recommendations.
+- `/leaderboard`: public stored profiles (or explicitly sample profiles in demo), search, schools, pagination, ties, current-user ranking, deltas, profile links.
+- `/profile/[username]`: public profile and rating history; private practice/exam answers are excluded.
+- `/settings`: display name, school, HTTPS avatar URL, profile visibility. Header theme toggle persists dark/light preference.
+- `/login`, `/signup`, `/forgot-password`, `/reset-password`: Supabase email/password auth and recovery; demo explains account setup instead of faking an account.
+- `/api/health`: deployment readiness endpoint.
+
+Legacy `/contest` and `/auth` redirect to the new routes. Loading, error, not-found, empty, and toast states are included. Keyboard shortcuts pause in fields/dialogs; modal dialogs trap focus and support Escape. Reduced motion is respected. Charts include accessible data lists.
+
+## Demonstration versus configured mode
+
+Leave **both** public Supabase settings empty for demo. The bundled library contains 820 historical questions from 41 exams (2004–2025), plus 20 original examples. Original exam images preserve formulas and diagrams; PDF/OCR text is a search transcript. See `docs/historical-library.md` for coverage and editorial status. Answers and solutions are imported only into server-only modules: the browser receives public statements/options and obtains explanations after a submission.
+
+Demo practice is graded by the server. Demo exam state is an HMAC-signed, HTTP-only, SameSite cookie; deadlines and late-write rejection are enforced server-side. Changing the browser clock or localStorage does not extend a deadline. Demo results and bookmarks are saved in this browser's localStorage for convenience, not as verified competitive records. A signed cookie is not a durable multi-user database; manually replaying old cookies, concurrent tabs, or clearing browser storage are outside its integrity guarantees. Only one active demo exam and practice session are supported per browser. Demo ratings never change.
+
+Set the optional server-only `DEMO_SESSION_SECRET` to a long random value to retain demo sessions across server restarts/instances. Without it a per-process key is generated; restarting invalidates signed sessions. Never rely on Render local disk or process memory for real user attempts.
+
+When either public Supabase setting is supplied, the application expects a working configured backend. Incomplete settings and database failures show service errors rather than substituting demonstration problems or fictitious activity. Both public settings must be provided before building. Supabase service-role credentials are never used by the browser or ordinary web API.
+
+## Supabase setup
+
+For a new installation use a fresh Supabase project. Existing v2 installations apply migrations 004 and 005, then rerun the seed. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+
+1. Run these migrations in order in the SQL editor:
+   - `supabase/migrations/001_platform.sql`
+   - `supabase/migrations/002_import.sql`
+   - `supabase/migrations/003_practice_review.sql`
+   - `supabase/migrations/004_initial_rating.sql`
+   - `supabase/migrations/005_historical_formats.sql`
+2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
+3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
+4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and original sample calculator guides on existing v2 records. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
+5. Restart/rebuild after changing public settings. Register, confirm email, sign in, submit a problem, run an exam, and check the private dashboard against your real project.
+6. Enable `pg_cron` in the Supabase dashboard and execute `docs/expiry-scheduler.sql` to finalize expired attempts unattended every minute. Deadlines are enforced regardless of the job: late writes are always rejected, and read/finalize requests finalize expired attempts with their actual deadline timestamp. Monitor this scheduled job in production.
+
+The `problem-images` Storage bucket is public, supports PNG/JPEG/WebP up to 5 MB, and has no client upload policy. Trusted organizers upload via dashboard/service-role. **Do not upload unreleased rated-event diagrams to a public bucket**; use private storage/signed asset delivery before enabling restricted diagram events. The demo semicircle is an original local SVG. Multiple figure records and private signed diagram delivery are extension points, not implemented claims.
+
+Google OAuth is not implemented in this version. Supabase email/password and password reset are the supported auth flows.
+
+## Backend architecture and security
+
+`app/api/[...path]/route.ts` dispatches validated operations. Zod validates answers, request IDs, profile edits, and imports. The API validates bearer sessions with Supabase `getUser()`; the database also validates `auth.uid()`. Normal operations use the public anon key and the authenticated user's bearer token, not the service role. There is a consistent `{error:{message}}` response format.
+
+Normalized tables include profiles, schools, topics, problems/options/private solutions, problem-topic mapping, contests/problems, attempts/answers, practice sessions/attempts, bookmarks, and rating history. UTC server timestamps are rendered in the user's local timezone.
+
+Public APIs return explicit public projections, never complete import records. Private helper RPCs have no anon/authenticated execute grants. SECURITY DEFINER functions pin an empty search path and check ownership. Direct client grade, score, rating, completion, answer-key, and verification writes are denied. Practice start creates a server timestamp; grading does not trust client score or elapsed-time values. Practice request IDs make retries idempotent. Contest answer saves and finalization lock the attempt; finalized/late answers are rejected. Rated-event solutions are withheld until `review_at`. Active unreleased rated questions are excluded from ordinary practice.
+
+API mutations check request origin and use a per-instance limiter (60/minute per token/demo identity/IP). Database practice starts serialize per profile and enforce 30/minute. **Before public deployment**, configure a shared deployment-layer rate limiter/WAF for submission and auth endpoints; the in-process limiter is not a distributed abuse-control guarantee. Requests without a browser Origin still require their normal bearer/ownership checks; demo cookies are SameSite Strict. Apply appropriate privacy notices and an operational retention policy for real student data.
+
+Avatar URLs are external HTTPS images and are not fetched by a privileged server. Prefer trusted image hosts for privacy. Full profile deletion and an admin content-review UI are not implemented; privileged operations use documented trusted tooling.
+
+## Practice scores and rating policy
+
+Default AMATYC-style scores are +2 correct, −0.5 wrong, and 0 blank. A 20-question default exam ranges from −10 to 40. Contest duration, count, and point values are stored independently.
+
+**AMATYC Code Rating — Beta** implements the specified seed/geometric-rank/performance-search/raw-delta/population-shift variant. It is not the official full Codeforces algorithm: top-participant correction and official new-participant handling are not independently verified. Ties receive shared last-place rank in the provisional module. New users start at 800 and receive no special adjustment; tiny/empty fields are tested, with singletons unchanged. The shift is not strictly zero-sum; floor clamping can change total deltas.
+
+Codeforces rank thresholds and colors (including Expert blue) are defined in `lib/rating.ts`. The database enforces `rating_enabled=false`; there is no automatic rating publisher or client rating update endpoint. Historical mocks and practice never change ratings or rated participation counts. `rating_history` is reserved for audited organizer transactions after a separately verified policy is enabled. Scheduled contests specify event windows, review time, ranking/tie/participation policy fields, and one attempt per competitor; eligibility lists and public rated scoring/rating publication require additional organizer tooling. Do not claim asynchronous demos are official synchronized competitions.
+
+## Testing
+
+```sh
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+With Docker available:
+
+```sh
+npm run test:db
+```
+
+This creates and removes an isolated PostgreSQL 17 container with minimal Supabase Auth/Storage fixtures. It checks answer confidentiality, grading authorization, profile/score/rating protections, unique requests/active attempts, saved answers and flags, server deadlines, finalization, cross-account isolation, and expiry sweeping. It does not simulate Supabase Auth email/OAuth/Storage HTTP services.
+
+With the production server running and Supabase settings empty:
+
+```sh
+npx playwright install chromium
+npm run smoke
+node tests/historical-browser.mjs
+```
+
+Or use system Chromium: `BROWSER_EXECUTABLE=/usr/bin/chromium npm run smoke`. `TEST_BASE_URL` selects another server/port. Browser tests use controlled demo records and cover the hackathon journey, confidentiality, flags, refresh, result immutability, profiles, theme, and mobile behavior. Live signup/login/recovery tests need a real configured project and are not claimed as passed without one.
+
+## Dataset imports
+
+The supplied QUESTIONS.zip and KEYS.zip have been imported. Source archives stay outside the public application; extracted statement images and reviewed private records are bundled. See `docs/historical-library.md` and `docs/import-review.md` for provenance and reproduction. There is no general automatic verified math-PDF parser.
+
+```sh
+npm run import:json -- /path/reviewed.json --validate-only
+npm run import:json -- /path/reviewed.json
+npm run import:json -- /path/reviewed.json --publish
+```
+
+Imports default to drafts. Publication requires a source image matched to a verified official key, or a fully verified worked solution. Missing editorials stay explicitly unavailable. Published records are immutable through the importer; revised content needs a new ID. Historical content uses the supplied original statements and official keys.
+
+## Deployment
+
+### Vercel
+
+Import the GitHub repository using the standard Next.js preset and Node 22.13+ or 24. Set public Supabase settings before building and the optional demo key if demo sessions must survive instances. Redeploy after changing public settings. Apply database migrations, seed reviewed content, configure auth redirects, expiry scheduling, and production rate limits. No service-role key is needed by the web application.
+
+### Render
+
+Use `render.yaml`, or a Node web service with build `npm ci && npm run build`, start `npm start`, and health check `/api/health`. Render supplies `PORT`; the server binds `0.0.0.0`. Configure settings before the build. Persist real data in Supabase, never the service filesystem.
+
+### Docker
+
+```sh
+docker build -t amatyc-code .
+docker run --rm -p 3000:3000 amatyc-code
+```
+
+Build args `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` embed public settings. `DEMO_SESSION_SECRET` is a runtime server-only environment variable. The Node 22 Alpine multi-stage image uses a non-root runner. For a TLS-inspecting proxy, supply a trusted CA with BuildKit `--secret id=npm_ca,src=/path/to/ca.pem` plus the HTTP_PROXY/HTTPS_PROXY build arguments. DNS overrides may be required by a cloud BuildKit sandbox. Keep TLS verification enabled; CA build secrets are not retained in the image.
+
+No GitHub push, Vercel/Render deployment, or cloud publication is performed automatically. Review and commit the files, then deploy using your own accounts. The pre-upgrade app is preserved as `AMATYC-Code-v1.zip` outside the checkout.

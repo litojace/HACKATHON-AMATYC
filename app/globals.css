@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+:root {
+  color-scheme: dark;
+  --ink: #0f1117;
+  --panel: #181c25;
+  --edge: #303847;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ink: #f5f7fa;
+  --panel: #ffffff;
+  --edge: #d6dee7;
+  --text: #172033;
+  --muted: #53627a;
+}
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: "Inter Variable", Arial, Helvetica, sans-serif;
+}
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.katex {
+  max-width: 100%;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 4px;
+}
+summary {
+  list-style: none;
+}
+input,
+select {
+  color: var(--text);
+}
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-edge bg-panel;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-[#052e24] transition hover:bg-emerald-400;
+  }
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-panel px-5 py-3 text-sm transition hover:border-emerald-500;
+  }
+  .field {
+    @apply w-full min-h-11 rounded-lg border border-edge bg-ink px-4 py-3 text-sm;
+  }
+}
+:root[data-theme="light"] .text-slate-400,
+:root[data-theme="light"] .text-slate-500 {
+  color: var(--muted);
+}
+:root[data-theme="light"] .text-emerald-400,
+:root[data-theme="light"] .text-emerald-300 {
+  color: #047857;
+}
+:root[data-theme="light"] .text-red-400 {
+  color: #b91c1c;
+}
+:root[data-theme="light"] .text-cyan-400 {
+  color: #0e7490;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-theme="light"] .text-amber-400 {
+  color: #92400e;
+}
+:root[data-theme="light"] .text-green-400 {
+  color: #166534;
+}
+:root[data-theme="light"] .text-blue-400 {
+  color: #1d4ed8;
+}
+:root[data-theme="light"] .text-violet-400 {
+  color: #6d28d9;
+}
+:root[data-theme="light"] .text-orange-400 {
+  color: #9a3412;
+}
+:root[data-theme="light"] .text-zinc-400 {
+  color: #52525b;
+}

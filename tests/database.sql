@@ -1,0 +1,51 @@
+insert into auth.users values('00000000-0000-4000-8000-000000000001','one@example.test','{"username":"solver"}'),('00000000-0000-4000-8000-000000000002','two@example.test','{"username":"solver"}');
+insert into public.contests(id,name,published) values('demo-challenge','Demo',true);
+insert into public.contest_problems select 'demo-challenge',id,question_number from public.problems;
+do $$ begin
+ if has_table_privilege('anon','public.problem_solutions','SELECT') then raise exception 'Answer table exposed';end if;
+ if has_function_privilege('authenticated','public.explanation_json(text)','EXECUTE') then raise exception 'Explanation helper exposed';end if;
+ if has_column_privilege('authenticated','public.profiles','rating','UPDATE') then raise exception 'Rating editable';end if;
+ if has_table_privilege('authenticated','public.practice_attempts','INSERT') then raise exception 'Client grades allowed';end if;
+ if has_function_privilege('authenticated','public.finalize_internal(uuid)','EXECUTE') then raise exception 'Privileged finalizer exposed';end if;
+ if (select count(distinct username) from public.profiles)<>2 then raise exception 'Signup collision failure';end if;
+ if public.list_public_problems()::text like '%correct_answer%' then raise exception 'Key in public response';end if;
+end $$;
+set role authenticated;
+select set_config('test.uid','00000000-0000-4000-8000-000000000001',false);
+update public.profiles set school='Chosen College' where id='00000000-0000-4000-8000-000000000001';
+update public.profiles set school='Forbidden' where id='00000000-0000-4000-8000-000000000002';
+do $$ declare session jsonb;result jsonb;a jsonb;aid uuid;begin
+ session:=public.start_practice('demo-01');
+ result:=public.submit_practice('demo-01','D',(session->>'request_id')::uuid);
+ if (result->>'score')::numeric<>2 or result->>'correct_answer'<>'D' then raise exception 'Practice grading failed';end if;
+ perform public.submit_practice('demo-01','A',(session->>'request_id')::uuid);
+ if (select count(*) from public.practice_attempts)<>1 then raise exception 'Duplicate practice submission';end if;
+ if (select rating from public.profiles where id=auth.uid())<>800 then raise exception 'Practice changed rating';end if;
+ a:=public.start_contest('demo-challenge');aid:=(a->>'id')::uuid;
+ if a::text like '%correct_answer%' then raise exception 'Active contest leaked key';end if;
+ if (public.start_contest('demo-challenge')->>'id')::uuid<>aid then raise exception 'Duplicate active contest';end if;
+ a:=public.save_contest_answer(aid,'demo-01','D',true);
+ if a->'answers'->>'demo-01'<>'D' or jsonb_array_length(a->'flags')<>1 then raise exception 'Answer persistence or flag failed';end if;
+ a:=public.finalize_contest(aid);
+ if (a->>'score')::numeric<>2 or a->>'status'<>'finalized' then raise exception 'Contest grading failed';end if;
+ if not a::text like '%correct_answer%' then raise exception 'Authorized review missing';end if;
+ if public.finalize_contest(aid)<>a then raise exception 'Finalization not idempotent';end if;
+ begin perform public.save_contest_answer(aid,'demo-01','A',false);raise exception 'Expected immutable exam';exception when raise_exception then if sqlerrm='Expected immutable exam' then raise;end if;end;
+ perform set_config('test.foreign_attempt',aid::text,false);
+end $$;
+select set_config('test.uid','00000000-0000-4000-8000-000000000002',false);
+do $$ begin
+ if (select count(*) from public.practice_attempts)<>0 then raise exception 'Private practice exposed';end if;
+ begin perform public.get_contest_attempt(current_setting('test.foreign_attempt')::uuid);raise exception 'Expected authorization rejection';exception when raise_exception then if sqlerrm='Expected authorization rejection' then raise;end if;end;
+end $$;
+reset role;
+do $$ declare a jsonb;aid uuid;begin
+ if (select school from public.profiles where id='00000000-0000-4000-8000-000000000002')='Forbidden' then raise exception 'Cross-account update succeeded';end if;
+ perform set_config('test.uid','00000000-0000-4000-8000-000000000001',false);
+ a:=public.start_contest('demo-challenge');aid:=(a->>'id')::uuid;
+ update public.contest_attempts set started_at=now()-interval '2 hours',deadline=now()-interval '1 hour' where id=aid;
+ begin perform public.save_contest_answer(aid,'demo-01','D',false);raise exception 'Expected late rejection';exception when raise_exception then if sqlerrm='Expected late rejection' then raise;end if;end;
+ perform public.finalize_expired_attempts();
+ if (select status from public.contest_attempts where id=aid)<>'finalized' then raise exception 'Expiry sweep failed';end if;
+end $$;
+select 'PASS: public answer confidentiality, authorization, server scoring, profile protection, answer saves, flags, timers, duplicate prevention, immutable finalization, private history and expiry sweep';

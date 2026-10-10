@@ -1,0 +1,30 @@
+do $$ begin
+ if (select count(*) from public.problems where id like 'amatyc-%')<>820 then raise exception 'Historical coverage incomplete';end if;
+ if public.list_public_problems()::text like '%accepted_answers%' or public.list_public_problems()::text like '%grading_policy%' then raise exception 'Grading key policy leaked';end if;
+ if has_function_privilege('authenticated','public.answer_matches(text,text)','EXECUTE') then raise exception 'Answer oracle exposed';end if;
+ if not public.answer_matches('amatyc-2009-fall-q11','A') or not public.answer_matches('amatyc-2009-fall-q11','E') then raise exception 'Alternate key rejected';end if;
+ if not public.answer_matches('amatyc-2010-spring-q13','4040100') then raise exception 'Numeric response normalization failed';end if;
+ if not public.answer_matches('amatyc-2005-spring-q06',null) then raise exception 'Credit for all not applied';end if;
+ if not public.answer_valid('amatyc-2004-fall-q03','CTAYAM') or public.answer_valid('amatyc-2025-spring-q01','Z') then raise exception 'Response format failed';end if;
+end $$;
+insert into public.contests(id,name,published) values('amatyc-2004-fall','Historical',true);
+insert into public.contest_problems select 'amatyc-2004-fall',id,question_number from public.problems where id like 'amatyc-2004-fall-q%';
+set role authenticated;
+select set_config('test.uid','00000000-0000-4000-8000-000000000001',false);
+do $$ declare session jsonb;r jsonb;a jsonb;begin
+ session:=public.start_practice('amatyc-2004-fall-q03');
+ r:=public.submit_practice('amatyc-2004-fall-q03','c t a y a m',(session->>'request_id')::uuid);
+ if (r->>'score')::numeric<>2 then raise exception 'Text response grading failed';end if;
+ session:=public.start_practice('amatyc-2015-spring-q14');
+ r:=public.submit_practice('amatyc-2015-spring-q14','999',(session->>'request_id')::uuid);
+ if (r->>'score')::numeric<>0 or (r->>'is_correct')::boolean then raise exception 'Official no-penalty correction failed';end if;
+ session:=public.start_practice('amatyc-2005-spring-q06');
+ r:=public.submit_practice('amatyc-2005-spring-q06',null,(session->>'request_id')::uuid);
+ if (r->>'score')::numeric<>2 then raise exception 'Official credit-all failed';end if;
+ a:=public.start_contest('amatyc-2004-fall');
+ a:=public.save_contest_answer((a->>'id')::uuid,'amatyc-2004-fall-q07','64',false);
+ a:=public.finalize_contest((a->>'id')::uuid);
+ if (a->>'score')::numeric<>2 then raise exception 'Historical exam short response score failed';end if;
+end $$;
+reset role;
+select 'PASS: all 820 historical records, private key policies, alternate answers, short responses, correction policies and historical exam scoring';

@@ -1,0 +1,1197 @@
+[
+  {
+    "id": "demo-01",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 1,
+    "category": "Algebra",
+    "difficulty_rating": 800,
+    "question_latex": "Define a binary operation $\\#$ on the integers by $m \\# n = m^2 - n$. Find $2 \\# (0 \\# (2 \\# 5))$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "-1"
+      },
+      {
+        "label": "B",
+        "text": "0"
+      },
+      {
+        "label": "C",
+        "text": "1"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      },
+      {
+        "label": "E",
+        "text": "5"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "Evaluate inside out: First, $2 \\# 5 = 2^2 - 5 = -1$. Next, $0 \\# (-1) = 0^2 - (-1) = 1$. Finally, $2 \\# 1 = 2^2 - 1 = 3$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Answer memory (Ans)",
+      "summary": "Reuse the previous result to evaluate the nested operation from the inside out. Ans stores each result, so intermediate values need not be retyped.",
+      "steps": [
+        "In COMP mode, evaluate the innermost operation: 2 [x²] − 5 [=]. Its result becomes Ans.",
+        "Enter 0 [x²] − [Ans] [=]. Subtracting the stored negative result handles the middle operation.",
+        "Enter 2 [x²] − [Ans] [=]. This applies the outside operation to the updated memory."
+      ],
+      "key_sequences": [
+        [
+          "MODE",
+          "1",
+          "2",
+          "x²",
+          "−",
+          "5",
+          "="
+        ],
+        [
+          "0",
+          "x²",
+          "−",
+          "Ans",
+          "="
+        ],
+        [
+          "2",
+          "x²",
+          "−",
+          "Ans",
+          "="
+        ]
+      ],
+      "screen_states": [
+        "−1",
+        "1",
+        "3"
+      ]
+    },
+    "title": "Nested Operations",
+    "topic_tags": [
+      "Algebra"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Three inside-out substitutions; no search or hidden identity."
+  },
+  {
+    "id": "demo-02",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 2,
+    "category": "Geometry",
+    "difficulty_rating": 1100,
+    "question_latex": "In the given semicircle, $AC$ is perpendicular to $BD$, $|AB| = a$, and $|BC| = 1$. Find $|BD|$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "$a$"
+      },
+      {
+        "label": "B",
+        "text": "$\\sqrt{a} + 1$"
+      },
+      {
+        "label": "C",
+        "text": "$\\sqrt{a} - 1$"
+      },
+      {
+        "label": "D",
+        "text": "$a - 1$"
+      },
+      {
+        "label": "E",
+        "text": "$\\sqrt{a}$"
+      }
+    ],
+    "correct_answer": "E",
+    "figure_required": true,
+    "figure_image_path": "/images/semicircle.svg",
+    "written_solution": "Because $\\angle ADC = 90^\\circ$ and altitude $BD \\perp AC$, by the geometric mean theorem: $BD^2 = AB \\times BC = a \\times 1 = a \\implies BD = \\sqrt{a}$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Recognize the right-angle altitude theorem; one geometric insight. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Altitude and Geometric Mean",
+    "topic_tags": [
+      "Geometry"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Recognize the right-angle altitude theorem; one geometric insight."
+  },
+  {
+    "id": "demo-03",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 3,
+    "category": "Algebra",
+    "difficulty_rating": 800,
+    "question_latex": "If $3x+7=22$, what is $x$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "4"
+      },
+      {
+        "label": "C",
+        "text": "5"
+      },
+      {
+        "label": "D",
+        "text": "6"
+      },
+      {
+        "label": "E",
+        "text": "7"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "Subtract $7$ to get $3x=15$, then divide by $3$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Numerical SOLVE",
+      "summary": "Let SOLVE find x directly from the original equation instead of doing the algebra and entering the final division.",
+      "steps": [
+        "Select COMP with [MODE] [1]. Enter 3×X+7−22 using [ALPHA] and the key marked X. Setting the residual to zero represents the original equation.",
+        "Press [SHIFT] [CALC] (SOLVE). At the initial-value prompt enter 0, then [=]. SOLVE uses this guess to search for a root.",
+        "Read X=5 and L−R=0. The residual confirms that 3×5+7 equals 22; choose C."
+      ],
+      "key_sequences": [
+        [
+          "MODE",
+          "1",
+          "3",
+          "×",
+          "ALPHA",
+          "X",
+          "+",
+          "7",
+          "−",
+          "22"
+        ],
+        [
+          "SHIFT",
+          "CALC",
+          "0",
+          "="
+        ],
+        []
+      ],
+      "screen_states": [
+        "3X+7−22",
+        "Solve for X: 0",
+        "X=5; L−R=0"
+      ]
+    },
+    "title": "Linear Equation",
+    "topic_tags": [
+      "Algebra"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "One linear isolation step."
+  },
+  {
+    "id": "demo-04",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 4,
+    "category": "Number Theory",
+    "difficulty_rating": 1100,
+    "question_latex": "What is the remainder when $7^{2026}$ is divided by $10$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "3"
+      },
+      {
+        "label": "C",
+        "text": "5"
+      },
+      {
+        "label": "D",
+        "text": "7"
+      },
+      {
+        "label": "E",
+        "text": "9"
+      }
+    ],
+    "correct_answer": "E",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "The last digits repeat $7,9,3,1$ every four powers. Since $2026\\equiv2\\pmod4$, the remainder is $9$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "TABLE for a power cycle",
+      "summary": "Use TABLE to discover the units-digit period without attempting the overflowing power 7^2026.",
+      "steps": [
+        "Select [MODE] [7] (TABLE). Enter f(X)=7^X, with X from the ALPHA key.",
+        "Set Start=1, End=4, Step=1. The values 7, 49, 343, 2401 have last digits 7, 9, 3, 1. Multiplying by 7 starts the same cycle again.",
+        "Return to COMP. Compute 2026÷4 = 506.5: the exponent is 4×506+2, so use the second cycle entry, last digit 9."
+      ],
+      "screen_states": [
+        "f(X)=7^X",
+        "7; 49; 343; 2401",
+        "2026 = 4×506 + 2 → 9"
+      ]
+    },
+    "title": "Last Digit Cycle",
+    "topic_tags": [
+      "Number Theory"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Recognize a four-term units-digit cycle and reduce the exponent."
+  },
+  {
+    "id": "demo-05",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 5,
+    "category": "Probability and Combinatorics",
+    "difficulty_rating": 900,
+    "question_latex": "Two fair six-sided dice are rolled. What is the probability their sum is $8$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "$1/6$"
+      },
+      {
+        "label": "B",
+        "text": "$5/36$"
+      },
+      {
+        "label": "C",
+        "text": "$1/4$"
+      },
+      {
+        "label": "D",
+        "text": "$7/36$"
+      },
+      {
+        "label": "E",
+        "text": "$1/3$"
+      }
+    ],
+    "correct_answer": "B",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "The favorable ordered outcomes are $(2,6),(3,5),(4,4),(5,3),(6,2)$ out of $36$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "List five ordered outcomes in a 36-outcome sample space. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Dice Sum",
+    "topic_tags": [
+      "Probability and Combinatorics"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "List five ordered outcomes in a 36-outcome sample space."
+  },
+  {
+    "id": "demo-06",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 6,
+    "category": "Geometry",
+    "difficulty_rating": 800,
+    "question_latex": "A right triangle has legs of length $6$ and $8$. What is its hypotenuse?",
+    "options": [
+      {
+        "label": "A",
+        "text": "9"
+      },
+      {
+        "label": "B",
+        "text": "10"
+      },
+      {
+        "label": "C",
+        "text": "12"
+      },
+      {
+        "label": "D",
+        "text": "14"
+      },
+      {
+        "label": "E",
+        "text": "16"
+      }
+    ],
+    "correct_answer": "B",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "By Pythagoras, $c=\\sqrt{6^2+8^2}=\\sqrt{100}=10$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Direct Pythagorean theorem or recognize the 6-8-10 triple. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Pythagorean Triple",
+    "topic_tags": [
+      "Geometry"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Direct Pythagorean theorem or recognize the 6-8-10 triple."
+  },
+  {
+    "id": "demo-07",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 7,
+    "category": "Trigonometry and Precalculus",
+    "difficulty_rating": 800,
+    "question_latex": "What is $\\sin(\\pi/6)+\\cos(\\pi/3)$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "$0$"
+      },
+      {
+        "label": "B",
+        "text": "$1/2$"
+      },
+      {
+        "label": "C",
+        "text": "$1$"
+      },
+      {
+        "label": "D",
+        "text": "$\\sqrt{3}$"
+      },
+      {
+        "label": "E",
+        "text": "$2$"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "Both terms equal $1/2$, so their sum is $1$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Angle setup and trigonometric functions",
+      "summary": "Use radian mode because the printed arguments use π. The calculator evaluates the trigonometric functions themselves.",
+      "steps": [
+        "Open [SHIFT] [MODE] (SETUP) and select [4] (Rad). Confirm the R angle indicator.",
+        "In COMP, enter sin(π÷6)+cos(π÷3) using the sin, cos and π labels. Close each function argument and press [=].",
+        "The result is 1. Switch the angle setting back if your next problem uses degrees."
+      ],
+      "screen_states": [
+        "R",
+        "sin(π/6)+cos(π/3)",
+        "1"
+      ]
+    },
+    "title": "Special Angles",
+    "topic_tags": [
+      "Trigonometry and Precalculus"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Recall two standard special-angle values."
+  },
+  {
+    "id": "demo-08",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 8,
+    "category": "Algebra",
+    "difficulty_rating": 900,
+    "question_latex": "The roots of $x^2-5x+6=0$ are $r$ and $s$. Find $r^2+s^2$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "5"
+      },
+      {
+        "label": "B",
+        "text": "11"
+      },
+      {
+        "label": "C",
+        "text": "13"
+      },
+      {
+        "label": "D",
+        "text": "25"
+      },
+      {
+        "label": "E",
+        "text": "36"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "By Vieta, $r+s=5$ and $rs=6$. Thus $r^2+s^2=(r+s)^2-2rs=25-12=13$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "EQN quadratic solver",
+      "summary": "Find both roots using the built-in polynomial solver, then use those roots in the requested expression.",
+      "steps": [
+        "Press [MODE] [5] (EQN), then [3] for ax²+bx+c=0.",
+        "Enter coefficients a=1, b=−5, c=6, confirming each with [=]. The solver displays x₁=3 and, after [=], x₂=2.",
+        "Return to COMP and evaluate 3²+2². The root-solving feature did the main equation work; the sum is 13."
+      ],
+      "screen_states": [
+        "ax²+bx+c=0",
+        "x₁=3; x₂=2",
+        "13"
+      ]
+    },
+    "title": "Root Identities",
+    "topic_tags": [
+      "Algebra"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "The quadratic factors immediately; roots 2 and 3 need one sum of squares."
+  },
+  {
+    "id": "demo-09",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 9,
+    "category": "Probability and Combinatorics",
+    "difficulty_rating": 800,
+    "question_latex": "How many ways can three students be chosen from a group of eight?",
+    "options": [
+      {
+        "label": "A",
+        "text": "24"
+      },
+      {
+        "label": "B",
+        "text": "48"
+      },
+      {
+        "label": "C",
+        "text": "56"
+      },
+      {
+        "label": "D",
+        "text": "64"
+      },
+      {
+        "label": "E",
+        "text": "336"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$\\binom83=8\\cdot7\\cdot6/(3\\cdot2\\cdot1)=56$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "nCr combinations",
+      "summary": "The built-in combination operator counts unordered selections. Use nCr rather than nPr because swapping committee members does not create a new committee.",
+      "steps": [
+        "Choose COMP using [MODE] [1]. Type 8, the number of available students.",
+        "Press [SHIFT] [÷], whose shifted label is nCr; then type 3, the committee size.",
+        "Press [=]. The display is 56; the nCr function accounts for the repeated orderings automatically."
+      ],
+      "key_sequences": [
+        [
+          "MODE",
+          "1",
+          "8"
+        ],
+        [
+          "SHIFT",
+          "÷",
+          "3"
+        ],
+        [
+          "="
+        ]
+      ],
+      "screen_states": [
+        "8",
+        "8 nCr 3",
+        "56"
+      ]
+    },
+    "title": "Choose a Committee",
+    "topic_tags": [
+      "Probability and Combinatorics"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Direct combination with no extra constraint."
+  },
+  {
+    "id": "demo-10",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 10,
+    "category": "Number Theory",
+    "difficulty_rating": 800,
+    "question_latex": "What is $\\gcd(84,126)$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "7"
+      },
+      {
+        "label": "B",
+        "text": "14"
+      },
+      {
+        "label": "C",
+        "text": "21"
+      },
+      {
+        "label": "D",
+        "text": "42"
+      },
+      {
+        "label": "E",
+        "text": "63"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$126=84+42$ and $84=2\\cdot42$, so the greatest common divisor is $42$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Exact fraction reduction",
+      "summary": "Reduce 84/126 to recover the common divisor from the cancellation factor.",
+      "steps": [
+        "In MathIO/COMP, enter 84 using the fraction-template key, place 126 in its denominator, and press [=].",
+        "Read the exact reduced fraction 2/3. Do not convert to a rounded decimal: the numerator has been divided by the GCD.",
+        "Compute 84÷2 = 42 and check 126÷3 = 42. Both cancellation factors agree."
+      ],
+      "screen_states": [
+        "84/126",
+        "2/3",
+        "42"
+      ]
+    },
+    "title": "Euclidean Algorithm",
+    "topic_tags": [
+      "Number Theory"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "One Euclidean-algorithm step."
+  },
+  {
+    "id": "demo-11",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 11,
+    "category": "Geometry",
+    "difficulty_rating": 800,
+    "question_latex": "A circle has circumference $12\\pi$. What is its area?",
+    "options": [
+      {
+        "label": "A",
+        "text": "$12\\pi$"
+      },
+      {
+        "label": "B",
+        "text": "$18\\pi$"
+      },
+      {
+        "label": "C",
+        "text": "$24\\pi$"
+      },
+      {
+        "label": "D",
+        "text": "$36\\pi$"
+      },
+      {
+        "label": "E",
+        "text": "$144\\pi$"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$2\\pi r=12\\pi$ gives $r=6$, hence area $\\pi r^2=36\\pi$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Recover radius from circumference then use the area formula. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Circle Area",
+    "topic_tags": [
+      "Geometry"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Recover radius from circumference then use the area formula."
+  },
+  {
+    "id": "demo-12",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 12,
+    "category": "Functions and Graphs",
+    "difficulty_rating": 800,
+    "question_latex": "If $f(x)=2x^2-3$, find $f(-2)$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "-11"
+      },
+      {
+        "label": "B",
+        "text": "-5"
+      },
+      {
+        "label": "C",
+        "text": "1"
+      },
+      {
+        "label": "D",
+        "text": "5"
+      },
+      {
+        "label": "E",
+        "text": "11"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$f(-2)=2(-2)^2-3=8-3=5$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "CALC substitution",
+      "summary": "Store the function expression once, then let CALC substitute a value of X while preserving the squared parentheses.",
+      "steps": [
+        "In COMP enter 2×X²−3, using [ALPHA] and the key marked X.",
+        "Press [CALC]. At the X? prompt use the [(-)] negative-number key and enter 2, then [=].",
+        "Read 5. CALC substituted X=−2 into the function; [CALC] can reuse it for another input."
+      ],
+      "screen_states": [
+        "2X²−3",
+        "X? −2",
+        "5"
+      ]
+    },
+    "title": "Evaluating a Function",
+    "topic_tags": [
+      "Functions and Graphs"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "One substitution with careful negative-number parentheses."
+  },
+  {
+    "id": "demo-13",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 13,
+    "category": "Trigonometry and Precalculus",
+    "difficulty_rating": 800,
+    "question_latex": "What is $\\log_2 32$?",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "3"
+      },
+      {
+        "label": "C",
+        "text": "4"
+      },
+      {
+        "label": "D",
+        "text": "5"
+      },
+      {
+        "label": "E",
+        "text": "6"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$2^5=32$, so $\\log_2 32=5$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Logarithm functions / change of base",
+      "summary": "Use log to find the exponent, rather than first recognizing 2^5 and typing its answer.",
+      "steps": [
+        "In COMP enter log(32)÷log(2), closing both logarithm arguments.",
+        "Press [=] to evaluate the change-of-base quotient. The result is 5.",
+        "Check by entering 2^Ans [=], which returns 32. This verifies the exponent against the original logarithm."
+      ],
+      "screen_states": [
+        "log(32)/log(2)",
+        "5",
+        "32"
+      ]
+    },
+    "title": "Logarithmic Identity",
+    "topic_tags": [
+      "Trigonometry and Precalculus"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Recognize a small power of two."
+  },
+  {
+    "id": "demo-14",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 14,
+    "category": "Probability and Combinatorics",
+    "difficulty_rating": 900,
+    "question_latex": "A bag contains $3$ red and $2$ blue balls. Two are drawn without replacement. What is the probability both are red?",
+    "options": [
+      {
+        "label": "A",
+        "text": "$1/5$"
+      },
+      {
+        "label": "B",
+        "text": "$3/10$"
+      },
+      {
+        "label": "C",
+        "text": "$2/5$"
+      },
+      {
+        "label": "D",
+        "text": "$3/5$"
+      },
+      {
+        "label": "E",
+        "text": "$9/25$"
+      }
+    ],
+    "correct_answer": "B",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$P=\\frac35\\cdot\\frac24=\\frac3{10}$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "nCr for sampling without replacement",
+      "summary": "Count favorable and total unordered draws with combinations; this avoids treating the second draw as independent.",
+      "steps": [
+        "In COMP enter 3 [SHIFT] [÷] 2, meaning 3 nCr 2. This counts red-only pairs.",
+        "Divide by (5 [SHIFT] [÷] 2), meaning 5 nCr 2. Parentheses keep the denominator as one combination.",
+        "Press [=]. The exact result is 3/10. [S⇔D] switches to 0.3 if needed."
+      ],
+      "screen_states": [
+        "3 nCr 2",
+        "(3 nCr 2)/(5 nCr 2)",
+        "3/10"
+      ]
+    },
+    "title": "Sampling Without Replacement",
+    "topic_tags": [
+      "Probability and Combinatorics"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Two conditional probabilities with changing denominators."
+  },
+  {
+    "id": "demo-15",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 15,
+    "category": "Number Theory",
+    "difficulty_rating": 1000,
+    "question_latex": "How many positive divisors does $72$ have?",
+    "options": [
+      {
+        "label": "A",
+        "text": "6"
+      },
+      {
+        "label": "B",
+        "text": "8"
+      },
+      {
+        "label": "C",
+        "text": "10"
+      },
+      {
+        "label": "D",
+        "text": "12"
+      },
+      {
+        "label": "E",
+        "text": "14"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$72=2^3 3^2$ gives $(3+1)(2+1)=12$ divisors.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Prime-factor exponent counting after a short factorization. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Counting Divisors",
+    "topic_tags": [
+      "Number Theory"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Prime-factor exponent counting after a short factorization."
+  },
+  {
+    "id": "demo-16",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 16,
+    "category": "Geometry",
+    "difficulty_rating": 1000,
+    "question_latex": "A regular hexagon has side length $2$. What is its area?",
+    "options": [
+      {
+        "label": "A",
+        "text": "$3\\sqrt3$"
+      },
+      {
+        "label": "B",
+        "text": "$6$"
+      },
+      {
+        "label": "C",
+        "text": "$6\\sqrt3$"
+      },
+      {
+        "label": "D",
+        "text": "$12\\sqrt3$"
+      },
+      {
+        "label": "E",
+        "text": "$24$"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "Six equilateral triangles of side $2$ each have area $\\sqrt3$, giving $6\\sqrt3$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Decompose a regular hexagon into six equilateral triangles. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Regular Hexagon",
+    "topic_tags": [
+      "Geometry"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Decompose a regular hexagon into six equilateral triangles."
+  },
+  {
+    "id": "demo-17",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 17,
+    "category": "Algebra",
+    "difficulty_rating": 1000,
+    "question_latex": "If $x+1/x=3$, find $x^2+1/x^2$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "5"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "7"
+      },
+      {
+        "label": "D",
+        "text": "9"
+      },
+      {
+        "label": "E",
+        "text": "11"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "Squaring gives $x^2+2+1/x^2=9$, so the answer is $7$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Square the given expression and remove the cross term. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Reciprocal Identity",
+    "topic_tags": [
+      "Algebra"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Square the given expression and remove the cross term."
+  },
+  {
+    "id": "demo-18",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 18,
+    "category": "Sequences and Series",
+    "difficulty_rating": 900,
+    "question_latex": "A geometric sequence starts $3,6,12,\\ldots$. What is the sum of its first six terms?",
+    "options": [
+      {
+        "label": "A",
+        "text": "93"
+      },
+      {
+        "label": "B",
+        "text": "96"
+      },
+      {
+        "label": "C",
+        "text": "186"
+      },
+      {
+        "label": "D",
+        "text": "189"
+      },
+      {
+        "label": "E",
+        "text": "192"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "$S_6=3(2^6-1)/(2-1)=189$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "TABLE for sequence generation",
+      "summary": "Generate the six terms using TABLE instead of entering an already-derived geometric-sum formula.",
+      "steps": [
+        "Select [MODE] [7] (TABLE) and enter f(X)=3×2^(X−1). This models term X from the first term and doubling rule.",
+        "Set Start=1, End=6, Step=1. Record 3, 6, 12, 24, 48, 96 from the table.",
+        "Return to COMP and add the six generated terms. The total is 189. TABLE produced the terms from the sequence rule."
+      ],
+      "screen_states": [
+        "3×2^(X−1)",
+        "3; 6; 12; 24; 48; 96",
+        "189"
+      ]
+    },
+    "title": "Geometric Series",
+    "topic_tags": [
+      "Sequences and Series"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Six terms or the standard geometric-series formula."
+  },
+  {
+    "id": "demo-19",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 19,
+    "category": "Probability and Combinatorics",
+    "difficulty_rating": 800,
+    "question_latex": "How many distinct arrangements are there of the letters in MATH?",
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "12"
+      },
+      {
+        "label": "C",
+        "text": "16"
+      },
+      {
+        "label": "D",
+        "text": "24"
+      },
+      {
+        "label": "E",
+        "text": "32"
+      }
+    ],
+    "correct_answer": "D",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "All four letters are distinct, so there are $4!=24$ permutations.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": true,
+      "functionality": "Factorial x!",
+      "summary": "Count the permutations directly with the calculator factorial function.",
+      "steps": [
+        "In COMP enter 4 for the four distinct letters.",
+        "Press [SHIFT] and the key with the x! shifted label (x⁻¹ on this model). The expression reads 4!.",
+        "Press [=] to obtain 24. Factorial counts the four, then three, then two, then one remaining choices."
+      ],
+      "key_sequences": [
+        [
+          "MODE",
+          "1",
+          "4"
+        ],
+        [
+          "SHIFT",
+          "x⁻¹"
+        ],
+        [
+          "="
+        ]
+      ],
+      "screen_states": [
+        "4",
+        "4!",
+        "24"
+      ]
+    },
+    "title": "Letter Arrangements",
+    "topic_tags": [
+      "Probability and Combinatorics"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Four distinct letters; direct factorial."
+  },
+  {
+    "id": "demo-20",
+    "contest_name": "Original Demonstration Set",
+    "question_number": 20,
+    "category": "Number Theory",
+    "difficulty_rating": 800,
+    "question_latex": "Find the least positive integer $n$ such that $n\\equiv2\\pmod3$ and $n\\equiv3\\pmod5$.",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "5"
+      },
+      {
+        "label": "C",
+        "text": "8"
+      },
+      {
+        "label": "D",
+        "text": "13"
+      },
+      {
+        "label": "E",
+        "text": "23"
+      }
+    ],
+    "correct_answer": "C",
+    "figure_required": false,
+    "figure_image_path": null,
+    "written_solution": "The positive integers congruent to $3$ modulo $5$ begin $3,8,13$. The first also congruent to $2$ modulo $3$ is $8$.",
+    "calculator_trick": {
+      "model": "Casio FX-115ES PLUS",
+      "applicable": false,
+      "summary": "Test the first two integers congruent to 3 modulo 5. A calculator does not supply the required geometric or algebraic reasoning here; use the mathematical solution instead of a final-arithmetic walkthrough.",
+      "steps": []
+    },
+    "title": "Modular Conditions",
+    "topic_tags": [
+      "Number Theory"
+    ],
+    "verification_status": "fully_verified",
+    "source_question_file": null,
+    "source_answer_key_file": null,
+    "publication_status": "published",
+    "difficulty": "Easy",
+    "difficulty_rationale": "Test the first two integers congruent to 3 modulo 5."
+  }
+]
