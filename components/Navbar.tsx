@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, Moon, Sun, X, ChevronDown } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
@@ -20,6 +20,18 @@ export default function Navbar() {
     setTheme(value);
     document.documentElement.dataset.theme = value;
   }, [notify]);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButton.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
   function toggle() {
     const next = theme === "dark" ? "light" : "dark";
     setTheme(next);
@@ -32,8 +44,8 @@ export default function Navbar() {
   }
   return (
     <header className="sticky top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
-      <nav className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:py-4">
+        <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
           <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
             <rect x="1" y="1" width="30" height="30" rx="8" fill="#10b981" />
             <path
@@ -47,45 +59,28 @@ export default function Navbar() {
             AMATYC <span className="text-emerald-400">Code</span>
           </span>
         </Link>
-        <button
-          aria-label={open ? "Close navigation" : "Open navigation"}
-          aria-expanded={open}
-          className="min-h-11 min-w-11 p-2 md:hidden"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
-        <div
-          className={`${open ? "flex" : "hidden"} order-3 w-full flex-col gap-5 text-sm md:order-none md:flex md:w-auto md:flex-row`}
-        >
+        <div className="hidden items-center gap-6 text-sm lg:flex">
           {[
             ["/problems", "Problems"],
             ["/contests", "Contests"],
             ["/leaderboard", "Leaderboard"],
             ["/dashboard", "Dashboard"],
           ].map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className={
-                path.startsWith(href)
-                  ? "text-emerald-400"
-                  : "muted hover:text-emerald-400"
-              }
-            >
+            <Link key={href} href={href} aria-current={path.startsWith(href) ? "page" : undefined}
+              className={path.startsWith(href) ? "text-emerald-400" : "muted hover:text-emerald-400"}>
               {label}
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
           <button
             aria-label="Toggle color theme"
             onClick={toggle}
-            className="min-h-11 min-w-11 rounded-lg border border-edge p-2"
+            className="flex h-11 w-11 items-center justify-center rounded-lg border border-edge hover:bg-panel"
           >
             {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
           </button>
+          <div className="hidden items-center gap-3 lg:flex">
           {user ? (
             <details className="relative">
               <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm">
@@ -123,12 +118,42 @@ export default function Navbar() {
               </Link>
             </>
           )}
+          </div>
+          <button ref={menuButton} aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-expanded={open} aria-controls="mobile-navigation"
+            className="flex h-11 w-11 items-center justify-center rounded-lg border border-edge hover:bg-panel lg:hidden"
+            onClick={() => setOpen(!open)}>
+            {open ? <X size={21} /> : <Menu size={21} />}
+          </button>
+        </div>
+      </nav>
+      <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}
+        className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">
+        <div className="space-y-1">
+          {[["/problems", "Problems"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"], ["/dashboard", "Dashboard"]].map(([href, label]) => (
+            <Link key={href} href={href} onClick={() => setOpen(false)}
+              aria-current={path.startsWith(href) ? "page" : undefined}
+              className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium ${path.startsWith(href) ? "bg-emerald-400/10 text-emerald-400" : "muted hover:bg-ink"}`}>
+              {label}
+            </Link>
+          ))}
+        </div>
+        <div className="mt-4 border-t border-edge pt-4">
+          {user ? <div className="space-y-1 text-sm">
+            <p className="px-3 pb-2 font-semibold">{profile?.username ?? "Account"}</p>
+            <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href="/settings" onClick={() => setOpen(false)}>Settings</Link>
+            {profile && <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
+            <button className="min-h-11 w-full rounded-lg px-3 text-left hover:bg-ink" onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
+          </div> : <div className="grid grid-cols-2 gap-3">
+            <Link href="/login" className="btn-secondary justify-center" onClick={() => setOpen(false)}>{demo ? "Account setup" : "Log in"}</Link>
+            <Link href="/signup" className="btn justify-center" onClick={() => setOpen(false)}>Sign up</Link>
+          </div>}
         </div>
       </nav>
       {demo && (
         <div className="border-t border-edge bg-emerald-400/5 px-5 py-1 text-center text-[11px] text-emerald-400">
-          LOCAL MODE · Historical exams + original samples · Unrated · Activity
-          stays in this browser
+          <span className="lg:hidden">Local mode · Unrated practice</span>
+          <span className="hidden lg:inline">LOCAL MODE · Historical exams + original samples · Unrated · Activity stays in this browser</span>
         </div>
       )}
     </header>
