@@ -47,7 +47,6 @@ export default function AuthForm({
               password,
               options: {
                 data: {
-                  username: String(fields.get("username")),
                   full_name: String(fields.get("full_name")),
                   school: String(fields.get("school") ?? ""),
                 },
@@ -105,17 +104,6 @@ export default function AuthForm({
           <form className="mt-6 space-y-4" onSubmit={submit}>
             {mode === "signup" && (
               <>
-                <label className="block text-xs muted">
-                  Username
-                  <input
-                    name="username"
-                    autoComplete="username"
-                    className="field mt-2"
-                    pattern="[A-Za-z0-9_]{3,30}"
-                    title="3–30 letters, digits, or underscores"
-                    required
-                  />
-                </label>
                 <label className="block text-xs muted">
                   Display name
                   <input

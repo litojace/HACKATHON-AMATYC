@@ -52,7 +52,7 @@ When either public Supabase setting is supplied, the application expects a worki
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 006, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 007, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 1. Run these migrations in order in the SQL editor:
    - `supabase/migrations/001_platform.sql`
@@ -61,6 +61,7 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/004_initial_rating.sql`
    - `supabase/migrations/005_historical_formats.sql`
    - `supabase/migrations/006_problem_submission_stats.sql`
+   - `supabase/migrations/007_profile_avatars.sql`
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
 4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
@@ -81,7 +82,7 @@ Public APIs return explicit public projections, never complete import records. P
 
 API mutations check request origin and use a per-instance limiter (60/minute per token/demo identity/IP). Database practice starts serialize per profile and enforce 30/minute. **Before public deployment**, configure a shared deployment-layer rate limiter/WAF for submission and auth endpoints; the in-process limiter is not a distributed abuse-control guarantee. Requests without a browser Origin still require their normal bearer/ownership checks; demo cookies are SameSite Strict. Apply appropriate privacy notices and an operational retention policy for real student data.
 
-Avatar URLs are external HTTPS images and are not fetched by a privileged server. Prefer trusted image hosts for privacy. Full profile deletion and an admin content-review UI are not implemented; privileged operations use documented trusted tooling.
+Settings supports PNG, JPEG, and WebP avatar uploads up to 2 MB to the public `avatars` bucket. Storage rules restrict uploads and deletion to each account’s own folder. Signup uses a display name; internal unique handles preserve public profile routes. Full profile deletion and an admin content-review UI are not implemented; privileged operations use documented trusted tooling.
 
 ## Practice scores and rating policy
 

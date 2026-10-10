@@ -11,8 +11,8 @@ for attempt in {1..30}; do
   sleep 1
 done
 if [ "$ready" != true ]; then echo 'Postgres did not become ready' >&2; exit 1; fi
-{ cat tests/database-fixture.sql supabase/migrations/001_platform.sql supabase/migrations/002_import.sql supabase/migrations/003_practice_review.sql supabase/migrations/004_initial_rating.sql supabase/migrations/005_historical_formats.sql supabase/migrations/006_problem_submission_stats.sql tests/database-seed.sql tests/database.sql
+{ cat tests/database-fixture.sql supabase/migrations/001_platform.sql supabase/migrations/002_import.sql supabase/migrations/003_practice_review.sql supabase/migrations/004_initial_rating.sql supabase/migrations/005_historical_formats.sql supabase/migrations/006_problem_submission_stats.sql supabase/migrations/007_profile_avatars.sql tests/database-seed.sql tests/database.sql
   node scripts/test-library-seed.mjs
-  cat tests/historical-database.sql
+  cat tests/historical-database.sql tests/profile-avatars.sql
 } |
   docker exec -i "$container" psql -U postgres -v ON_ERROR_STOP=1

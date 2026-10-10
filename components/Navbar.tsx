@@ -91,7 +91,7 @@ export default function Navbar() {
                     className="h-7 w-7 rounded-full object-cover"
                   />
                 )}
-                {profile?.username ?? "Account"}
+                <span className="max-w-40 truncate">{profile?.full_name?.trim() || "Account"}</span>
                 <ChevronDown size={14} />
               </summary>
               <div className="panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
@@ -140,7 +140,7 @@ export default function Navbar() {
         </div>
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">
-            <p className="px-3 pb-2 font-semibold">{profile?.username ?? "Account"}</p>
+            <p className="flex items-center gap-3 break-words px-3 pb-2 font-semibold">{profile?.avatar_url && <img src={profile.avatar_url} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />}{profile?.full_name?.trim() || "Account"}</p>
             <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href="/settings" onClick={() => setOpen(false)}>Settings</Link>
             {profile && <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
             <button className="min-h-11 w-full rounded-lg px-3 text-left hover:bg-ink" onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
