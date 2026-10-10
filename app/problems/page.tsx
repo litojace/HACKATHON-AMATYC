@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Bookmark, Search, CheckCircle2, RotateCw } from "lucide-react";
 import { useApp } from "@/components/Providers";
 import { Loading, PageTitle, ServiceError } from "@/components/Shared";
-import { filterProblems } from "@/lib/domain";
+import { difficultyColor, filterProblems } from "@/lib/domain";
 export default function Problems() {
   const { problems, activity, bookmark, loading, error } = useApp();
   const [filters, setFilters] = useState<Record<string, string>>({}),
@@ -179,7 +179,7 @@ export default function Problems() {
                         </Link>
                       </td>
                       <td className="p-4 text-xs muted">{p.category}</td>
-                      <td className="p-4 text-xs">{p.difficulty}</td>
+                      <td className={`p-4 text-xs font-semibold ${difficultyColor(p.difficulty)}`}>{p.difficulty}</td>
                       <td className="p-4 font-mono text-emerald-400">
                         {p.difficulty_rating ?? "—"}
                       </td>

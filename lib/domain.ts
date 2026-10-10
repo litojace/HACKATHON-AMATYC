@@ -60,3 +60,7 @@ export function filterProblems(
 export function remainingSeconds(deadline: string, now: number) {
   return Math.max(0, Math.ceil((Date.parse(deadline) - now) / 1000));
 }
+
+export function difficultyColor(level: string) {
+  return level === "Easy" ? "text-green-400" : level === "Medium" ? "text-blue-400" : level === "Hard" ? "text-red-400" : "text-zinc-400";
+}

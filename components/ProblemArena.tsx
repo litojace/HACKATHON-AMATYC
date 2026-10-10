@@ -16,6 +16,8 @@ import type {
 import { useApp } from "./Providers";
 import { api } from "@/lib/client";
 import MathRenderer from "./MathRenderer";
+import SolutionRenderer from "./SolutionRenderer";
+import { difficultyColor } from "@/lib/domain";
 import CasioKeypadGuide from "./CasioKeypadGuide";
 import Dialog from "./ui/Dialog";
 export default function ProblemArena({
@@ -159,7 +161,7 @@ export default function ProblemArena({
           <span className="rounded-md bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
             {problem.category}
           </span>
-          <span className="rounded-md border border-edge px-3 py-1 text-xs muted">
+          <span className={`rounded-md border border-edge px-3 py-1 text-xs font-semibold ${difficultyColor(problem.difficulty)}`}>
             {problem.difficulty} · {problem.difficulty_rating ?? "Unrated"}
           </span>
         </div>
@@ -338,7 +340,7 @@ export default function ProblemArena({
           <div role="tabpanel">
             {tab === "math" ? (
               <div className="leading-8">
-                <MathRenderer
+                <SolutionRenderer
                   text={
                     solution.written_solution ??
                     "A reviewed explanation is not yet available."
