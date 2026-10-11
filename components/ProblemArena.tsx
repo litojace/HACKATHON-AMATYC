@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Bookmark,
-  Keyboard,
   ZoomIn,
 } from "lucide-react";
 import type {
@@ -29,7 +28,6 @@ export default function ProblemArena({
   onAnswer,
   locked = false,
   explanation,
-  hideKeyboardHelp = false,
   initialResult,
   onAnswerSelected,
   onPracticeResult,
@@ -42,7 +40,6 @@ export default function ProblemArena({
   onAnswer?: (answer: Answer | null) => void;
   locked?: boolean;
   explanation?: Explanation | null;
-  hideKeyboardHelp?: boolean;
   initialResult?: PracticeResult | null;
   onAnswerSelected?: (answer: Answer | null) => void;
   onPracticeResult?: (result: PracticeResult) => void;
@@ -55,7 +52,6 @@ export default function ProblemArena({
       request_id: string;
       started_at: string;
     } | null>(null),
-    [help, setHelp] = useState(false),
     [zoom, setZoom] = useState(false);
   const value = exam ? (answer ?? null) : selected,
     solution = exam ? explanation : result;
@@ -114,6 +110,14 @@ export default function ProblemArena({
       setBusy(false);
     }
   }
+  async function advance() {
+    if (!onNext || busy) return;
+    if (exam || result) {
+      onNext();
+      return;
+    }
+    await submit();
+  }
   async function retry() {
     if (!user) return;
     setBusy(true);
@@ -138,7 +142,6 @@ export default function ProblemArena({
         e.metaKey ||
         e.ctrlKey ||
         e.altKey ||
-        help ||
         zoom ||
         el.closest(
           'input,textarea,select,[role="dialog"],[contenteditable="true"]',
@@ -154,18 +157,9 @@ export default function ProblemArena({
       if (choice && problem.options.some(o => o.label === choice)) {
         e.preventDefault();
         choose(choice as Answer);
-      } else if (
-        k === "ENTER" &&
-        !exam &&
-        !result &&
-        session &&
-        el.tagName !== "A"
-      ) {
-        e.preventDefault();
-        submit();
       } else if (e.key === "ArrowRight" && onNext && !busy) {
         e.preventDefault();
-        onNext();
+        void advance();
       } else if (e.key === "ArrowLeft" && onPrevious && !busy) {
         e.preventDefault();
         onPrevious();
@@ -205,13 +199,6 @@ export default function ProblemArena({
               />
             </button>
           )}
-          {!hideKeyboardHelp && <button
-            aria-label="Keyboard shortcuts"
-            onClick={() => setHelp(true)}
-            className="btn-secondary !p-3"
-          >
-            <Keyboard size={17} />
-          </button>}
         </div>
       </div>
       <div className="panel p-5 sm:p-8">
@@ -307,24 +294,11 @@ export default function ProblemArena({
               Clear selection
             </button>
           )}
-          {!exam &&
-            (!result ? (
-              <button
-                disabled={busy || !session || (!demo && !user)}
-                onClick={submit}
-                className="btn"
-              >
-                {busy
-                  ? "Submitting…"
-                  : !demo && !user
-                    ? "Sign in to submit"
-                    : "Submit Answer"}
-              </button>
-            ) : (
-              <button onClick={retry} disabled={busy || locked} className="btn">
-                Try again
-              </button>
-            ))}
+          {!exam && result && (
+            <button onClick={retry} disabled={busy || locked} className="btn">
+              Try again
+            </button>
+          )}
           {onPrevious && (
             <button
               onClick={onPrevious}
@@ -336,8 +310,8 @@ export default function ProblemArena({
             </button>
           )}
           {onNext && (
-            <button onClick={onNext} className={`btn-secondary${exam ? " ml-auto" : ""}`} disabled={busy}>
-              {exam ? "Next" : "Next problem"}
+            <button onClick={advance} className={`btn-secondary${exam ? " ml-auto" : ""}`} disabled={busy || (!exam && !session)}>
+              {exam ? "Next" : result ? "Next problem" : "Check answer"}
               <ArrowRight size={15} />
             </button>
           )}
@@ -361,31 +335,18 @@ export default function ProblemArena({
               </div>
         </div>
       )}
-      {(help || zoom) && (
+      {zoom && (
         <Dialog
-          title={help ? "Keyboard shortcut help" : problem.source_image_path ? "Original exam question" : "Diagram zoom"}
+          title={problem.source_image_path ? "Original exam question" : "Diagram zoom"}
           onClose={() => {
-            setHelp(false);
             setZoom(false);
           }}
         >
-          {help ? (
-            <p className="leading-8 muted">
-              A–E or 1–5: select an answer
-              <br />
-              Enter: submit practice
-              <br />
-              →: next question · ←: previous question
-              <br />
-              Shortcuts pause in fields and dialogs.
-            </p>
-          ) : (
-            <img
-              className="w-full"
-              src={problem.source_image_path ?? problem.figure_image_path!}
-              alt={`Enlarged diagram for ${problem.title}`}
-            />
-          )}
+          <img
+            className="w-full"
+            src={problem.source_image_path ?? problem.figure_image_path!}
+            alt={`Enlarged diagram for ${problem.title}`}
+          />
         </Dialog>
       )}
     </section>

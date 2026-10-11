@@ -214,7 +214,7 @@ export default function Training() {
           </section>
           <AccountGate requireAuth>
             <ProblemArena key={current.id} problem={current} exam answer={answers[current.id] ?? null}
-              hideKeyboardHelp locked={submitting}
+              locked={submitting}
               onAnswer={(answer) => setAnswers((previous) => ({ ...previous, [current.id]: answer }))} />
           </AccountGate>
           <div className="mx-auto mt-5 flex max-w-4xl items-center justify-between gap-3">
