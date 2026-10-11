@@ -39,6 +39,7 @@ function DiscordIcon() {
 
 export default function HomeCommunityGallery() {
   const { user, authLoading } = useApp();
+  const userId = user?.id;
   const [adminUserId, setAdminUserId] = useState<string | null>(null);
   const [previousPhoto, setPreviousPhoto] = useState<number | null>(null);
   const [activePhoto, setActivePhoto] = useState(() => Math.max(0, cachedPhotos.findIndex(photo => photo.src === cachedActiveSrc)));
@@ -66,13 +67,13 @@ export default function HomeCommunityGallery() {
     return () => { active = false; };
   }, [reload]);
   useEffect(() => {
-    if (!user || authLoading || !supabase) return;
+    if (!userId || authLoading || !supabase) return;
     let active = true;
     Promise.resolve(supabase.rpc("is_site_admin")).then(({ data, error }) => {
-      if (active) setAdminUserId(!error && data === true ? user.id : null);
+      if (active) setAdminUserId(!error && data === true ? userId : null);
     }).catch(() => { if (active) setAdminUserId(null); });
-    return () => { active = false; setAdminUserId(null); };
-  }, [user, authLoading]);
+    return () => { active = false; };
+  }, [userId, authLoading]);
   const photo = photos[activePhoto];
   useEffect(() => { if (photo) cachedActiveSrc = photo.src; }, [photo]);
   const slideDuration = photos[0]?.duration_seconds ?? 2.5;
@@ -170,7 +171,7 @@ export default function HomeCommunityGallery() {
             const image = event.currentTarget;
             try { await image.decode(); } catch { /* onLoad confirms the image is available. */ }
             decodedSources.add(item.src);
-            setReadyPhotos(current => new Set(current).add(index));
+            setReadyPhotos(current => current.has(index) ? current : new Set(current).add(index));
           }} src={item.src} alt={item.label || item.alt || `Community photo ${index + 1}`} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
         </div>)}
         {!readyPhotos.has(activePhoto) && <div className="absolute inset-0 flex items-center justify-center text-sm muted" role="status">{galleryError ? <div className="text-center"><p>Photos could not be loaded.</p><button type="button" className="btn-secondary mt-3" onClick={() => setReload(value => value + 1)}>Retry photos</button></div> : "Loading community photos…"}</div>}

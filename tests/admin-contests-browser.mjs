@@ -10,7 +10,7 @@ const jwt=[{alg:'HS256',typ:'JWT'},{sub:user.id,aud:'authenticated',role:'authen
 const problems=Array.from({length:20},(_,i)=>({id:'test-problem-'+i,title:'Problem '+(i+1),contest_name:'Test',question_number:i+1,category:'Algebra',topic_tags:[],difficulty:'Easy',difficulty_rating:800,question_latex:'Compute $1+1$.',options:[{label:'A',text:'2'},{label:'B',text:'3'}],figure_required:false,figure_image_path:null,source_image_path:null,answer_format:'multiple_choice',verification_status:'fully_verified',publication_status:'draft'}));
 const contest={id:'test-contest',name:'Mocked admin contest',description:'',year:2026,semester:'Custom',kind:'rated',duration_seconds:900,question_count:5,correct_points:2,incorrect_points:-0.5,blank_points:0,starts_at:new Date(Date.now()-60000).toISOString(),ends_at:new Date(Date.now()+3600000).toISOString(),review_at:new Date(Date.now()+4500000).toISOString(),published:true,rating_enabled:true,ratings_processed_at:null};
 let attempt={id:'mock-attempt',contest_id:contest.id,started_at:new Date().toISOString(),deadline:new Date(Date.now()+900000).toISOString(),finalized_at:null,status:'active',answers:{},flags:[],score:null,questions:problems.slice(0,5),server_now:new Date().toISOString(),breakdown:null};
-let created=null,patches=0,finishes=0,failSave=false,isAdmin=true,heartbeats=0;
+let created=null,patches=0,finishes=0,failSave=false,isAdmin=true,heartbeats=0,adminChecks=0,accountLoads=0;
 const browser=await chromium.launch({executablePath:process.env.BROWSER_EXECUTABLE,headless:true});
 try{
  const context=await browser.newContext({viewport:{width:1280,height:900}});
@@ -19,13 +19,15 @@ try{
   const path=route.request().url();
   if(path.includes('record_presence')){heartbeats++;return route.fulfill({json:null});}
   if(path.includes('admin_online_users'))return route.fulfill({json:[{id:'online-learner',username:'learner',full_name:'Online Learner'}]});
+  if(path.includes('is_site_admin'))adminChecks++;
   return route.fulfill({json:path.includes('is_site_admin')?isAdmin:user});
  });
  await context.route('**/api/**',async route=>{
   const path=new URL(route.request().url()).pathname.slice(5),method=route.request().method();
   if(path==='problems')return route.fulfill({json:problems});
   if(path==='leaderboard')return route.fulfill({json:[{id:'online-learner',username:'learner',full_name:'Online Learner',rating:800,school:null,contests_attended:0,last_delta:0}]});
-  if(path==='me')return route.fulfill({json:{...user,username:'admin',full_name:'Test Admin',rating:800,contests_attended:0,is_public:true}});
+  if(path==='me'){accountLoads++;return route.fulfill({json:{...user,username:'admin',full_name:'Test Admin',rating:800,contests_attended:0,is_public:true}});}
+  if(path==='carousel')return route.fulfill({json:[{src:'/images/community/team.png',label:'Team',alt:'Team',fit:'cover',duration_seconds:3},{src:'/images/community/pizza.png',label:'Pizza',alt:'Pizza',fit:'cover',duration_seconds:3}]});
   if(path==='activity')return route.fulfill({json:{practice:[],contests:[],ratings:[],bookmarks:[]}});
   if(path==='admin/problems'&&method==='POST'){const record=route.request().postDataJSON();problems.push(record);return route.fulfill({json:record,status:201});}
   if(path==='admin/problems')return route.fulfill({json:problems});
@@ -42,6 +44,18 @@ try{
   return route.fulfill({json:[]});
  });
  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base);await page.getByRole('link',{name:'Edit carousel',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Pause slideshow',exact:true}).click();
+ const retainedSlide=await page.locator('aside[aria-label="MAT Community"] img[alt="Team"]').elementHandle();
+ const checkCount=adminChecks,accountCount=accountLoads;
+ const disappeared=await page.evaluate(async({channelName,session})=>{
+  let removals=0;const link=document.querySelector('a[aria-label="Edit carousel"]');
+  const observer=new MutationObserver(()=>{if(!link?.isConnected)removals++;});observer.observe(document.body,{childList:true,subtree:true});
+  const channel=new BroadcastChannel(channelName);
+  for(let i=0;i<8;i++){channel.postMessage({event:'SIGNED_IN',session:{...session,user:{...session.user,user_metadata:{iteration:i}}}});await new Promise(resolve=>setTimeout(resolve,150));}
+  channel.close();observer.disconnect();return removals;
+ },{channelName:'sb-'+new URL(url).hostname.split('.')[0]+'-auth-token',session:{access_token:jwt,refresh_token:'mock-refresh',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user}});
+ assert.equal(disappeared,0);assert.equal(adminChecks,checkCount);assert.equal(accountLoads,accountCount);assert.ok(await retainedSlide.evaluate(el=>el.isConnected));
  await page.goto(base+'/admin/contests/new');await page.getByRole('heading',{name:'Create contest',exact:true}).waitFor();
  await page.getByLabel('Contest name',{exact:true}).fill('New competition');
  await page.getByLabel('Contest length').selectOption('10');await page.getByText('10 questions · 30 minutes',{exact:true}).count();

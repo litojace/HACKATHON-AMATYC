@@ -52,8 +52,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     [notice, setNotice] = useState(""),
     [localLoaded, setLocalLoaded] = useState(false);
   const demo = !supabaseConfigured;
+  const userId=user?.id;
   useEffect(()=>{
-    if(!user||!supabase)return;
+    if(!userId||!supabase)return;
     const client=supabase;let pending=false;
     async function heartbeat(){
       if(document.visibilityState!=='visible'||pending)return;
@@ -63,7 +64,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     void heartbeat();const timer=setInterval(heartbeat,30000);
     document.addEventListener('visibilitychange',heartbeat);
     return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',heartbeat);};
-  },[user]);
+  },[userId]);
   const notify = useCallback((t: string) => setNotice(t), []);
   const reload = useCallback(async () => {
     setLoading(true);
@@ -119,23 +120,25 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!supabase) return;
     const client = supabase;
-    client.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null);
+    function applyUser(next:User|null){
+      setUser(previous=>JSON.stringify(previous)===JSON.stringify(next)?previous:next);
       setAuthLoading(false);
+    }
+    client.auth.getSession().then(({ data }) => {
+      applyUser(data.session?.user ?? null);
     });
     const { data } = client.auth.onAuthStateChange((_event, s) => {
-      setUser(s?.user ?? null);
-      setAuthLoading(false);
+      applyUser(s?.user ?? null);
     });
     return () => data.subscription.unsubscribe();
   }, []);
   useEffect(() => {
-    if (user) refreshAccount();
+    if (userId) refreshAccount();
     else if (!demo) {
       setProfile(null);
       setActivity(empty);
     }
-  }, [user, demo, refreshAccount]);
+  }, [userId, demo, refreshAccount]);
   useEffect(() => {
     if (!notice) return;
     const t = setTimeout(() => setNotice(""), 6000);

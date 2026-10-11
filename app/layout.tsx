@@ -5,6 +5,7 @@ import "./globals.css";
 import "@fontsource-variable/inter";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
+import LiveAnnouncements from "@/components/LiveAnnouncements";
 export const metadata: Metadata = {
   title: "AMATYC Arena — Train your mathematical edge",
   description:
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Navbar />
+          <LiveAnnouncements />
           {children}
           <footer className="mx-auto mt-16 max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">

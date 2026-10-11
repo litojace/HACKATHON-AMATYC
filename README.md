@@ -166,3 +166,5 @@ Migration 011 enables admin problem creation and editing at `/admin/problems`, u
 Migration 014 adds scheduled admin contests, private question snapshots, participant monitoring and delayed rating batches. Run `supabase/contest_scheduler.sql` to enable the background job. See [admin contest setup](docs/admin-contests.md).
 
 Administrators can use `/admin/users` (Manage user ratings on their own public profile) to adjust any account’s rating, including their own. Apply `015_admin_user_ratings.sql` after the existing migrations. A reason is required; changes are recorded in the private `user_rating_admin_audit` table and do not count as rated contests.
+
+Admins can post a text announcement from their own profile. Signed-in users who are online when it is posted receive a dismissible notice on every page, including contests. Apply migrations 016 and 017; see [announcement setup](docs/announcements.md). Unread notices stay available after a refresh, and dismissing one persists across tabs and devices.
