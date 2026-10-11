@@ -272,8 +272,6 @@ select {
 :root[data-theme="dark"] .rank-legend { --rank-color: #ff8b9c; }
 .ranked-name .rank-name-text { color: var(--rank-color); }
 .rank-legend .rank-name-text { display: inline-block; }
-.rank-legend .rank-name-text::first-letter { color: #111827; }
-:root[data-theme="dark"] .rank-legend .rank-name-text::first-letter { color: #f8fafc; }
 .rank-featured { display: inline-block; max-width: 100%; padding-block: .65em .2em; }
 .rank-crown { position: absolute; top: -.12em; left: 50%; transform: translateX(-50%); width: .85em; height: .7em; fill: var(--rank-color); pointer-events: none; }
 .rank-symbols { position: absolute; inset: 0; pointer-events: none; user-select: none; color: var(--rank-color); }
