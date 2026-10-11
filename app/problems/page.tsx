@@ -1,4 +1,5 @@
 "use client";
+import AnimatedSelect from "@/components/AnimatedSelect";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Bookmark, Search, CheckCircle2, RotateCw } from "lucide-react";
@@ -102,7 +103,7 @@ export default function Problems() {
           ["status", "Status", ["solved", "attempted", "unsolved"]],
           ["sort", "Sort", ["rating", "difficulty", "title", "source"]],
         ].map(([key, label, options]) => (
-          <select
+          <AnimatedSelect
             key={key as string}
             aria-label={label as string}
             className="field"
@@ -125,11 +126,11 @@ export default function Problems() {
                   : v}
               </option>
             ))}
-          </select>
+          </AnimatedSelect>
         ))}
         <div className="flex gap-2">
           {(["min", "max"] as const).map(key => (
-            <select
+            <AnimatedSelect
               key={key}
               className="field min-w-0"
               aria-label={key === "min" ? "Minimum rating" : "Maximum rating"}
@@ -139,7 +140,7 @@ export default function Problems() {
               <option value="">{key === "min" ? "Min rating" : "Max rating"}</option>
               {filters[key] && !ratings.includes(Number(filters[key])) && <option value={filters[key]} hidden>{key === "min" ? "Min" : "Max"}: {filters[key]}</option>}
               {ratings.map(rating => <option key={rating} value={rating}>{rating}</option>)}
-            </select>
+            </AnimatedSelect>
           ))}
         </div>
         <label className="flex items-center gap-3 text-sm">

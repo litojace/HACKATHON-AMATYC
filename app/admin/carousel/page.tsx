@@ -1,4 +1,5 @@
 "use client";
+import AnimatedSelect from "@/components/AnimatedSelect";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/client";
@@ -89,7 +90,7 @@ function Editor() {
             <label className="block text-sm">Upload / replace image<input type="file" accept="image/png,image/jpeg,image/webp" className="field mt-2" onChange={e => { void upload(index, e.target.files?.[0]); e.target.value = ""; }} /></label>
             <label className="block text-sm">Image URL<input className="field mt-2" value={photo.src} onChange={e => update(index, {src: e.target.value})} /></label>
             <label className="block text-sm">Caption (optional)<input className="field mt-2" maxLength={80} value={photo.label} onChange={e => update(index, {label: e.target.value})} /></label>
-            <label className="block text-sm">Display<select className="field mt-2" value={photo.fit} onChange={e => update(index, {fit: e.target.value as CarouselPhoto["fit"]})}><option value="cover">Fill frame</option><option value="contain">Show whole image</option></select></label>
+            <label className="block text-sm">Display<AnimatedSelect className="field mt-2" value={photo.fit} onChange={e => update(index, {fit: e.target.value as CarouselPhoto["fit"]})}><option value="cover">Fill frame</option><option value="contain">Show whole image</option></AnimatedSelect></label>
           </div>
         </div>
       </section>)}

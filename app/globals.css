@@ -104,7 +104,8 @@ select {
   }
   /* Center single-line text, with a small optical adjustment for Inter's baseline. */
   input.field:not([type="file"]):not([type="range"]):not([type="color"]),
-  select.field:not([multiple]):not([size]) {
+  select.field:not([multiple]):not([size]),
+  .animated-select.field {
     @apply h-12 leading-5;
     padding-top: 0;
     padding-bottom: 2px;
@@ -118,6 +119,27 @@ select {
     background-repeat: no-repeat;
     background-size: 1rem;
   }
+}
+.animated-select {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-align: left;
+}
+.animated-select-menu {
+  z-index: 70;
+  animation: dropdown-open 180ms cubic-bezier(.22,1,.36,1) both;
+}
+.animated-select-option {
+  animation: dropdown-option 180ms ease-out both;
+}
+@keyframes dropdown-open {
+  from { opacity: 0; transform: translateY(-4px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dropdown-option {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 @media (prefers-reduced-motion: reduce) {
   *,

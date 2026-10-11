@@ -1,4 +1,5 @@
 "use client";
+import AnimatedSelect from "@/components/AnimatedSelect";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/client";
 import type { Profile } from "@/types/problem";
@@ -68,7 +69,7 @@ export default function Leaderboard() {
             setPage(1);
           }}
         />
-        <select
+        <AnimatedSelect
           className="field h-12 min-w-0 sm:w-64"
           aria-label="Filter by school"
           value={school}
@@ -83,7 +84,7 @@ export default function Leaderboard() {
               <option key={s!}>{s}</option>
             ),
           )}
-        </select>
+        </AnimatedSelect>
         {rank >= 0 && (
           <p className="self-center text-sm muted">
             Your rank: #

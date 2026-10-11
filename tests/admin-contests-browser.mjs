@@ -58,13 +58,13 @@ try{
  assert.equal(disappeared,0);assert.equal(adminChecks,checkCount);assert.equal(accountLoads,accountCount);assert.ok(await retainedSlide.evaluate(el=>el.isConnected));
  await page.goto(base+'/admin/contests/new');await page.getByRole('heading',{name:'Create contest',exact:true}).waitFor();
  await page.getByLabel('Contest name',{exact:true}).fill('New competition');
- await page.getByLabel('Contest length').selectOption('10');await page.getByText('10 questions · 30 minutes',{exact:true}).count();
- await page.getByLabel('Contest length').selectOption('20');await page.getByLabel('Contest length').selectOption('5');
+ await page.getByRole('combobox',{name:'Contest length',exact:true}).click();await page.getByRole('option',{name:'10 questions · 30 minutes',exact:true}).click();await page.getByText('10 questions · 30 minutes',{exact:true}).count();
+ await page.getByRole('combobox',{name:'Contest length',exact:true}).click();await page.getByRole('option',{name:'20 questions · 60 minutes',exact:true}).click();await page.getByRole('combobox',{name:'Contest length',exact:true}).click();await page.getByRole('option',{name:'5 questions · 15 minutes',exact:true}).click();
  for(let i=0;i<4;i++)await page.getByRole('checkbox').nth(i).check();
  await page.getByRole('button',{name:'Create a new problem',exact:true}).click();
  await page.getByLabel('Title',{exact:true}).fill('Brand new question');await page.getByLabel('Question text / math').fill('Compute $2+2$.');
  for(const [i,label] of [...'ABCDE'].entries())await page.getByLabel('Option '+label,{exact:true}).fill(String(i+4));
- await page.getByLabel('Written solution',{exact:true}).fill('$2+2=4$.');await page.getByLabel('Review status').selectOption('fully_verified');
+ await page.getByLabel('Written solution',{exact:true}).fill('$2+2=4$.');await page.getByRole('combobox',{name:'Review status',exact:true}).click();await page.getByRole('option',{name:'Answer and solution reviewed',exact:true}).click();
  await page.getByRole('button',{name:'Save draft',exact:true}).click();await page.getByText('Question order · 5/5',{exact:true}).waitFor();
  await page.getByRole('button',{name:'Publish contest',exact:true}).click();await page.waitForURL('**/admin/contests/test-contest');
  assert.equal(created.problem_ids.length,5);assert.equal(created.question_count,5);assert.equal(created.published,true);

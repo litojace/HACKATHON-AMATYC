@@ -1,4 +1,5 @@
 "use client";
+import AnimatedSelect from "@/components/AnimatedSelect";
 import {useEffect,useState} from "react";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
@@ -31,7 +32,7 @@ function Creator(){
  <Link className="btn-secondary mb-5" href="/admin/contests">Manage contests</Link>
  <fieldset disabled={busy} className="panel grid gap-4 p-5 sm:grid-cols-2">
   <label className="text-sm">Contest name<input className="field mt-2" maxLength={160} value={name} onChange={e=>setName(e.target.value)}/></label>
-  <label className="text-sm">Contest length<select className="field mt-2" value={count} onChange={e=>setCount(Number(e.target.value))}>{CONTEST_PRESETS.map(p=><option key={p.count} value={p.count}>{p.count} questions · {p.minutes} minutes</option>)}</select></label>
+  <label className="text-sm">Contest length<AnimatedSelect className="field mt-2" value={count} onChange={e=>setCount(Number(e.target.value))}>{CONTEST_PRESETS.map(p=><option key={p.count} value={p.count}>{p.count} questions · {p.minutes} minutes</option>)}</AnimatedSelect></label>
   <label className="text-sm">Starts at (your local time)<input className="field mt-2" type="datetime-local" value={starts} onChange={e=>setStarts(e.target.value)}/></label>
   <label className="text-sm">Closes at (your local time)<input className="field mt-2" type="datetime-local" value={ends} onChange={e=>setEnds(e.target.value)}/></label>
   <label className="text-sm sm:col-span-2">Description<textarea className="field mt-2" rows={3} value={description} onChange={e=>setDescription(e.target.value)}/></label>
