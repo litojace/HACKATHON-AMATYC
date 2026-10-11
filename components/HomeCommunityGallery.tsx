@@ -9,6 +9,14 @@ import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
 import { carouselSchema, type CarouselPhoto } from "@/lib/carousel";
 
+// Session-only cache: never restore old bundled images on a fresh page load.
+let cachedPhotos: CarouselPhoto[] = [];
+let cachedActiveSrc: string | undefined;
+const decodedSources = new Set<string>();
+function readyIndexes(photos: CarouselPhoto[]) {
+  return new Set(photos.flatMap((photo, index) => decodedSources.has(photo.src) ? [index] : []));
+}
+
 
 
 function InstagramIcon() {
@@ -33,14 +41,14 @@ export default function HomeCommunityGallery() {
   const { user, authLoading } = useApp();
   const [adminUserId, setAdminUserId] = useState<string | null>(null);
   const [previousPhoto, setPreviousPhoto] = useState<number | null>(null);
-  const [activePhoto, setActivePhoto] = useState(0);
-  const [readyPhotos, setReadyPhotos] = useState<Set<number>>(new Set());
+  const [activePhoto, setActivePhoto] = useState(() => Math.max(0, cachedPhotos.findIndex(photo => photo.src === cachedActiveSrc)));
+  const [readyPhotos, setReadyPhotos] = useState<Set<number>>(() => readyIndexes(cachedPhotos));
   const [galleryError, setGalleryError] = useState(false);
   const [reload, setReload] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [photos, setPhotos] = useState<CarouselPhoto[]>([]);
+  const [photos, setPhotos] = useState<CarouselPhoto[]>(() => cachedPhotos);
   const thumbnailStrip = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let active = true;
@@ -48,7 +56,12 @@ export default function HomeCommunityGallery() {
     api<CarouselPhoto[]>("carousel").then(data => {
       const parsed = carouselSchema.safeParse(data);
       if (!parsed.success) throw new Error("Invalid carousel");
-      if (active) { setPhotos(parsed.data); setReadyPhotos(new Set()); setActivePhoto(0); }
+      cachedPhotos = parsed.data;
+      if (active) {
+        setPhotos(current => JSON.stringify(current) === JSON.stringify(parsed.data) ? current : parsed.data);
+        setReadyPhotos(readyIndexes(parsed.data));
+        setActivePhoto(Math.max(0, parsed.data.findIndex(photo => photo.src === cachedActiveSrc)));
+      }
     }).catch(() => { if (active) setGalleryError(true); });
     return () => { active = false; };
   }, [reload]);
@@ -61,6 +74,7 @@ export default function HomeCommunityGallery() {
     return () => { active = false; setAdminUserId(null); };
   }, [user, authLoading]);
   const photo = photos[activePhoto];
+  useEffect(() => { if (photo) cachedActiveSrc = photo.src; }, [photo]);
   const slideDuration = photos[0]?.duration_seconds ?? 2.5;
   useEffect(() => {
     if (photos.length < 2 || !readyPhotos.has(activePhoto) || paused || hovered || focused) return;
@@ -155,6 +169,7 @@ export default function HomeCommunityGallery() {
           <Image unoptimized loading="eager" onLoad={async (event) => {
             const image = event.currentTarget;
             try { await image.decode(); } catch { /* onLoad confirms the image is available. */ }
+            decodedSources.add(item.src);
             setReadyPhotos(current => new Set(current).add(index));
           }} src={item.src} alt={item.label || item.alt || `Community photo ${index + 1}`} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
         </div>)}
