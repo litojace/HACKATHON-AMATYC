@@ -4,11 +4,11 @@ import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
 import { ArrowLeft, ArrowRight, Clock3, RotateCcw } from "lucide-react";
-import type { Answer, PracticeResult, PublicProblem } from "@/types/problem";
+import type { Answer, PracticeResult, Profile, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
-import { balancedQuestions, TRAINING_PRESETS } from "@/lib/training";
+import { ratingMatchedQuestions, trainingCandidates, trainingRating, TRAINING_PRESETS } from "@/lib/training";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
 import { isPerfectScore } from "@/lib/perfect-score";
 
@@ -23,7 +23,8 @@ function formatTime(seconds: number) {
 }
 
 export default function Training() {
-  const { problems, loading, savePractice } = useApp();
+  const { problems, profile, demo, loading, savePractice } = useApp();
+  const rating = trainingRating(profile?.rating);
   const [preset, setPreset] = useState(0);
   const { minutes, questions: questionCount } = TRAINING_PRESETS[preset];
   const [starting, setStarting] = useState(false);
@@ -40,7 +41,7 @@ export default function Training() {
   const [submitError, setSubmitError] = useState("");
   const submittingRef = useRef(false);
 
-  const pool = useMemo(() => problems.filter((problem) => problem.option_count > 0), [problems]);
+  const pool = useMemo(() => trainingCandidates(problems, rating).filter((problem) => problem.option_count > 0), [problems, rating]);
   const remaining = deadline === null ? minutes * 60 : Math.max(0, Math.ceil((deadline - now) / 1000));
   const current = session[index];
 
@@ -59,9 +60,12 @@ export default function Training() {
     setStarting(true);
     setStartError("");
     try {
-      const freshPool = await api<PublicProblem[]>("problems");
-      const selected = balancedQuestions(freshPool, questionCount);
-      if (selected.length < questionCount) throw new Error("There are not enough published questions for this session. Choose a smaller session or try again later.");
+      const [freshPool, freshProfile] = await Promise.all([
+        api<PublicProblem[]>("problems"),
+        demo ? Promise.resolve(profile) : api<Profile>("me"),
+      ]);
+      const selected = ratingMatchedQuestions(freshPool, questionCount, trainingRating(freshProfile?.rating));
+      if (selected.length < questionCount) throw new Error("There are not enough questions near your rating for this session. Choose a smaller session or try again later.");
       setSession(selected);
       setAnswers({});
       setResults({});
@@ -123,13 +127,14 @@ export default function Training() {
       <PageTitle
         eyebrow="TIMED PRACTICE"
         title="Train under pressure."
-        description="Choose a session. Every start draws a fresh, shuffled set of questions with a balanced mix of easy, medium, and hard problems."
+        description="Build confidence with questions matched to your rating, plus a few gentle challenges to help you improve. Every session draws a fresh set."
       />
 
       {!session.length ? (
         <section className="panel p-5 sm:p-8">
           <div>
             <h2 className="text-lg font-semibold">Choose your session</h2>
+            <p className="mt-2 text-sm muted">Your training level: {rating}. Mostly questions around your level, with warm-ups and challenges up to {rating + 300}. The mix adapts to available questions.</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               {TRAINING_PRESETS.map((option, i) => (
                 <button key={option.minutes} type="button" aria-pressed={preset === i}
@@ -137,11 +142,11 @@ export default function Training() {
                   onClick={() => { setPreset(i); setStartError(""); }}
                   className={`motion-card rounded-xl border p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${preset === i ? "border-emerald-400 bg-emerald-400/10" : "border-edge hover:bg-panel"}`}>
                   <span className="block text-xl font-semibold">{option.minutes === 60 ? "1 hour" : `${option.minutes} minutes`}</span>
-                  <span className="mt-1 block text-sm muted">{option.questions} questions · Balanced mix</span>
+                  <span className="mt-1 block text-sm muted">{option.questions} questions · Matched to your rating</span>
                 </button>
               ))}
             </div>
-            {pool.length < 5 && <p className="mt-3 text-sm muted">There are not enough practice questions available to start training yet.</p>}
+            {pool.length < questionCount && <p className="mt-3 text-sm muted">Only {pool.length} questions are available near your rating. {pool.length >= 5 ? "Choose a shorter session to start training." : "There are not enough suitable questions to start training yet."}</p>}
           </div>
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5">
             <p className="text-sm muted">{minutes === 60 ? "1 hour" : `${minutes} minutes`} · {questionCount} questions</p>
@@ -185,7 +190,7 @@ export default function Training() {
           <section className="panel mb-5 flex flex-wrap items-center justify-between gap-4 p-4 sm:px-6">
             <div>
               <p className="text-sm muted">Question {index + 1} of {session.length}</p>
-              <p className="mt-1 text-xs muted">{current.difficulty} difficulty · Mixed set</p>
+              <p className="mt-1 text-xs muted">{current.difficulty} difficulty · Rating-matched practice</p>
             </div>
             <div role="timer" aria-live="off" className={`flex items-center gap-2 rounded-lg border px-4 py-2 font-mono text-xl font-semibold tabular-nums ${remaining <= 60 ? "border-red-400/50 text-red-400" : "border-edge"}`}>
               <Clock3 size={19} aria-hidden="true" />{formatTime(remaining)}
