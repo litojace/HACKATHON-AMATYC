@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil } from "lucide-react";
+import { Pencil, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/client";
 import { supabase } from "@/lib/supabaseClient";
@@ -33,6 +33,10 @@ export default function HomeCommunityGallery() {
   const { user, authLoading } = useApp();
   const [adminUserId, setAdminUserId] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
+  const [previousPhoto, setPreviousPhoto] = useState<number | null>(null);
+  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [photos, setPhotos] = useState<CarouselPhoto[]>(defaultCarouselPhotos);
   useEffect(() => {
     let active = true;
@@ -51,13 +55,32 @@ export default function HomeCommunityGallery() {
     return () => { active = false; setAdminUserId(null); };
   }, [user, authLoading]);
   const photo = photos[activePhoto];
+  useEffect(() => {
+    if (photos.length < 2 || paused || hovered || focused) return;
+    const timer = window.setInterval(() => {
+      if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      setPreviousPhoto(activePhoto);
+      setActivePhoto((activePhoto + 1) % photos.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [activePhoto, photos.length, paused, hovered, focused]);
+  useEffect(() => {
+    if (previousPhoto === null) return;
+    const timer = window.setTimeout(() => setPreviousPhoto(null), 450);
+    return () => window.clearTimeout(timer);
+  }, [previousPhoto, activePhoto]);
 
   function showPhoto(index: number) {
-    setActivePhoto((index + photos.length) % photos.length);
+    const next = (index + photos.length) % photos.length;
+    if (next === activePhoto) return;
+    setPreviousPhoto(activePhoto);
+    setActivePhoto(next);
   }
 
   return (
-    <aside className="panel overflow-hidden p-4 sm:p-5" aria-label="AMATYC community">
+    <aside className="panel overflow-hidden p-4 sm:p-5" aria-label="AMATYC community"
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Image
@@ -105,6 +128,10 @@ export default function HomeCommunityGallery() {
             Edit
           </Link>
         )}
+        {previousPhoto !== null && photos[previousPhoto] && <div key={`previous-${previousPhoto}`} className="carousel-exit absolute inset-0" aria-hidden="true">
+          <Image unoptimized src={photos[previousPhoto].src} alt="" fill sizes="(min-width: 1024px) 40vw, 100vw" className={photos[previousPhoto].fit === "contain" ? "object-contain" : "object-cover"} />
+        </div>}
+        <div key={`active-${activePhoto}`} className={`absolute inset-0 ${previousPhoto !== null ? "carousel-enter" : ""}`}>
         <Image
           key={photo.src}
           unoptimized
@@ -115,9 +142,10 @@ export default function HomeCommunityGallery() {
           sizes="(min-width: 1024px) 40vw, 100vw"
           className={photo.fit === "contain" ? "object-contain" : "object-cover"}
         />
+        </div>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
           <p className="text-sm font-semibold">{photo.label}</p>
-          <p className="text-xs text-white/80" aria-live="polite">
+          <p className="text-xs text-white/80" aria-live={paused || focused ? "polite" : "off"}>
             {activePhoto + 1} of {photos.length}
           </p>
         </div>
@@ -138,6 +166,11 @@ export default function HomeCommunityGallery() {
           ›
         </button>
       </div>
+
+      {photos.length > 1 && <button type="button" onClick={() => setPaused(!paused)} aria-label={paused ? "Play slideshow" : "Pause slideshow"} className="mt-3 inline-flex min-h-10 items-center gap-2 text-xs muted hover:text-emerald-400">
+        {paused ? <Play size={14} /> : <Pause size={14} />}
+        {paused ? "Play slideshow" : "Pause slideshow"}
+      </button>}
 
       <div className="mt-3 grid grid-cols-5 gap-2" aria-label="Choose a photo">
         {photos.map((item, index) => (

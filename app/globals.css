@@ -1,5 +1,15 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
+@keyframes carousel-enter {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes carousel-exit {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+.carousel-enter { animation: carousel-enter 450ms ease-in-out both; }
+.carousel-exit { animation: carousel-exit 450ms ease-in-out both; }
 /* Reuse the existing accent utilities with the poster's orange palette. */
 @theme inline {
   --color-emerald-300: var(--accent-text);
