@@ -251,7 +251,7 @@ export default function ProblemArena({
               onClick={() => choose(o.label)}
               className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center" : "gap-4"} rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "answer-correct" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
             >
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-ink font-mono text-sm">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center font-bold">
                 {o.label}
               </span>
               {!printedOptions && <MathRenderer text={o.text} />}
