@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import RankedName from "@/components/RankedName";
+import RankedName, { RankText } from "@/components/RankedName";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import Chart from "@/components/Charts";
@@ -128,8 +128,8 @@ function Content() {
 
       <div className="mb-5 grid gap-4 sm:grid-cols-2">
         <div className="panel p-5">
-          <p className={`font-mono text-3xl ${rank.color}`}>{profile?.rating ?? INITIAL_RATING}</p>
-          <p className="mt-2 text-sm muted">Rating · {rank.title}</p>
+          <p className="font-mono text-3xl"><RankText rating={profile?.rating ?? INITIAL_RATING}>{profile?.rating ?? INITIAL_RATING}</RankText></p>
+          <p className="mt-2 text-sm muted">Rating · <RankText rating={profile?.rating ?? INITIAL_RATING}>{rank.title}</RankText></p>
         </div>
         <div className="panel p-5">
           <p className="font-mono text-3xl text-emerald-400">{bestMockScore ?? "—"}</p>

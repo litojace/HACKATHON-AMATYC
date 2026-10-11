@@ -6,7 +6,7 @@ import { api } from "@/lib/client";
 import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
-import RankedName from "@/components/RankedName";
+import RankedName, { RankText } from "@/components/RankedName";
 import RankEffectsControl from "@/components/RankEffectsControl";
 import Chart from "@/components/Charts";
 import AdminProblemActions from "@/components/AdminProblemActions";
@@ -50,9 +50,9 @@ export default function PublicProfile() {
             </div>
             <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-edge pt-6">
             <div>
-              <p className={`text-3xl font-mono ${getCodeforcesTitle(p.rating).color}`}>{p.rating}</p>
-              <p className={getCodeforcesTitle(p.rating).color}>
-                {getCodeforcesTitle(p.rating).title}
+              <p className="text-3xl font-mono"><RankText rating={p.rating}>{p.rating}</RankText></p>
+              <p>
+                <RankText rating={p.rating}>{getCodeforcesTitle(p.rating).title}</RankText>
               </p>
             </div>
             <div>

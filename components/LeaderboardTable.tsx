@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import RankedName from "./RankedName";
+import RankedName, { RankText } from "./RankedName";
 import { getCodeforcesTitle } from "@/lib/rating";
 import type { Profile } from "@/types/problem";
 export default function LeaderboardTable({
@@ -60,8 +60,8 @@ export default function LeaderboardTable({
                 <td className="p-4 text-xs muted">
                   {p.school ?? "Not provided"}
                 </td>
-                <td className={`p-4 font-mono ${tier.color}`}>{p.rating}</td>
-                <td className={`p-4 text-xs ${tier.color}`}>{tier.title}</td>
+                <td className="p-4 font-mono"><RankText rating={p.rating}>{p.rating}</RankText></td>
+                <td className="p-4 text-xs"><RankText rating={p.rating}>{tier.title}</RankText></td>
                 <td className="p-4 font-mono muted">{p.contests_attended}</td>
                 <td className="p-4 font-mono">
                   {(p.last_delta ?? 0) > 0 ? "+" : ""}

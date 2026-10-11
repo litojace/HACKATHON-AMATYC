@@ -15,6 +15,7 @@ export default function AuthForm({
     router = useRouter();
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState(""),
+    [messageIsError, setMessageIsError] = useState(false),
     [showPassword, setShowPassword] = useState(false),
     [showConfirmation, setShowConfirmation] = useState(false),
     [confirmationError, setConfirmationError] = useState(false);
@@ -29,6 +30,7 @@ export default function AuthForm({
     if (!supabase || busy) return;
     setBusy(true);
     setMessage("");
+    setMessageIsError(false);
     try {
       const next = safeReturnPath(new URLSearchParams(location.search).get("next"));
       const { error } = await supabase.auth.signInWithOAuth({
@@ -41,6 +43,7 @@ export default function AuthForm({
       if (error) throw error;
     } catch (error) {
       setMessage((error as Error).message);
+      setMessageIsError(true);
       setBusy(false);
     }
   }
@@ -59,6 +62,7 @@ export default function AuthForm({
     setConfirmationError(false);
     setBusy(true);
     setMessage("");
+    setMessageIsError(false);
     try {
       const result =
         mode === "signup"
@@ -93,7 +97,12 @@ export default function AuthForm({
               : "Password updated.",
         );
     } catch (e) {
-      setMessage((e as Error).message);
+      const error = e as Error & { code?: string };
+      const incorrectCredentials = mode === "login" && (
+        error.code === "invalid_credentials" || /invalid login credentials/i.test(error.message)
+      );
+      setMessage(incorrectCredentials ? "Incorrect email/password" : error.message);
+      setMessageIsError(true);
     } finally {
       setBusy(false);
     }
@@ -169,7 +178,7 @@ export default function AuthForm({
                     onChange={() => setConfirmationError(false)}
                     autoComplete={mode === "login" ? "current-password" : "new-password"}
                     className="field pr-12"
-                    minLength={8}
+                    minLength={mode === "login" ? undefined : 8}
                     required
                   />
                   <button
@@ -228,7 +237,7 @@ export default function AuthForm({
           </form>
         )}
         {message && (
-          <p role="status" className="mt-5 text-sm">
+          <p role={messageIsError ? "alert" : "status"} className={`mt-5 text-sm ${messageIsError ? "text-red-400" : ""}`}>
             {message}
           </p>
         )}

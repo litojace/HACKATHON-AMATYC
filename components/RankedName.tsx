@@ -1,8 +1,18 @@
 import { getCodeforcesTitle } from "@/lib/rating";
+import type { ReactNode } from "react";
 
 /** Legend names sparkle everywhere; profiles also show the crown and symbols. */
 export default function RankedName({ name, rating, featured = false }: {
   name: string;
+  rating: number;
+  featured?: boolean;
+}) {
+  return <RankText rating={rating} featured={featured}>{name.trim() || "Competitor"}</RankText>;
+}
+
+/** Names, rating values, and titles share one palette and animation treatment. */
+export function RankText({ children, rating, featured = false }: {
+  children: ReactNode;
   rating: number;
   featured?: boolean;
 }) {
@@ -15,7 +25,7 @@ export default function RankedName({ name, rating, featured = false }: {
           <path d="M3 6 9 11 14 2 19 11 25 6 23 18H5Z" /><rect x="5" y="20" width="18" height="2" rx="1" />
         </svg>
       )}
-      <span className="rank-name-text">{name.trim() || "Competitor"}</span>
+      <span className="rank-name-text">{children}</span>
       {effect === "legend" && (
         <span className="rank-sparkles" aria-hidden="true">
           {[0, 1, 2, 3, 4].map((sparkle) => (
