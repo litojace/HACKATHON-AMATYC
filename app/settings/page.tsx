@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { api } from "@/lib/client";
 import { useApp } from "@/components/Providers";
-import { AccountGate, PageTitle } from "@/components/Shared";
+import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 export default function Settings() {
   return (
     <main className="mx-auto max-w-3xl px-5 py-10">
@@ -20,6 +20,8 @@ function Content() {
     [avatar, setAvatar] = useState(""),
     [visible, setVisible] = useState(true),
     [busy, setBusy] = useState(false);
+  const initializedProfile = useRef<string | null>(null);
+  const [baseline, setBaseline] = useState<{name: string; school: string; avatar: string; visible: boolean} | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
@@ -30,15 +32,19 @@ function Content() {
     return () => URL.revokeObjectURL(url);
   }, [file]);
   useEffect(() => {
-    if (profile) {
+    if (profile && initializedProfile.current !== profile.id) {
+      initializedProfile.current = profile.id;
+      setBaseline({name: profile.full_name, school: profile.school ?? "", avatar: profile.avatar_url ?? "", visible: profile.is_public});
       setName(profile.full_name);
       setSchool(profile.school ?? "");
       setAvatar(profile.avatar_url ?? "");
       setVisible(profile.is_public);
     }
   }, [profile]);
+  const changed = !!baseline && (name.trim() !== baseline.name || school.trim() !== baseline.school || avatar !== baseline.avatar || visible !== baseline.visible || !!file);
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (!changed || busy || !profile) return;
     setBusy(true);
     let uploadedPath: string | null = null;
     let saved = false;
@@ -57,14 +63,17 @@ function Content() {
       await api(
         "me",
         {
-          full_name: name,
-          school: school || null,
+          full_name: name.trim(),
+          school: school.trim() || null,
           avatar_url: avatarUrl || null,
           is_public: visible,
         },
         "PATCH",
       );
       saved = true;
+      setName(name.trim());
+      setSchool(school.trim());
+      setBaseline({name: name.trim(), school: school.trim(), avatar: avatarUrl, visible});
       setAvatar(avatarUrl);
       setFile(null);
       await refreshAccount();
@@ -94,6 +103,8 @@ function Content() {
             belong in browser variables.
           </p>
         </div>
+      ) : !profile || !baseline ? (
+        <div aria-live="polite"><p className="muted">Loading your saved profile…</p><Loading /><button type="button" className="btn-secondary" onClick={refreshAccount}>Retry loading profile</button></div>
       ) : (
         <form className="panel p-8" onSubmit={save}>
           <fieldset disabled={busy} className="min-w-0 space-y-5">
@@ -135,7 +146,7 @@ function Content() {
                 }} />
               </div>
             </div>
-            {(avatar || file) && <button type="button" className="text-sm underline underline-offset-4" disabled={busy} onClick={() => { setAvatar(""); setFile(null); }}>Remove avatar</button>}
+            {(avatar || file) && <button type="button" className="btn-secondary text-sm" disabled={busy} onClick={() => { setAvatar(""); setFile(null); }}>Remove avatar</button>}
             <p className="text-xs muted">Avatar images are public. PNG, JPG, or WebP, up to 10 MB. Save your profile to apply changes.</p>
           </div>
           <label className="flex items-center gap-3 text-sm">
@@ -151,7 +162,7 @@ function Content() {
             Turning visibility off removes your profile from the public
             leaderboard.
           </p>
-          <button disabled={busy} className="btn">
+          <button disabled={busy || !changed} className={changed ? "btn" : "btn-secondary"}>
             {busy ? "Saving…" : "Save profile"}
           </button>
           </fieldset>

@@ -53,14 +53,18 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-/* Keep text actions visibly clickable in both themes and at every viewport. */
-a[href],
-button,
-summary,
-input[type="file"]::file-selector-button {
+/* Underlines distinguish text links; headers and button controls use their own styling. */
+a[href]:not(.btn):not(.btn-secondary) {
   text-decoration-line: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
+}
+header a[href],
+button,
+summary,
+a.btn,
+a.btn-secondary {
+  text-decoration-line: none;
 }
 input[type="file"]::file-selector-button {
   cursor: pointer;

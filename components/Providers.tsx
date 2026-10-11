@@ -67,14 +67,17 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const refreshAccount = useCallback(async () => {
     if (!supabase) return;
     try {
-      const [p, a, library] = await Promise.all([
+      const [p, a, library] = await Promise.allSettled([
         api<Profile>("me"),
         api<Activity>("activity"),
         api<PublicProblem[]>("problems"),
       ]);
-      setProfile(p);
-      setActivity(a);
-      setProblems(library);
+      if (p.status === "fulfilled") setProfile(p.value);
+      else throw p.reason;
+      if (a.status === "fulfilled") setActivity(a.value);
+      else notify((a.reason as Error).message);
+      if (library.status === "fulfilled") setProblems(library.value);
+      else notify((library.reason as Error).message);
     } catch (e) {
       notify((e as Error).message);
     }
