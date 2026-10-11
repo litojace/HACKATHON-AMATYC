@@ -156,11 +156,11 @@ export default function HomeCommunityGallery() {
             const image = event.currentTarget;
             try { await image.decode(); } catch { /* onLoad confirms the image is available. */ }
             setReadyPhotos(current => new Set(current).add(index));
-          }} src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
+          }} src={item.src} alt={item.label || item.alt || `Community photo ${index + 1}`} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
         </div>)}
         {!readyPhotos.has(activePhoto) && <div className="absolute inset-0 flex items-center justify-center text-sm muted" role="status">{galleryError ? <div className="text-center"><p>Photos could not be loaded.</p><button type="button" className="btn-secondary mt-3" onClick={() => setReload(value => value + 1)}>Retry photos</button></div> : "Loading community photos…"}</div>}
         {photo && <div className="absolute z-[3] inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
-          <p className="text-sm font-semibold">{photo.label}</p>
+          {photo.label && <p className="text-sm font-semibold">{photo.label}</p>}
           <p className="text-xs text-white/80" aria-live={paused || focused ? "polite" : "off"}>
             {activePhoto + 1} of {photos.length}
           </p>
@@ -197,7 +197,7 @@ export default function HomeCommunityGallery() {
             type="button"
             disabled={!readyPhotos.has(index)}
             onClick={() => showPhoto(index)}
-            aria-label={`Show photo ${index + 1}: ${item.label}`}
+            aria-label={`Show photo ${index + 1}${item.label ? ": " + item.label : ""}`}
             aria-pressed={activePhoto === index}
             className={`relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-md border-2 bg-ink ${activePhoto === index ? "border-emerald-400" : "border-transparent opacity-65 hover:opacity-100"}`}
           >

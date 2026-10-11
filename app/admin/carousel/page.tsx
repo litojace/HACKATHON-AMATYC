@@ -53,7 +53,7 @@ function Editor() {
   }
   async function save() {
     const parsed = carouselSchema.safeParse(photos);
-    if (!parsed.success) { setMessage("Each image needs a valid image URL, caption, description, and a time between 1 and 30 seconds. Keep 1–10 images."); return; }
+    if (!parsed.success) { setMessage("Use valid image URLs and a time between 1 and 30 seconds. Captions are optional. Keep 1–10 images."); return; }
     setBusy(true); setMessage("");
     try {
       const saved = await api<CarouselPhoto[]>("admin/carousel", parsed.data, "PUT");
@@ -88,8 +88,7 @@ function Editor() {
           <div className="space-y-3">
             <label className="block text-sm">Upload / replace image<input type="file" accept="image/png,image/jpeg,image/webp" className="field mt-2" onChange={e => { void upload(index, e.target.files?.[0]); e.target.value = ""; }} /></label>
             <label className="block text-sm">Image URL<input className="field mt-2" value={photo.src} onChange={e => update(index, {src: e.target.value})} /></label>
-            <label className="block text-sm">Caption<input className="field mt-2" maxLength={80} value={photo.label} onChange={e => update(index, {label: e.target.value})} /></label>
-            <label className="block text-sm">Image description<input className="field mt-2" maxLength={240} value={photo.alt} onChange={e => update(index, {alt: e.target.value})} /></label>
+            <label className="block text-sm">Caption (optional)<input className="field mt-2" maxLength={80} value={photo.label} onChange={e => update(index, {label: e.target.value})} /></label>
             <label className="block text-sm">Display<select className="field mt-2" value={photo.fit} onChange={e => update(index, {fit: e.target.value as CarouselPhoto["fit"]})}><option value="cover">Fill frame</option><option value="contain">Show whole image</option></select></label>
           </div>
         </div>

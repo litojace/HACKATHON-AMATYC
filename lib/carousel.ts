@@ -1,8 +1,8 @@
 import { z } from "zod";
 export const carouselPhotoSchema = z.object({
   src: z.string().max(2048).refine(value => /^\/images\/[A-Za-z0-9_./-]+$/.test(value) && !value.includes("..") || (() => { try { const u = new URL(value); return u.protocol === "https:" && !u.username && !u.password; } catch { return false; } })(), "Use an image path or HTTPS URL"),
-  alt: z.string().trim().min(1).max(240),
-  label: z.string().trim().min(1).max(80),
+  alt: z.string().trim().max(240).default(""),
+  label: z.string().trim().max(80).default(""),
   fit: z.enum(["cover", "contain"]),
   duration_seconds: z.number().min(1).max(30).default(2.5),
 });

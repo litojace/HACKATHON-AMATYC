@@ -25,8 +25,8 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ink: #1c1915;
-  --panel: #29241e;
+  --ink: #13110f;
+  --panel: #211d18;
   --edge: #504638;
   --text: #faf5e6;
   --muted: #c3b8a3;
