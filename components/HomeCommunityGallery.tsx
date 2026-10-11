@@ -1,40 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/client";
+import { defaultCarouselPhotos, carouselSchema, type CarouselPhoto } from "@/lib/carousel";
 
-const photos = [
-  {
-    src: "/images/community/student-math-league.png",
-    alt: "AMATYC Student Math League competition flyer",
-    label: "Math League",
-    fit: "contain",
-  },
-  {
-    src: "/images/community/practice-session.png",
-    alt: "Students working together during a math practice session",
-    label: "Practice",
-    fit: "cover",
-  },
-  {
-    src: "/images/community/pizza.png",
-    alt: "Two pizzas",
-    label: "Pizza",
-    fit: "cover",
-  },
-  {
-    src: "/images/community/whiteboard.png",
-    alt: "A student solving math problems on a whiteboard",
-    label: "Problem solving",
-    fit: "cover",
-  },
-  {
-    src: "/images/community/team.png",
-    alt: "Students gathered after a math practice session",
-    label: "Our team",
-    fit: "cover",
-  },
-] as const;
+
 
 function InstagramIcon() {
   return (
@@ -56,6 +27,15 @@ function DiscordIcon() {
 
 export default function HomeCommunityGallery() {
   const [activePhoto, setActivePhoto] = useState(0);
+  const [photos, setPhotos] = useState<CarouselPhoto[]>(defaultCarouselPhotos);
+  useEffect(() => {
+    let active = true;
+    api<CarouselPhoto[]>("carousel").then(data => {
+      const parsed = carouselSchema.safeParse(data);
+      if (active && parsed.success) { setPhotos(parsed.data); setActivePhoto(0); }
+    }).catch(() => { /* Keep the bundled gallery if the service is unavailable. */ });
+    return () => { active = false; };
+  }, []);
   const photo = photos[activePhoto];
 
   function showPhoto(index: number) {
@@ -103,6 +83,7 @@ export default function HomeCommunityGallery() {
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink">
         <Image
           key={photo.src}
+          unoptimized
           src={photo.src}
           alt={photo.alt}
           fill
@@ -137,14 +118,14 @@ export default function HomeCommunityGallery() {
       <div className="mt-3 grid grid-cols-5 gap-2" aria-label="Choose a photo">
         {photos.map((item, index) => (
           <button
-            key={item.src}
+            key={index}
             type="button"
             onClick={() => showPhoto(index)}
             aria-label={`Show photo ${index + 1}: ${item.label}`}
             aria-pressed={activePhoto === index}
             className={`relative aspect-[4/3] overflow-hidden rounded-md border-2 bg-ink ${activePhoto === index ? "border-emerald-400" : "border-transparent opacity-65 hover:opacity-100"}`}
           >
-            <Image src={item.src} alt="" fill sizes="100px" className="object-cover" />
+            <Image unoptimized src={item.src} alt="" fill sizes="100px" className="object-cover" />
           </button>
         ))}
       </div>

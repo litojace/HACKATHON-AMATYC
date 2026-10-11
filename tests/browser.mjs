@@ -28,6 +28,27 @@ try {
   }
   await page.goto(base + "/problems");
   await page.getByRole("heading", {name: "Find your next breakthrough."}).waitFor();
+  await page.goto(base + "/admin/carousel");
+  await page.getByRole("heading", {name: "Sign in to manage the carousel."}).waitFor();
+  assert.equal((await page.request.put(base + "/api/admin/carousel", {data: []})).status(), 401);
+  const carouselResponse = await page.request.get(base + "/api/carousel");
+  // A shared backend may not have applied the new migration yet.
+  assert.ok([200, 503].includes(carouselResponse.status()));
+  const slides = carouselResponse.ok() ? await carouselResponse.json() : [
+    {src: "/images/community/team.png", label: "Team", alt: "Team", fit: "cover"},
+    {src: "/images/community/pizza.png", label: "Pizza", alt: "Pizza", fit: "cover"},
+  ];
+  assert.ok(slides.length > 0);
+  await page.route("**/api/carousel", route => route.fulfill({json: [
+    {...slides[0], label: "Edited caption"},
+    {...(slides[1] ?? slides[0]), label: "Second slide"},
+  ]}));
+  await page.goto(base);
+  await page.getByText("Edited caption", {exact: true}).waitFor();
+  await page.getByRole("button", {name: "Show next photo"}).click();
+  await page.getByText("Second slide", {exact: true}).waitFor();
+  await page.getByRole("button", {name: "Show next photo"}).click();
+  await page.getByText("Edited caption", {exact: true}).waitFor();
   await page.goto(base + "/problems/" + problem.id);
   await page.getByRole("heading", {name: "Sign in to practice."}).waitFor();
   assert.equal(await page.getByRole("button", {name: "Submit Answer", exact: true}).count(), 0);

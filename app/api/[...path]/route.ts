@@ -6,6 +6,7 @@ import {
   sampleProfiles,
 } from "@/lib/server/data";
 import { database, databaseConfigured } from "@/lib/server/database";
+import { carouselSchema, defaultCarouselPhotos } from "@/lib/carousel";
 import {
   practiceSchema,
   saveAnswerSchema,
@@ -48,6 +49,7 @@ async function handle(
         for (const [k, v] of limits) if (v.until < Date.now()) limits.delete(k);
     }
     if (!databaseConfigured) {
+      if (resource === "carousel" && method === "GET") return NextResponse.json(defaultCarouselPhotos);
       if (resource === "practice" || resource === "attempts") {
         return error("Please sign in to continue. Supabase must be configured to enable practice and contests.", 401);
       }
@@ -90,6 +92,10 @@ async function handle(
       if (e) throw new Error(e.message);
       return data;
     }
+    if (resource === "carousel" && method === "GET") {
+      const row = await query<{ photos: unknown }>(db.from("site_carousel").select("photos").eq("id", true).single());
+      return NextResponse.json(carouselSchema.parse(row?.photos));
+    }
     if (resource === "problems" && method === "GET")
       return NextResponse.json(
         await query(db.rpc("list_public_problems", { problem_id: id ?? null })),
@@ -121,6 +127,20 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "admin" && id === "carousel") {
+      const isAdmin = await query(db.rpc("is_site_admin"));
+      if (!isAdmin) return error("Only administrators can edit the carousel.", 403);
+      if (method === "GET") {
+        const row = await query<{ photos: unknown }>(db.from("site_carousel").select("photos").eq("id", true).single());
+        return NextResponse.json(carouselSchema.parse(row?.photos));
+      }
+      if (method === "PUT") {
+        const photos = carouselSchema.parse(await req.json());
+        await query(db.from("site_carousel").update({ photos, updated_at: new Date().toISOString() }).eq("id", true).select("id").single());
+        return NextResponse.json(photos);
+      }
+      return error("Method not allowed", 405);
+    }
     if (resource === "practice" && method === "GET" && action === "solution")
       return NextResponse.json(
         await query(db.rpc("get_practice_solution", { problem_id: id })),
@@ -215,4 +235,5 @@ async function handle(
 }
 export const GET = handle,
   POST = handle,
+  PUT = handle,
   PATCH = handle;
