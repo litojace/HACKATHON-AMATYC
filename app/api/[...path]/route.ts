@@ -324,7 +324,12 @@ async function handle(
       const result = b.saved
         ? await db
             .from("bookmarks")
-            .upsert({ user_id: user.id, problem_id: id })
+            // Bookmark saves are idempotent inserts; this table deliberately
+            // grants INSERT/DELETE, not UPDATE, to authenticated users.
+            .upsert({ user_id: user.id, problem_id: id }, {
+              onConflict: "user_id,problem_id",
+              ignoreDuplicates: true,
+            })
         : await db
             .from("bookmarks")
             .delete()
