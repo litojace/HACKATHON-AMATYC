@@ -6,6 +6,12 @@ import { useRouter } from "next/navigation";
 import { supabase, setRememberMe } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
 import { safeReturnPath } from "@/lib/auth";
+
+function authSiteOrigin() {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  return configured ? new URL(configured).origin : location.origin;
+}
+
 export default function AuthForm({
   mode,
 }: {
@@ -35,10 +41,12 @@ export default function AuthForm({
     try {
       if (mode === "login") setRememberMe(rememberMe);
       const next = safeReturnPath(new URLSearchParams(location.search).get("next"));
+      const callback = new URL("/auth/callback", authSiteOrigin());
+      callback.searchParams.set("next", next);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: location.origin + "/auth/callback?next=" + encodeURIComponent(next),
+          redirectTo: callback.toString(),
           queryParams: { prompt: "select_account" },
         },
       });
@@ -77,14 +85,14 @@ export default function AuthForm({
                   full_name: String(fields.get("full_name")),
                   school: String(fields.get("school") ?? ""),
                 },
-                emailRedirectTo: location.origin + "/login",
+                emailRedirectTo: new URL("/email-confirmed", authSiteOrigin()).toString(),
               },
             })
           : mode === "login"
             ? await supabase.auth.signInWithPassword({ email, password })
             : mode === "forgot"
               ? await supabase.auth.resetPasswordForEmail(email, {
-                  redirectTo: location.origin + "/reset-password",
+                  redirectTo: new URL("/reset-password", authSiteOrigin()).toString(),
                 })
               : await supabase.auth.updateUser({ password });
       if (result.error) throw result.error;
