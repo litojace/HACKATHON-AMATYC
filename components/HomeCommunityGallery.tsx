@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Pencil, Pause, Play } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/client";
 import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
@@ -38,6 +38,7 @@ export default function HomeCommunityGallery() {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [photos, setPhotos] = useState<CarouselPhoto[]>(defaultCarouselPhotos);
+  const thumbnailStrip = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let active = true;
     api<CarouselPhoto[]>("carousel").then(data => {
@@ -61,7 +62,7 @@ export default function HomeCommunityGallery() {
       if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       setPreviousPhoto(activePhoto);
       setActivePhoto((activePhoto + 1) % photos.length);
-    }, 5000);
+    }, 2500);
     return () => window.clearInterval(timer);
   }, [activePhoto, photos.length, paused, hovered, focused]);
   useEffect(() => {
@@ -69,6 +70,16 @@ export default function HomeCommunityGallery() {
     const timer = window.setTimeout(() => setPreviousPhoto(null), 450);
     return () => window.clearTimeout(timer);
   }, [previousPhoto, activePhoto]);
+  useEffect(() => {
+    const strip = thumbnailStrip.current;
+    const selected = strip?.children[activePhoto] as HTMLElement | undefined;
+    if (!strip || !selected) return;
+    const left = selected.offsetLeft;
+    const right = left + selected.offsetWidth;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    if (left < strip.scrollLeft) strip.scrollTo({ left, behavior });
+    else if (right > strip.scrollLeft + strip.clientWidth) strip.scrollTo({ left: right - strip.clientWidth, behavior });
+  }, [activePhoto, photos.length]);
 
   function showPhoto(index: number) {
     const next = (index + photos.length) % photos.length;
@@ -78,7 +89,7 @@ export default function HomeCommunityGallery() {
   }
 
   return (
-    <aside className="panel overflow-hidden p-4 sm:p-5" aria-label="AMATYC community"
+    <aside className="panel min-w-0 overflow-hidden p-4 sm:p-5" aria-label="AMATYC community"
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -128,21 +139,14 @@ export default function HomeCommunityGallery() {
             Edit
           </Link>
         )}
-        {previousPhoto !== null && photos[previousPhoto] && <div key={`previous-${previousPhoto}`} className="carousel-exit absolute inset-0" aria-hidden="true">
-          <Image unoptimized src={photos[previousPhoto].src} alt="" fill sizes="(min-width: 1024px) 40vw, 100vw" className={photos[previousPhoto].fit === "contain" ? "object-contain" : "object-cover"} />
-        </div>}
-        <div key={`active-${activePhoto}`} className={`absolute inset-0 ${previousPhoto !== null ? "carousel-enter" : ""}`}>
-        <Image
-          key={photo.src}
-          unoptimized
-          src={photo.src}
-          alt={photo.alt}
-          fill
-          priority={activePhoto === 0}
-          sizes="(min-width: 1024px) 40vw, 100vw"
-          className={photo.fit === "contain" ? "object-contain" : "object-cover"}
-        />
-        </div>
+        {photos.map((item, index) => <div
+          key={`${index}-${item.src}`}
+          aria-hidden={index !== activePhoto}
+          className={`absolute inset-0 ${index === activePhoto || index === previousPhoto ? "transition-transform duration-[450ms] ease-in-out motion-reduce:transition-none" : ""}`}
+          style={{ transform: `translateX(${index === activePhoto ? 0 : index === previousPhoto ? -100 : 100}%)`, visibility: index === activePhoto || index === previousPhoto ? "visible" : "hidden" }}
+        >
+          <Image unoptimized loading="eager" src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
+        </div>)}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
           <p className="text-sm font-semibold">{photo.label}</p>
           <p className="text-xs text-white/80" aria-live={paused || focused ? "polite" : "off"}>
@@ -172,7 +176,7 @@ export default function HomeCommunityGallery() {
         {paused ? "Play slideshow" : "Pause slideshow"}
       </button>}
 
-      <div className="mt-3 grid grid-cols-5 gap-2" aria-label="Choose a photo">
+      <div ref={thumbnailStrip} className="carousel-thumbnails relative mt-3 flex w-full gap-2 overflow-x-auto pb-3" aria-label="Choose a photo">
         {photos.map((item, index) => (
           <button
             key={index}
@@ -180,7 +184,7 @@ export default function HomeCommunityGallery() {
             onClick={() => showPhoto(index)}
             aria-label={`Show photo ${index + 1}: ${item.label}`}
             aria-pressed={activePhoto === index}
-            className={`relative aspect-[4/3] overflow-hidden rounded-md border-2 bg-ink ${activePhoto === index ? "border-emerald-400" : "border-transparent opacity-65 hover:opacity-100"}`}
+            className={`relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-md border-2 bg-ink ${activePhoto === index ? "border-emerald-400" : "border-transparent opacity-65 hover:opacity-100"}`}
           >
             <Image unoptimized src={item.src} alt="" fill sizes="100px" className="object-cover" />
           </button>

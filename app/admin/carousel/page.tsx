@@ -5,6 +5,7 @@ import { api } from "@/lib/client";
 import { supabase } from "@/lib/supabaseClient";
 import { carouselSchema, type CarouselPhoto } from "@/lib/carousel";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
+import Dialog from "@/components/ui/Dialog";
 
 export default function CarouselAdmin() {
   return <main className="mx-auto max-w-4xl px-5 py-10"><AccountGate requireAuth title="Sign in to manage the carousel." description="Only approved administrators can edit homepage photos."><Editor /></AccountGate></main>;
@@ -16,6 +17,7 @@ function Editor() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [removeIndex, setRemoveIndex] = useState<number | null>(null);
   useEffect(() => {
     let active = true;
     api<CarouselPhoto[]>("admin/carousel").then(data => {
@@ -69,7 +71,7 @@ function Editor() {
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h2 className="font-semibold">Image {index + 1}</h2><div className="flex gap-2">
           <button type="button" className="btn-secondary" disabled={index === 0} onClick={() => move(index, -1)} aria-label={`Move image ${index + 1} up`}>↑</button>
           <button type="button" className="btn-secondary" disabled={index === photos.length - 1} onClick={() => move(index, 1)} aria-label={`Move image ${index + 1} down`}>↓</button>
-          <button type="button" className="btn-secondary" disabled={photos.length === 1} onClick={() => setPhotos(previous => previous.filter((_, i) => i !== index))}>Remove image {index + 1}</button>
+          <button type="button" className="btn-secondary" disabled={photos.length === 1} onClick={() => setRemoveIndex(index)}>Remove image {index + 1}</button>
         </div></div>
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="aspect-[4/3] overflow-hidden rounded-xl bg-ink">{photo.src && <img src={photo.src} alt={photo.alt || "Image preview"} className={`h-full w-full ${photo.fit === "contain" ? "object-contain" : "object-cover"}`} />}</div>
@@ -91,5 +93,16 @@ function Editor() {
     </fieldset>
     {busy && <p role="status" className="mt-4">Please wait…</p>}
     {message && <p role="status" className="mt-4">{message}</p>}
+    {removeIndex !== null && <Dialog title="Remove this image?" onClose={() => setRemoveIndex(null)}>
+      <p className="muted">Remove “{photos[removeIndex]?.label || `Image ${removeIndex + 1}`}” from the carousel? This change is published when you save.</p>
+      <div className="mt-5 flex gap-3">
+        <button type="button" className="btn-secondary" onClick={() => setRemoveIndex(null)}>Cancel</button>
+        <button type="button" className="btn" onClick={() => {
+          setPhotos(previous => previous.filter((_, i) => i !== removeIndex));
+          setRemoveIndex(null);
+          setMessage("");
+        }}>Confirm removal</button>
+      </div>
+    </Dialog>}
   </>;
 }

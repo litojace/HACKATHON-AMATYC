@@ -52,7 +52,7 @@ export default function Home() {
             practice
           </p>
         </div>
-        <div className="relative z-10">
+        <div className="relative z-10 min-w-0">
           <HomeCommunityGallery />
         </div>
       </section>

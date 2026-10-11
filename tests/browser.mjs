@@ -11,7 +11,7 @@ try {
   for (const problem of library) {
     for (const field of ["correct_answer", "accepted_answers", "written_solution", "calculator_trick"]) assert.ok(!(field in problem));
   }
-  const problem = library[0];
+  const problem = library.find(item => !item.id.startsWith("demo-"));
   const contests = await (await page.request.get(base + "/api/contests")).json();
   const contest = contests[0];
   for (const [path, method, data] of [
@@ -54,6 +54,19 @@ try {
   await page.getByText("Second slide", {exact: true}).waitFor();
   await page.getByRole("button", {name: "Show next photo"}).click();
   await page.getByText("Edited caption", {exact: true}).waitFor();
+  await page.route("**/api/carousel", route => route.fulfill({json: Array.from({length: 10}, (_, index) => ({...slides[0], label: `Slide ${index + 1}`}))}));
+  await page.setViewportSize({width: 390, height: 844});
+  await page.goto(base);
+  await page.getByRole("button", {name: "Show photo 10: Slide 10", exact: true}).waitFor();
+  const strip = page.getByLabel("Choose a photo");
+  assert.ok(await strip.evaluate(el => el.scrollWidth > el.clientWidth));
+  assert.ok(await strip.evaluate(el => new Set([...el.children].map(child => child.offsetTop)).size === 1));
+  const retainedImage = await page.locator('aside[aria-label="AMATYC community"] img[alt]').nth(1).elementHandle();
+  await page.getByRole("button", {name: "Show photo 10: Slide 10", exact: true}).click();
+  await page.getByText("Slide 10", {exact: true}).waitFor();
+  assert.ok(await retainedImage.evaluate(el => el.isConnected));
+  await page.waitForFunction(() => document.querySelector('.carousel-thumbnails').scrollLeft > 0);
+  await page.setViewportSize({width: 1280, height: 900});
   await page.goto(base + "/problems/" + problem.id);
   await page.getByRole("heading", {name: "Sign in to practice."}).waitFor();
   assert.equal(await page.getByRole("button", {name: "Submit Answer", exact: true}).count(), 0);
