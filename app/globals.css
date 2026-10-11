@@ -199,3 +199,8 @@ select {
 :root[data-theme="light"] .text-yellow-500 {
   color: #86630e;
 }
+
+@keyframes carousel-slide-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes carousel-slide-out { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+.carousel-slide-in { animation: carousel-slide-in 800ms ease-in-out; }
+.carousel-slide-out { animation: carousel-slide-out 800ms ease-in-out; }

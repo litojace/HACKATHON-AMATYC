@@ -32,6 +32,7 @@ function DiscordIcon() {
 export default function HomeCommunityGallery() {
   const { user, authLoading } = useApp();
   const [adminUserId, setAdminUserId] = useState<string | null>(null);
+  const [previousPhoto, setPreviousPhoto] = useState<number | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
   const [readyPhotos, setReadyPhotos] = useState<Set<number>>(new Set());
   const [galleryError, setGalleryError] = useState(false);
@@ -65,10 +66,10 @@ export default function HomeCommunityGallery() {
     const timer = window.setInterval(() => {
       if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const next = (activePhoto + 1) % photos.length;
-      if (readyPhotos.has(next)) setActivePhoto(next);
-    }, 2500);
+      if (readyPhotos.has(next)) { setPreviousPhoto(activePhoto); setActivePhoto(next); }
+    }, (photo?.duration_seconds ?? 2.5) * 1000);
     return () => window.clearInterval(timer);
-  }, [activePhoto, photos.length, paused, hovered, focused, readyPhotos]);
+  }, [activePhoto, photos.length, paused, hovered, focused, readyPhotos, photo?.duration_seconds]);
   useEffect(() => {
     const strip = thumbnailStrip.current;
     const selected = strip?.children[activePhoto] as HTMLElement | undefined;
@@ -80,9 +81,16 @@ export default function HomeCommunityGallery() {
     else if (right > strip.scrollLeft + strip.clientWidth) strip.scrollTo({ left: right - strip.clientWidth, behavior });
   }, [activePhoto, photos.length]);
 
+  useEffect(() => {
+    if (previousPhoto === null) return;
+    const timer = window.setTimeout(() => setPreviousPhoto(null), 800);
+    return () => window.clearTimeout(timer);
+  }, [previousPhoto, activePhoto]);
+
   function showPhoto(index: number) {
     const next = (index + photos.length) % photos.length;
     if (next === activePhoto || !readyPhotos.has(next)) return;
+    setPreviousPhoto(activePhoto);
     setActivePhoto(next);
   }
 
@@ -140,8 +148,8 @@ export default function HomeCommunityGallery() {
         {photos.map((item, index) => <div
           key={`${index}-${item.src}`}
           aria-hidden={index !== activePhoto}
-          className="absolute inset-0 transition-opacity duration-[450ms] ease-in-out motion-reduce:transition-none"
-          style={{ opacity: index === activePhoto && readyPhotos.has(index) ? 1 : 0 }}
+          className={`absolute inset-0 ${previousPhoto !== null ? index === activePhoto ? "carousel-slide-in" : index === previousPhoto ? "carousel-slide-out" : "" : ""}`}
+          style={{ visibility: readyPhotos.has(index) && (index === activePhoto || index === previousPhoto) ? "visible" : "hidden", transform: `translateX(${index === activePhoto ? 0 : -100}%)`, zIndex: index === activePhoto ? 2 : 1 }}
         >
           <Image unoptimized loading="eager" onLoad={async (event) => {
             const image = event.currentTarget;
@@ -150,7 +158,7 @@ export default function HomeCommunityGallery() {
           }} src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
         </div>)}
         {!readyPhotos.has(activePhoto) && <div className="absolute inset-0 flex items-center justify-center text-sm muted" role="status">{galleryError ? <div className="text-center"><p>Photos could not be loaded.</p><button type="button" className="btn-secondary mt-3" onClick={() => setReload(value => value + 1)}>Retry photos</button></div> : "Loading community photos…"}</div>}
-        {photo && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
+        {photo && <div className="absolute z-[3] inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
           <p className="text-sm font-semibold">{photo.label}</p>
           <p className="text-xs text-white/80" aria-live={paused || focused ? "polite" : "off"}>
             {activePhoto + 1} of {photos.length}
@@ -161,7 +169,7 @@ export default function HomeCommunityGallery() {
           disabled={!photo || !readyPhotos.has((activePhoto - 1 + photos.length) % photos.length)}
           onClick={() => showPhoto(activePhoto - 1)}
           aria-label="Show previous photo"
-          className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
+          className="absolute z-[3] left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
         >
           ‹
         </button>
@@ -170,7 +178,7 @@ export default function HomeCommunityGallery() {
           disabled={!photo || !readyPhotos.has((activePhoto + 1) % photos.length)}
           onClick={() => showPhoto(activePhoto + 1)}
           aria-label="Show next photo"
-          className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
+          className="absolute z-[3] right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
         >
           ›
         </button>

@@ -53,9 +53,7 @@ try {
   ]}));
   await page.goto(base);
   await page.getByText("Edited caption", {exact: true}).waitFor();
-  const gallery = page.getByRole("complementary", {name: "AMATYC community"});
-  await page.waitForFunction(() => Array.from(document.querySelectorAll('aside[aria-label="AMATYC community"] img')).some(image => image.parentElement.style.opacity === "1"));
-  assert.equal(await gallery.locator("div.transition-opacity").first().evaluate(element => getComputedStyle(element).transitionDuration), "0.45s");
+  await page.waitForFunction(() => Array.from(document.querySelectorAll('aside[aria-label="AMATYC community"] img')).some(image => image.parentElement.style.visibility === "visible"));
   assert.equal(await page.getByRole("link", {name: "Edit carousel"}).count(), 0);
   await page.mouse.move(0, 0);
   await page.getByText("Second slide", {exact: true}).waitFor({timeout: 8000});

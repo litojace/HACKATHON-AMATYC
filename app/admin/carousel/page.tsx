@@ -53,7 +53,7 @@ function Editor() {
   }
   async function save() {
     const parsed = carouselSchema.safeParse(photos);
-    if (!parsed.success) { setMessage("Each image needs a valid image URL, caption and description. Keep 1–10 images."); return; }
+    if (!parsed.success) { setMessage("Each image needs a valid image URL, caption, description, and a time between 1 and 30 seconds. Keep 1–10 images."); return; }
     setBusy(true); setMessage("");
     try {
       const saved = await api<CarouselPhoto[]>("admin/carousel", parsed.data, "PUT");
@@ -80,6 +80,7 @@ function Editor() {
             <label className="block text-sm">Image URL<input className="field mt-2" value={photo.src} onChange={e => update(index, {src: e.target.value})} /></label>
             <label className="block text-sm">Caption<input className="field mt-2" maxLength={80} value={photo.label} onChange={e => update(index, {label: e.target.value})} /></label>
             <label className="block text-sm">Image description<input className="field mt-2" maxLength={240} value={photo.alt} onChange={e => update(index, {alt: e.target.value})} /></label>
+            <label className="block text-sm">Time on screen (seconds)<input type="number" min="1" max="30" step="0.5" className="field mt-2" value={photo.duration_seconds ?? 2.5} onChange={e => update(index, {duration_seconds: e.target.valueAsNumber})} /></label>
             <label className="block text-sm">Display<select className="field mt-2" value={photo.fit} onChange={e => update(index, {fit: e.target.value as CarouselPhoto["fit"]})}><option value="cover">Fill frame</option><option value="contain">Show whole image</option></select></label>
           </div>
         </div>

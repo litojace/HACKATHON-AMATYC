@@ -12,3 +12,10 @@ test("carousel validates image sources, captions and slide limits", () => {
   assert.equal(carouselSchema.safeParse(Array(11).fill(photo)).success, false);
   assert.equal(carouselSchema.safeParse([{...photo, label: " "}]).success, false);
 });
+
+test("carousel timing defaults and supported durations", () => {
+  const photo = defaultCarouselPhotos[0];
+  assert.equal(carouselSchema.parse([photo])[0].duration_seconds, 2.5);
+  assert.equal(carouselSchema.parse([{...photo, duration_seconds: 5}])[0].duration_seconds, 5);
+  for (const duration_seconds of [0, 31, "5", null]) assert.equal(carouselSchema.safeParse([{...photo, duration_seconds}]).success, false);
+});
