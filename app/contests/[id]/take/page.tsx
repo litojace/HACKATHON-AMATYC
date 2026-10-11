@@ -12,7 +12,7 @@ import Dialog from "@/components/ui/Dialog";
 export default function Take() {
   return (
     <main className="mx-auto max-w-7xl px-5 py-8">
-      <AccountGate>
+      <AccountGate requireAuth>
         <Exam />
       </AccountGate>
     </main>

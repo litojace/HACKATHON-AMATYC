@@ -9,7 +9,7 @@ import { Loading } from "@/components/Shared";
 export default function Overview() {
   const { id } = useParams<{ id: string }>(),
     router = useRouter(),
-    { demo, user, notify } = useApp();
+    { user, authLoading, notify } = useApp();
   const [contest, setContest] = useState<Contest | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
@@ -19,6 +19,7 @@ export default function Overview() {
       .catch((e) => setError(e.message));
   }, [id]);
   async function start() {
+    if (!user || authLoading) return;
     setBusy(true);
     try {
       const a = await api<ExamAttempt>("attempts/" + id + "/start", {});
@@ -79,15 +80,8 @@ export default function Overview() {
               Solutions unlock at the configured review time.
             </p>
           )}
-          {demo && (
-            <p className="mb-5 text-xs muted">
-              Demo sessions use signed browser cookies. A server restart can
-              invalidate them unless a persistent demo signing key is
-              configured. These results are not competitive records.
-            </p>
-          )}
-          {!demo && !user ? (
-            <Link className="btn" href="/login">
+          {authLoading ? <Loading /> : !user ? (
+            <Link className="btn" href={"/login?next=" + encodeURIComponent(`/contests/${id}`)}>
               Sign in to begin
             </Link>
           ) : (

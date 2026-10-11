@@ -12,7 +12,7 @@ import Chart from "@/components/Charts";
 export default function Results() {
   return (
     <main className="mx-auto max-w-7xl px-5 py-10">
-      <AccountGate>
+      <AccountGate requireAuth>
         <Content />
       </AccountGate>
     </main>

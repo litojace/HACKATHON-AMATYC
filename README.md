@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3000 in your local browser. Stop with Ctrl+C. No credentials are required to practice the bundled historical exams and original samples. Each cloud task already has an isolated checkout; use it rather than creating a Git worktree.
+Open http://localhost:3000 in your local browser. Stop with Ctrl+C. Browsing is public; solving problems and taking contests requires a signed-in Supabase account. Each cloud task already has an isolated checkout; use it rather than creating a Git worktree.
 
 For a production server:
 
@@ -40,15 +40,13 @@ On Linux/macOS, `PORT=3001 npm start` selects another port. On Windows PowerShel
 
 Legacy `/contest` and `/auth` redirect to the new routes. Loading, error, not-found, empty, and toast states are included. Keyboard shortcuts pause in fields/dialogs; modal dialogs trap focus and support Escape. Reduced motion is respected. Charts include accessible data lists.
 
-## Demonstration versus configured mode
+## Public browsing and configured accounts
 
-Leave **both** public Supabase settings empty for demo. The bundled library contains 820 historical questions from 41 exams (2004–2025), plus 20 original examples. Original exam images preserve formulas and diagrams; PDF/OCR text is a search transcript. See `docs/historical-library.md` for coverage and editorial status. Answers and solutions are imported only into server-only modules: the browser receives public statements/options and obtains explanations after a submission.
+Leave both public Supabase settings empty to browse the bundled library: 820 historical questions from 41 exams (2004–2025), plus 20 original examples. Original exam images preserve formulas and diagrams; OCR transcripts are used for search. Answers and solutions remain server-only. See `docs/historical-library.md` for coverage and editorial status.
 
-Demo practice is graded by the server. Demo exam state is an HMAC-signed, HTTP-only, SameSite cookie; deadlines and late-write rejection are enforced server-side. Changing the browser clock or localStorage does not extend a deadline. Demo results and bookmarks are saved in this browser's localStorage for convenience, not as verified competitive records. A signed cookie is not a durable multi-user database; manually replaying old cookies, concurrent tabs, or clearing browser storage are outside its integrity guarantees. Only one active demo exam and practice session are supported per browser. Demo ratings never change.
+Practice and contests require a signed-in Supabase user. Guest submissions, practice session starts, explanations, contest starts, answer saves and finalization are rejected by the API. Without Supabase configured, the library is available for browsing but no guest demo attempts can be created. Existing local demonstration history is not a verified account record.
 
-Set the optional server-only `DEMO_SESSION_SECRET` to a long random value to retain demo sessions across server restarts/instances. Without it a per-process key is generated; restarting invalidates signed sessions. Never rely on Render local disk or process memory for real user attempts.
-
-When either public Supabase setting is supplied, the application expects a working configured backend. Incomplete settings and database failures show service errors rather than substituting demonstration problems or fictitious activity. Both public settings must be provided before building. Supabase service-role credentials are never used by the browser or ordinary web API.
+Both public Supabase settings must be provided before building. Incomplete settings and database failures show service errors rather than substituting demonstration activity. Service-role credentials are never used by the browser or ordinary web API. Google accounts and email/password accounts use the same profile and private attempt storage.
 
 ## Supabase setup
 
@@ -71,7 +69,7 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
 
 The `problem-images` Storage bucket is public, supports PNG/JPEG/WebP up to 5 MB, and has no client upload policy. Trusted organizers upload via dashboard/service-role. **Do not upload unreleased rated-event diagrams to a public bucket**; use private storage/signed asset delivery before enabling restricted diagram events. The demo semicircle is an original local SVG. Multiple figure records and private signed diagram delivery are extension points, not implemented claims.
 
-Google OAuth is not implemented in this version. Supabase email/password and password reset are the supported auth flows.
+Google OAuth and email/password sign-in are supported. Enable the Google provider in the shared Supabase project; see `docs/google-login.md` for callback URLs and setup. Practice and contests require authentication, including when browsing the bundled library without Supabase configuration.
 
 ## Backend architecture and security
 
@@ -118,7 +116,7 @@ npm run smoke
 node tests/historical-browser.mjs
 ```
 
-Or use system Chromium: `BROWSER_EXECUTABLE=/usr/bin/chromium npm run smoke`. `TEST_BASE_URL` selects another server/port. Browser tests use controlled demo records and cover the hackathon journey, confidentiality, flags, refresh, result immutability, profiles, theme, and mobile behavior. Live signup/login/recovery tests need a real configured project and are not claimed as passed without one.
+Or use system Chromium: `BROWSER_EXECUTABLE=/usr/bin/chromium npm run smoke`. `TEST_BASE_URL` selects another server/port. Browser smoke tests verify public browsing, guest API rejection, login gates, return links, callback failures, theme persistence and mobile navigation. Historical browser tests check source assets and authentication requirements. Live signup/login/recovery tests need a real configured project and are not claimed as passed without one.
 
 ## Dataset imports
 

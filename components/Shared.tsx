@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useApp } from "./Providers";
 export function Loading() {
   return (
@@ -13,17 +14,23 @@ export function Loading() {
     </div>
   );
 }
-export function AccountGate({ children }: { children: React.ReactNode }) {
+export function AccountGate({ children, requireAuth = false }: { children: React.ReactNode; requireAuth?: boolean }) {
   const { demo, user, authLoading } = useApp();
+  const pathname = usePathname();
+  const router = useRouter();
   if (authLoading) return <Loading />;
-  if (!demo && !user)
+  if (!user && (requireAuth || !demo))
     return (
       <div className="panel mx-auto my-10 max-w-lg p-8">
-        <h1 className="text-2xl">Your personal progress awaits.</h1>
+        <h1 className="text-2xl">{requireAuth ? "Sign in to practice." : "Your personal progress awaits."}</h1>
         <p className="my-5 muted">
-          Sign in to access your private account data.
+          {requireAuth ? "Log in with Google or email to solve problems and take contests." : "Sign in to access your private account data."}
         </p>
-        <Link href="/login" className="btn">
+        <Link href={"/login?next=" + encodeURIComponent(pathname)} onClick={(event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          router.push("/login?next=" + encodeURIComponent(pathname + location.search));
+        }} className="btn">
           Sign in
         </Link>
       </div>

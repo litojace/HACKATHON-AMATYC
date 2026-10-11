@@ -19,6 +19,7 @@ import MathRenderer from "./MathRenderer";
 import SolutionRenderer from "./SolutionRenderer";
 import { difficultyColor } from "@/lib/domain";
 import Dialog from "./ui/Dialog";
+import { AccountGate, Loading } from "./Shared";
 export default function ProblemArena({
   problem,
   onNext,
@@ -38,7 +39,7 @@ export default function ProblemArena({
   locked?: boolean;
   explanation?: Explanation | null;
 }) {
-  const { user, demo, activity, bookmark, notify, savePractice } = useApp();
+  const { user, demo, authLoading, activity, bookmark, notify, savePractice } = useApp();
   const [selected, setSelected] = useState<Answer | null>(null),
     [result, setResult] = useState<PracticeResult | null>(null),
     [busy, setBusy] = useState(false),
@@ -59,7 +60,7 @@ export default function ProblemArena({
     ? attemptCount ? (100 * acceptedCount / attemptCount).toFixed(1) + "%" : "—"
     : problem.acceptance_rate != null ? problem.acceptance_rate + "%" : "—";
   useEffect(() => {
-    if (exam || (!demo && !user)) return;
+    if (exam || !user || authLoading) return;
     let active = true;
     const controller = new AbortController();
     api<{ request_id: string; started_at: string }>(
@@ -78,14 +79,14 @@ export default function ProblemArena({
       active = false;
       controller.abort();
     };
-  }, [problem.id, demo, user, exam, notify]);
+  }, [problem.id, user, authLoading, exam, notify]);
   function choose(a: Answer | null) {
-    if (locked || busy || (!exam && result)) return;
+    if (!user || locked || busy || (!exam && result)) return;
     if (exam) onAnswer?.(a);
     else setSelected(a);
   }
   async function submit() {
-    if (exam || busy || result || !session) return;
+    if (!user || exam || busy || result || !session) return;
     setBusy(true);
     try {
       const r = await api<PracticeResult>("practice/" + problem.id, {
@@ -102,6 +103,7 @@ export default function ProblemArena({
     }
   }
   async function retry() {
+    if (!user) return;
     setBusy(true);
     try {
       const s = await api<{ request_id: string; started_at: string }>(
@@ -160,6 +162,8 @@ export default function ProblemArena({
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
   });
+  if (authLoading) return <Loading />;
+  if (!user) return <AccountGate requireAuth>{null}</AccountGate>;
   return (
     <section className="mx-auto max-w-4xl">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">

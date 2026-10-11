@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
+import { safeReturnPath } from "@/lib/auth";
 export default function AuthForm({
   mode,
 }: {
@@ -24,6 +25,25 @@ export default function AuthForm({
     forgot: "Reset your password.",
     reset: "Choose a new password.",
   };
+  async function signInWithGoogle() {
+    if (!supabase || busy) return;
+    setBusy(true);
+    setMessage("");
+    try {
+      const next = safeReturnPath(new URLSearchParams(location.search).get("next"));
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: location.origin + "/auth/callback?next=" + encodeURIComponent(next),
+          queryParams: { prompt: "select_account" },
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      setMessage((error as Error).message);
+      setBusy(false);
+    }
+  }
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) return;
@@ -63,7 +83,7 @@ export default function AuthForm({
       if (result.error) throw result.error;
       if (mode === "login") {
         notify("Signed in successfully.");
-        router.push("/dashboard");
+        router.push(safeReturnPath(new URLSearchParams(location.search).get("next")));
       } else
         setMessage(
           mode === "signup"
@@ -88,12 +108,12 @@ export default function AuthForm({
         {!supabase ? (
           <>
             <p className="my-5 leading-7 muted">
-              Accounts need Supabase configuration. Demonstration practice,
-              contests, bookmarks, and browser-local progress are available
-              without signing in.
+              Sign-in is not available yet. Connect Supabase to enable Google
+              and email accounts. You can browse the problem library; practice
+              and contests require an account.
             </p>
             <Link className="btn" href="/problems">
-              Try demonstration practice
+              Browse problems
             </Link>
           </>
         ) : mode === "reset" && !user ? (
@@ -102,6 +122,13 @@ export default function AuthForm({
           </p>
         ) : (
           <form className="mt-6 space-y-4" onSubmit={submit}>
+            {(mode === "login" || mode === "signup") && <>
+              <button type="button" onClick={signInWithGoogle} disabled={busy} className="btn-secondary w-full">
+                <span aria-hidden="true" className="font-bold text-blue-500">G</span>
+                Continue with Google
+              </button>
+              <p className="text-center text-xs muted">or continue with email</p>
+            </>}
             {mode === "signup" && (
               <>
                 <label className="block text-xs muted">

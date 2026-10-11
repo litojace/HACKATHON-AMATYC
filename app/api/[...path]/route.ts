@@ -1,74 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "node:crypto";
 import {
   libraryQuestions,
   libraryContests,
-  questionsForContest,
-  demoContest,
   publicProblem,
   sampleProfiles,
 } from "@/lib/server/data";
 import { database, databaseConfigured } from "@/lib/server/database";
 import {
-  readSession,
-  signSession,
-  type DemoSession,
-} from "@/lib/server/demo-session";
-import {
   practiceSchema,
   saveAnswerSchema,
   profileSchema,
 } from "@/lib/validation";
-import { scoreAnswer, isCorrectAnswer } from "@/lib/rating";
-import type { ExamAttempt } from "@/types/problem";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const limits = new Map<string, { count: number; until: number }>();
 function error(message: string, status = 400) {
   return NextResponse.json({ error: { message } }, { status });
-}
-function demoAttempt(s: DemoSession): ExamAttempt {
-  const finished = !!s.finalized_at;
-  const contest = libraryContests.find(c => c.id === (s.contest_id ?? demoContest.id))!;
-  const questions = questionsForContest(contest.id);
-  return {
-    ...s,
-    contest_id: contest.id,
-    status: finished ? "finalized" : "active",
-    score: finished
-      ? questions.reduce(
-          (sum, p) => sum + scoreAnswer(s.answers[p.id], p.correct_answer, p.accepted_answers, p.grading_policy),
-          0,
-        )
-      : null,
-    questions: questions.map(publicProblem),
-    server_now: new Date().toISOString(),
-    ...(finished
-      ? {
-          time_spent_seconds: Math.max(
-            0,
-            Math.min(
-              contest.duration_seconds,
-              Math.floor(
-                (Date.parse(s.finalized_at!) - Date.parse(s.started_at)) / 1000,
-              ),
-            ),
-          ),
-          breakdown: questions.map((p) => ({
-            ...publicProblem(p),
-            selected_answer: s.answers[p.id] ?? null,
-            is_correct: isCorrectAnswer(s.answers[p.id], p.correct_answer, p.accepted_answers, p.grading_policy),
-            points: scoreAnswer(s.answers[p.id], p.correct_answer, p.accepted_answers, p.grading_policy),
-            explanation: {
-              correct_answer: p.correct_answer,
-              written_solution: p.written_solution,
-              calculator_trick: p.calculator_trick,
-              accepted_answers: p.accepted_answers, grading_policy: p.grading_policy,
-            },
-          })),
-        }
-      : {}),
-  };
 }
 async function handle(
   req: NextRequest,
@@ -101,152 +48,15 @@ async function handle(
         for (const [k, v] of limits) if (v.until < Date.now()) limits.delete(k);
     }
     if (!databaseConfigured) {
+      if (resource === "practice" || resource === "attempts") {
+        return error("Please sign in to continue. Supabase must be configured to enable practice and contests.", 401);
+      }
       if (resource === "problems" && method === "GET") {
         const p = id ? libraryQuestions.find((p) => p.id === id) : null;
         if (id && !p) return error("Problem not found", 404);
         return NextResponse.json(
           id ? publicProblem(p!) : libraryQuestions.map(publicProblem),
         );
-      }
-      if (resource === "practice" && method === "POST") {
-        const p = libraryQuestions.find((p) => p.id === id);
-        if (!p) return error("Problem not found", 404);
-        if (action === "start") {
-          const now = new Date();
-          const session: DemoSession = {
-            id: randomUUID(),
-            started_at: now.toISOString(),
-            deadline: new Date(now.getTime() + 86400000).toISOString(),
-            answers: {},
-            flags: [id],
-            finalized_at: null,
-          };
-          const res = NextResponse.json({
-            request_id: session.id,
-            started_at: session.started_at,
-          });
-          res.cookies.set("amatyc-demo-practice", signSession(session), {
-            httpOnly: true,
-            sameSite: "strict",
-            secure:
-              req.nextUrl.protocol === "https:" ||
-              req.headers.get("x-forwarded-proto") === "https",
-            path: "/",
-            maxAge: 86400,
-          });
-          return res;
-        }
-        const body = practiceSchema.parse(await req.json());
-        const session = readSession(
-          req.cookies.get("amatyc-demo-practice")?.value,
-        );
-        if (
-          !session ||
-          session.id !== body.request_id ||
-          session.flags[0] !== id
-        )
-          return error("Start or retry this practice problem first.", 409);
-        if (!session.finalized_at) {
-          session.finalized_at = new Date().toISOString();
-          if (body.answer && p.options.length && !p.options.some(o => o.label === body.answer)) return error("Choose a printed answer letter", 422);
-          session.answers[id] = body.answer;
-        }
-        const selected = session.answers[id] ?? null;
-        const res = NextResponse.json({
-          id: session.id,
-          problem_id: p.id,
-          selected_answer: selected,
-          is_correct: isCorrectAnswer(selected, p.correct_answer, p.accepted_answers, p.grading_policy),
-          score: scoreAnswer(selected, p.correct_answer, p.accepted_answers, p.grading_policy),
-          time_spent_seconds: Math.max(
-            0,
-            Math.min(
-              86400,
-              Math.floor(
-                (Date.parse(session.finalized_at) -
-                  Date.parse(session.started_at)) /
-                  1000,
-              ),
-            ),
-          ),
-          created_at: session.finalized_at,
-          correct_answer: p.correct_answer,
-          written_solution: p.written_solution,
-          calculator_trick: p.calculator_trick,
-          accepted_answers: p.accepted_answers, grading_policy: p.grading_policy,
-        });
-        res.cookies.set("amatyc-demo-practice", signSession(session), {
-          httpOnly: true,
-          sameSite: "strict",
-          secure:
-            req.nextUrl.protocol === "https:" ||
-            req.headers.get("x-forwarded-proto") === "https",
-          path: "/",
-          maxAge: 86400,
-        });
-        return res;
-      }
-      if (resource === "contests" && method === "GET") {
-        const contest = libraryContests.find(c => c.id === id);
-        if (id && !contest) return error("Contest not found", 404);
-        return NextResponse.json(id ? contest : libraryContests);
-      }
-      if (resource === "attempts") {
-        let s = readSession(req.cookies.get("amatyc-demo-exam")?.value);
-        if (method === "POST" && action === "start") {
-          const contest = libraryContests.find(c => c.id === id);
-          if (!contest) return error("Contest not found", 404);
-          if (s && !s.finalized_at && (s.contest_id ?? demoContest.id) !== id) return error("Finish your active exam before starting another one.", 409);
-          if (!s || s.finalized_at) {
-            const now = new Date();
-            s = {
-              id: randomUUID(),
-              contest_id: contest.id,
-              started_at: now.toISOString(),
-              deadline: new Date(
-                now.getTime() + contest.duration_seconds * 1000,
-              ).toISOString(),
-              answers: {},
-              flags: [],
-              finalized_at: null,
-            };
-          }
-        } else if (!s || s.id !== id)
-          return error(
-            "Demo session expired. Start a new exam. A server restart can clear demo sessions.",
-            404,
-          );
-        if (!s) return error("No attempt", 404);
-        if (!s.finalized_at && Date.now() >= Date.parse(s.deadline))
-          s.finalized_at = s.deadline;
-        if (method === "PATCH") {
-          if (s.finalized_at)
-            return error(
-              "This exam is finalized. Answer changes are closed.",
-              409,
-            );
-          const body = saveAnswerSchema.parse(await req.json());
-          if (!questionsForContest(s.contest_id ?? demoContest.id).some((p) => p.id === body.problem_id))
-            return error("Question not in contest");
-          const problem = libraryQuestions.find(p => p.id === body.problem_id)!;
-          if (body.answer && problem.options.length && !problem.options.some(o => o.label === body.answer)) return error("Choose a printed answer letter", 422);
-          s.answers[body.problem_id] = body.answer;
-          s.flags = s.flags.filter((i) => i !== body.problem_id);
-          if (body.flagged) s.flags.push(body.problem_id);
-        }
-        if (method === "POST" && action === "finish" && !s.finalized_at)
-          s.finalized_at = new Date().toISOString();
-        const response = NextResponse.json(demoAttempt(s));
-        response.cookies.set("amatyc-demo-exam", signSession(s), {
-          httpOnly: true,
-          sameSite: "strict",
-          secure:
-            req.nextUrl.protocol === "https:" ||
-            req.headers.get("x-forwarded-proto") === "https",
-          path: "/",
-          maxAge: 86400,
-        });
-        return response;
       }
       if (resource === "stats")
         return NextResponse.json({

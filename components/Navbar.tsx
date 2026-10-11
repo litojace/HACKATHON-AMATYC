@@ -152,8 +152,8 @@ export default function Navbar() {
       </nav>
       {demo && (
         <div className="border-t border-edge bg-emerald-400/5 px-5 py-1 text-center text-[11px] text-emerald-400">
-          <span className="lg:hidden">Local mode · Unrated practice</span>
-          <span className="hidden lg:inline">LOCAL MODE · Historical exams + original samples · Unrated · Activity stays in this browser</span>
+          <span className="lg:hidden">Browse mode · Sign in to practice</span>
+          <span className="hidden lg:inline">BROWSE MODE · Historical exams + original samples · Connect Supabase and sign in to practice</span>
         </div>
       )}
     </header>

@@ -2,7 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useApp } from "@/components/Providers";
-import { Loading, ServiceError } from "@/components/Shared";
+import { AccountGate, Loading, ServiceError } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
 export default function ProblemPage() {
   const { id } = useParams<{ id: string }>(),
@@ -35,6 +35,7 @@ export default function ProblemPage() {
         ← Back to problems
       </Link>
       <div className="mt-6">
+        <AccountGate requireAuth>
         <ProblemArena
           key={problem.id}
           problem={problem}
@@ -51,6 +52,7 @@ export default function ProblemPage() {
             )
           }
         />
+        </AccountGate>
       </div>
     </main>
   );

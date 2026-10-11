@@ -1,224 +1,65 @@
 import { chromium } from "playwright";
 import assert from "node:assert/strict";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 const base = process.env.TEST_BASE_URL ?? "http://127.0.0.1:3000";
-const browser = await chromium.launch({
-  executablePath: process.env.BROWSER_EXECUTABLE,
-  headless: true,
-  args: ["--no-sandbox"],
-});
+const browser = await chromium.launch({ executablePath: process.env.BROWSER_EXECUTABLE, headless: true });
 try {
-  const page = await browser.newPage({
-      viewport: { width: 1440, height: 1000 },
-    }),
-    errors = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto(base);
-  await page
-    .getByRole("heading", { name: "Master Mathematics. Climb the Rankings." })
-    .waitFor();
-  await page.screenshot({
-    path: join(tmpdir(), "amatyc-v2-desktop.png"),
-    fullPage: true,
-  });
-  const publicData = await (
-    await page.request.get(base + "/api/problems")
-  ).json();
-  assert.equal(publicData.length, 840);
-  assert.ok(
-    publicData.every(
-      (p) =>
-        !("correct_answer" in p) &&
-        !("written_solution" in p) &&
-        !("calculator_trick" in p),
-    ),
-  );
-  assert.equal(
-    (
-      await page.request.post(base + "/api/practice/demo-01", {
-        data: { answer: "D", request_id: crypto.randomUUID() },
-      })
-    ).status(),
-    409,
-  );
-  await page.getByRole("link", { name: /Start Practicing/ }).click();
-  await page
-    .getByRole("link", { name: "Nested Operations", exact: true })
-    .waitFor();
-  assert.equal(await page.locator("tbody tr").count(), 12);
-  await page
-    .getByRole("combobox", { name: "Topic", exact: true })
-    .selectOption("Geometry");
-  assert.ok((await page.locator("tbody tr").count()) > 0);
-  assert.ok(page.url().includes("topic=Geometry"));
-  await page
-    .getByRole("combobox", { name: "Topic", exact: true })
-    .selectOption("");
-  await page
-    .getByRole("button", { name: "Bookmark Nested Operations", exact: true })
-    .click();
-  await page.getByLabel("Bookmarked only").check();
-  await page.waitForFunction(
-    () => document.querySelectorAll("tbody tr").length === 1,
-  );
-  await page
-    .getByRole("link", { name: "Nested Operations", exact: true })
-    .click();
-  const submit = page.getByRole("button", {
-    name: "Submit Answer",
-    exact: true,
-  });
-  await submit.waitFor();
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll("button")].some(
-      (b) => b.textContent === "Submit Answer" && !b.disabled,
-    ),
-  );
-  await page.keyboard.press("4");
-  await page.keyboard.press("Enter");
-  await page.getByRole("heading", { name: "Mathematical Solution" }).waitFor();
-  await page.getByText("+2.0 pts", { exact: true }).waitFor();
-  await page.waitForFunction(() => {
-    const stats = Object.fromEntries([...document.querySelectorAll("dl > div")].map(el => [el.querySelector("dt")?.textContent, el.querySelector("dd")?.textContent]));
-    return stats.Accepted === "1" && stats.Attempts === "1" && stats["Acceptance rate"] === "100.0%";
-  });
-  assert.equal(await page.getByRole("tab", { name: "Casio Calculator Strategy" }).count(), 0);
-  await page.getByRole("button", { name: "Try again", exact: true }).click();
-  await submit.click();
-  await page.getByText("0.0 pts", { exact: true }).waitFor();
-  await page.waitForFunction(() => {
-    const stats = Object.fromEntries([...document.querySelectorAll("dl > div")].map(el => [el.querySelector("dt")?.textContent, el.querySelector("dd")?.textContent]));
-    return stats.Accepted === "1" && stats.Attempts === "2" && stats["Acceptance rate"] === "50.0%";
-  });
-  await page.getByRole("link", { name: "Dashboard", exact: true }).click();
-  await page.getByRole("heading", { name: /Your progress/ }).waitFor();
-  await page.getByText("Recent activity", { exact: true }).waitFor();
-  await page.getByRole("button", { name: "Rating", exact: true }).click();
-  await page.getByRole("heading", { name: "Solved rating distribution" }).waitFor();
-  assert.equal(await page.getByRole("img", { name: "Solved rating distribution chart" }).count(), 1);
-  await page.getByRole("button", { name: "Difficulty", exact: true }).click();
-  await page.getByRole("heading", { name: "Solved difficulty distribution" }).waitFor();
-  assert.ok(
-    await page
-      .getByText("Nested Operations · Solved", { exact: false })
-      .count(),
-  );
-  await page.goto(base + "/contests");
-  await page.getByRole("link", { name: /View contest/ }).first().click();
-  await page.getByRole("button", { name: "Start / resume exam" }).click();
-  await page.getByRole("timer").waitFor();
-  await page
-    .locator("button[aria-pressed]")
-    .filter({ hasText: /D/ })
-    .last()
-    .click();
-  await page
-    .getByRole("button", { name: "Flag for review", exact: true })
-    .click();
-  await page
-    .getByRole("button", { name: "Question 1, flagged", exact: true })
-    .waitFor();
-  const attemptId = new URL(page.url()).searchParams.get("attempt");
-  const before = await (
-    await page.request.get(base + "/api/attempts/" + attemptId)
-  ).json();
-  assert.ok(!JSON.stringify(before).includes("correct_answer"));
-  await page.getByRole("button", { name: "Next problem", exact: true }).click();
-  await page.getByRole("button", { name: "Previous", exact: true }).click();
-  await page.reload();
-  await page.getByRole("timer").waitFor();
-  const after = await (
-    await page.request.get(base + "/api/attempts/" + attemptId)
-  ).json();
-  assert.equal(before.deadline, after.deadline);
-  assert.equal(after.answers["demo-01"], "D");
-  assert.ok(after.flags.includes("demo-01"));
-  await page.getByRole("button", { name: "Submit Exam", exact: true }).click();
-  await page.getByRole("dialog").waitFor();
-  await page.getByRole("button", { name: "Close", exact: true }).click();
-  await page.getByRole("timer").waitFor();
-  await page.getByRole("button", { name: "Submit Exam", exact: true }).click();
-  await page
-    .getByRole("button", { name: "Confirm submission", exact: true })
-    .click();
-  await page.waitForURL("**/results?attempt=*");
-  await page
-    .getByRole("heading", { name: "Every attempt is a step forward." })
-    .waitFor();
-  assert.equal(await page.locator("tbody tr").count(), 20);
-  const result = await (
-    await page.request.get(base + "/api/attempts/" + attemptId)
-  ).json();
-  assert.equal(result.score, 2);
-  assert.equal(result.status, "finalized");
-  assert.equal(
-    (
-      await page.request.patch(base + "/api/attempts/" + attemptId, {
-        data: { problem_id: "demo-01", answer: "A", flagged: false },
-      })
-    ).status(),
-    409,
-  );
-  const again = await (
-    await page.request.post(base + "/api/attempts/" + attemptId + "/finish", {
-      data: {},
-    })
-  ).json();
-  assert.equal(again.finalized_at, result.finalized_at);
-  await page
-    .getByRole("button", { name: "View solution", exact: true })
-    .first()
-    .click();
-  await page.getByRole("heading", { name: "Mathematical Solution" }).waitFor();
-  const expanded = page.getByRole("region", { name: "Solution for question 1", exact: true });
-  await expanded.waitFor();
-  assert.equal(await expanded.locator("xpath=ancestor::tr/preceding-sibling::tr[1]").getByRole("button", {name: "Hide solution", exact: true}).getAttribute("aria-expanded"), "true");
-  await page.getByRole("button", {name: "Hide solution", exact: true}).click();
-  assert.equal(await expanded.count(), 0);
-
-  await page
-    .getByRole("link", { name: "View your progress", exact: true })
-    .click();
-  await page.getByText("Best mock score", { exact: true }).waitFor();
-  await page.goto(base + "/leaderboard");
-  await page.getByText("Demonstration rankings", { exact: false }).waitFor();
-  await page
-    .getByRole("link", { name: "sample_integral", exact: true })
-    .click();
-  await page.getByText("SAMPLE PUBLIC PROFILE", { exact: true }).waitFor();
-  for (const route of ["login", "signup", "forgot-password", "settings"]) {
-    await page.goto(base + "/" + route);
-    assert.ok(await page.locator("main").innerText());
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  const library = await (await page.request.get(base + "/api/problems")).json();
+  assert.ok(library.length > 0);
+  for (const problem of library) {
+    for (const field of ["correct_answer", "accepted_answers", "written_solution", "calculator_trick"]) assert.ok(!(field in problem));
   }
+  const problem = library[0];
+  const contests = await (await page.request.get(base + "/api/contests")).json();
+  const contest = contests[0];
+  for (const [path, method, data] of [
+    [`practice/${problem.id}/start`, "POST", {}],
+    [`practice/${problem.id}`, "POST", {answer: "A", request_id: "00000000-0000-4000-8000-000000000001"}],
+    [`practice/${problem.id}/solution`, "GET"],
+    [`attempts/${contest.id}/start`, "POST", {}],
+    ["attempts/00000000-0000-4000-8000-000000000001", "GET"],
+    ["attempts/00000000-0000-4000-8000-000000000001", "PATCH", {problem_id: problem.id, answer: "A", flagged: false}],
+    ["attempts/00000000-0000-4000-8000-000000000001/finish", "POST", {}],
+  ]) {
+    const response = await page.request.fetch(base + "/api/" + path, {method, ...(data ? {data} : {})});
+    assert.equal(response.status(), 401, path);
+  }
+  await page.goto(base + "/problems");
+  await page.getByRole("heading", {name: "Find your next breakthrough."}).waitFor();
+  await page.goto(base + "/problems/" + problem.id);
+  await page.getByRole("heading", {name: "Sign in to practice."}).waitFor();
+  assert.equal(await page.getByRole("button", {name: "Submit Answer", exact: true}).count(), 0);
+  const signIn = page.getByRole("link", {name: "Sign in", exact: true});
+  assert.equal(await signIn.getAttribute("href"), "/login?next=" + encodeURIComponent("/problems/" + problem.id));
+  await signIn.click();
+  await page.getByRole("heading", {name: "Welcome back."}).waitFor();
+  if (await page.getByRole("button", {name: "Continue with Google"}).count()) {
+    assert.equal(await page.getByRole("button", {name: "Continue with Google"}).getAttribute("type"), "button");
+  } else {
+    await page.getByText(/Sign-in is not available yet/).waitFor();
+  }
+  await page.goto(base + "/contests/" + contest.id);
+  await page.getByRole("link", {name: "Sign in to begin"}).waitFor();
+  assert.equal(await page.getByRole("button", {name: "Start / resume exam"}).count(), 0);
+  for (const suffix of ["take", "results"]) {
+    await page.goto(base + `/contests/${contest.id}/${suffix}`);
+    await page.getByRole("heading", {name: "Sign in to practice."}).waitFor();
+  }
+  await page.goto(base + "/auth/callback#error=access_denied&error_description=Sign-in%20cancelled");
+  await page.locator("main").getByRole("alert").waitFor();
+  assert.match(await page.locator("main").getByRole("alert").innerText(), /cancelled/);
   await page.goto(base);
-  await page.getByRole("button", { name: "Toggle color theme" }).click();
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
+  const initialTheme = await page.locator("html").getAttribute("data-theme");
+  await page.getByRole("button", {name: "Toggle color theme"}).click();
+  const switched = initialTheme === "dark" ? "light" : "dark";
   await page.reload();
-  await page.waitForFunction(
-    () => document.documentElement.dataset.theme === "dark",
-  );
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
-  await page.getByRole("button", { name: "Toggle color theme" }).click();
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open navigation" }).click();
-  await page.getByRole("link", { name: "Problems", exact: true }).click();
-  await page
-    .getByRole("link", { name: "Nested Operations", exact: true })
-    .waitFor();
-  assert.ok(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  );
-  await page.screenshot({
-    path: join(tmpdir(), "amatyc-v2-mobile.png"),
-    fullPage: true,
-  });
+  await page.waitForFunction(theme => document.documentElement.dataset.theme === theme, switched);
+  await page.setViewportSize({width: 390, height: 844});
+  await page.getByRole("button", {name: "Open navigation"}).click();
+  await page.getByRole("link", {name: "Problems", exact: true}).click();
+  await page.getByRole("heading", {name: "Find your next breakthrough."}).waitFor();
   assert.deepEqual(errors, []);
-  console.log(
-    "PASS: demo journey, public answer confidentiality, bookmarks, combined filters, practice/blank submission/retry, submission statistics, dashboard, server-timed exam saves/flags/refresh/finalization, immutable results, profiles, account pages, theme persistence, mobile layout; no browser errors.",
-  );
-} finally {
-  await browser.close();
-}
+  console.log("PASS: public browsing, answer confidentiality, guest API rejection, practice/contest login gates, return links, callback errors, theme persistence and mobile navigation.");
+} finally { await browser.close(); }
