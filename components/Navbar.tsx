@@ -87,6 +87,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-6 text-sm lg:flex">
           {[
             ["/problems", "Problems"],
+            ["/training", "Training"],
             ["/contests", "Contests"],
             ["/leaderboard", "Leaderboard"],
             ["/dashboard", "Dashboard"],
@@ -155,7 +156,7 @@ export default function Navbar() {
       <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}
         className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">
         <div className="space-y-1">
-          {[["/problems", "Problems"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"], ["/dashboard", "Dashboard"]].map(([href, label]) => (
+          {[["/problems", "Problems"], ["/training", "Training"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"], ["/dashboard", "Dashboard"]].map(([href, label]) => (
             <Link key={href} href={href} onClick={() => setOpen(false)}
               aria-current={path.startsWith(href) ? "page" : undefined}
               className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium ${path.startsWith(href) ? "bg-emerald-400/10 text-emerald-400" : "muted hover:bg-ink"}`}>

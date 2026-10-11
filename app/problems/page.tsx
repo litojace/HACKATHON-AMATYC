@@ -66,9 +66,9 @@ export default function Problems() {
     activity.bookmarks,
   );
   const ratings = [...new Set(problems.flatMap(p => typeof p.difficulty_rating === "number" ? [p.difficulty_rating] : []))].sort((a, b) => a - b);
-  const sources = [...new Set(problems.map((p) => p.contest_name))].sort(
-    compareSourcesNewestFirst,
-  );
+  const sources = [...new Set(problems.map((p) => p.contest_name))]
+    .filter((source) => source !== "Original Demonstration Set")
+    .sort(compareSourcesNewestFirst);
   const topics = [...new Set(problems.map((p) => p.category))].sort((a, b) =>
     a.localeCompare(b, "en", { sensitivity: "base" }),
   );

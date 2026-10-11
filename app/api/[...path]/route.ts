@@ -20,6 +20,14 @@ const limits = new Map<string, { count: number; until: number }>();
 function error(message: string, status = 400) {
   return NextResponse.json({ error: { message } }, { status });
 }
+function addLocalWrittenSolution(payload: unknown, problemId: string) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) return payload;
+  const result = payload as Record<string, unknown>;
+  if (typeof result.written_solution === "string" && result.written_solution.trim())
+    return payload;
+  const written_solution = libraryQuestions.find((problem) => problem.id === problemId)?.written_solution;
+  return written_solution ? { ...result, written_solution } : payload;
+}
 async function handle(
   req: NextRequest,
   ctx: { params: Promise<{ path: string[] }> },
@@ -197,7 +205,10 @@ async function handle(
     }
     if (resource === "practice" && method === "GET" && action === "solution")
       return NextResponse.json(
-        await query(db.rpc("get_practice_solution", { problem_id: id })),
+        addLocalWrittenSolution(
+          await query(db.rpc("get_practice_solution", { problem_id: id })),
+          id,
+        ),
       );
     if (resource === "practice" && method === "POST") {
       if (action === "start")
@@ -206,13 +217,13 @@ async function handle(
         );
       const b = practiceSchema.parse(await req.json());
       return NextResponse.json(
-        await query(
+        addLocalWrittenSolution(await query(
           db.rpc("submit_practice", {
             problem_id: id,
             selected: b.answer,
             request_id: b.request_id,
           }),
-        ),
+        ), id),
       );
     }
     if (resource === "attempts") {
@@ -237,9 +248,13 @@ async function handle(
         return NextResponse.json(
           await query(db.rpc("finalize_contest", { attempt_id: id })),
         );
-      return NextResponse.json(
-        await query(db.rpc("get_contest_attempt", { attempt_id: id })),
-      );
+      const attempt = await query<{
+        breakdown?: { id: string; explanation?: unknown }[] | null;
+      }>(db.rpc("get_contest_attempt", { attempt_id: id }));
+      if (attempt?.breakdown)
+        for (const item of attempt.breakdown)
+          item.explanation = addLocalWrittenSolution(item.explanation, item.id);
+      return NextResponse.json(attempt);
     }
     if (resource === "activity")
       return NextResponse.json(await query(db.rpc("my_activity")));

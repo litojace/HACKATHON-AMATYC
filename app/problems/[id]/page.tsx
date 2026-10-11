@@ -1,6 +1,5 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, ServiceError } from "@/components/Shared";
@@ -9,12 +8,13 @@ import AdminProblemActions from "@/components/AdminProblemActions";
 export default function ProblemPage() {
   const { id } = useParams<{ id: string }>(),
     router = useRouter(),
+    searchParams = useSearchParams(),
     { problems, loading, error } = useApp();
-  const [returnTo, setReturnTo] = useState("/problems");
-  useEffect(() => {
-    const value = new URLSearchParams(location.search).get("returnTo");
-    if (value === "/problems" || value?.startsWith("/problems?")) setReturnTo(value);
-  }, [id]);
+  const candidate = searchParams.get("returnTo");
+  const returnTo =
+    candidate === "/problems" || candidate?.startsWith("/problems?")
+      ? candidate
+      : "/problems";
   const suffix = "?returnTo=" + encodeURIComponent(returnTo);
   if (loading)
     return (

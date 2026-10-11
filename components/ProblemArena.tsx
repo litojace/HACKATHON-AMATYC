@@ -29,6 +29,10 @@ export default function ProblemArena({
   onAnswer,
   locked = false,
   explanation,
+  hideKeyboardHelp = false,
+  initialResult,
+  onAnswerSelected,
+  onPracticeResult,
 }: {
   problem: PublicProblem;
   onNext?: () => void;
@@ -38,10 +42,14 @@ export default function ProblemArena({
   onAnswer?: (answer: Answer | null) => void;
   locked?: boolean;
   explanation?: Explanation | null;
+  hideKeyboardHelp?: boolean;
+  initialResult?: PracticeResult | null;
+  onAnswerSelected?: (answer: Answer | null) => void;
+  onPracticeResult?: (result: PracticeResult) => void;
 }) {
   const { user, demo, authLoading, activity, bookmark, notify, savePractice } = useApp();
-  const [selected, setSelected] = useState<Answer | null>(null),
-    [result, setResult] = useState<PracticeResult | null>(null),
+  const [selected, setSelected] = useState<Answer | null>(initialResult?.selected_answer ?? null),
+    [result, setResult] = useState<PracticeResult | null>(initialResult ?? null),
     [busy, setBusy] = useState(false),
     [session, setSession] = useState<{
       request_id: string;
@@ -83,7 +91,10 @@ export default function ProblemArena({
   function choose(a: Answer | null) {
     if (!user || locked || busy || (!exam && result)) return;
     if (exam) onAnswer?.(a);
-    else setSelected(a);
+    else {
+      setSelected(a);
+      onAnswerSelected?.(a);
+    }
   }
   async function submit() {
     if (!user || exam || busy || result || !session) return;
@@ -95,6 +106,7 @@ export default function ProblemArena({
       });
       setResult(r);
       savePractice(r);
+      onPracticeResult?.(r);
       notify("Answer submitted. Explanations are unlocked.");
     } catch (e) {
       notify((e as Error).message);
@@ -193,13 +205,13 @@ export default function ProblemArena({
               />
             </button>
           )}
-          <button
+          {!hideKeyboardHelp && <button
             aria-label="Keyboard shortcuts"
             onClick={() => setHelp(true)}
             className="btn-secondary !p-3"
           >
             <Keyboard size={17} />
-          </button>
+          </button>}
         </div>
       </div>
       <div className="panel p-5 sm:p-8">
@@ -309,7 +321,7 @@ export default function ProblemArena({
                     : "Submit Answer"}
               </button>
             ) : (
-              <button onClick={retry} disabled={busy} className="btn">
+              <button onClick={retry} disabled={busy || locked} className="btn">
                 Try again
               </button>
             ))}

@@ -71,8 +71,8 @@ export default function Home() {
             icon: Clock3,
             title: "Train under pressure",
             description:
-              "A timed exam, flexible navigation, flags, and a complete results review.",
-            href: "/contests",
+              "Choose a 15, 30, or 60 minute session with a balanced mix of problems.",
+            href: "/training",
           },
           {
             icon: Lightbulb,

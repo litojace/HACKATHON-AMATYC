@@ -1288,7 +1288,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Convert both exchange rates through dollars. Three ADA are worth $1.05, so one dollar buys 3/1.05 = 20/7 ADA. Two BTC are worth $124,000. Therefore they buy 124000(20/7) = 2,480,000/7 = 354,285 5/7 ADA. Rounding down gives 354,285 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1344,7 +1344,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If the first flip is H, the next T makes Ali win; another H returns to the same H-state, so Brenna can never win from there. If the first flip is T, the next T makes Brenna win, while HT makes Ali win. Brenna therefore wins exactly when the first two flips are TT, with probability (1/2)(1/2)=1/4 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1400,7 +1400,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A lattice point (a,b) is visible from the origin exactly when gcd(a,b)=1: a common divisor greater than 1 gives an intermediate lattice point, and gcd 1 prevents one. For the listed points, gcd(28,14)=14, gcd(28,15)=1, gcd(28,16)=4, gcd(28,18)=2, and gcd(28,21)=7. Only (28,15) is visible (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1456,7 +1456,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For i>j, 2^i−2^j has binary form with a consecutive block of 1s, so different exponent pairs give different positive differences. Count pairs with 2^i−2^j≤2024. For i=1 through 10, every j=0,…,i−1 works, contributing 1+2+…+10=55. For i=11, the condition requires j≥5, giving j=5,…,10 and 6 more. No i≥12 works. There are 61 positive differences; include 0 from equal powers to get 62 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1512,7 +1512,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are C(8,3)=56 ways to place the three cuts, and 2³ choices of signs. Checking these finite cases, the only expression equal to 2024 is 1234−5+6+789=2024. Thus c=6 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1568,7 +1568,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write each divisor as 2^i3^j, with 0≤i≤3 and 0≤j≤1. For the LCM to be 24=2^3·3, the larger of the two 2-exponents must be 3 and the larger of the 3-exponents must be 1. There are 7 ordered exponent pairs for the 2-part (4²−3²=7) and 3 for the 3-part (2²−1²=3), or 21 ordered pairs of divisors. One is the equal pair (24,24); the other 20 split into 10 unordered distinct pairs. Since a<b, the answer is 10 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1624,7 +1624,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Numbers with exactly two 1s in binary and at most 10 binary digits number C(10,2)=45. Thus the 50th number is the 5th such number with 11 digits. Its leading 1 contributes 2^10=1024; the remaining 1 is, in increasing order, at 2^0,2^1,2^2,2^3,2^4 for the first five numbers. The fifth is 1024+16=1040 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1680,7 +1680,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Set the temperature to 150: 150=125e^(−kt)+75, so e^(−kt)=3/5 and t=ln(5/3)/k. The logarithmic factor is the same with either lid setting, so t_on/t_off = k_off/k_on = 0.1/0.02 = 5 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1736,7 +1736,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By commutativity and distributivity, write k=1*1; then for integers m,n, m*n=mnk. Consequently 3*(4*5)=60k² and 4*(5*6)=120k², so the second expression is twice the first: 20 (C). There is a caveat in the statement: if the operation must map integers to integers, k is an integer, but 60k²=10 has no integer solution. Thus no such integer operation satisfies the premise; 20 is the formal intended consequence of the stated algebraic laws.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1792,7 +1792,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If Z is the spy, X’s claim that Z is a knave is false. Then X,Y would have to be knight and knave: X cannot be the knight, and if X is the knave then Y the knight falsely claims X is a knight. So Z is not the spy. Z also cannot be the knight, since “I am the spy” would be false; hence Z is the knave. Now X and Y are knight and spy. If X is the spy, Y the knight falsely says X is a knight, impossible. Therefore X is the knight and Y the spy, which is choice D.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1848,7 +1848,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let AB=x, AC=y, and BC=z. Adding the first and third side-sum equations and subtracting the second gives 2x=31+38−27=42, so x=21. Similarly, y=10 and z=17. The semiperimeter is 24. By Heron’s formula, the area is √(24·(24−21)·(24−10)·(24−17)) = √(24·3·14·7)=84 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -1904,7 +1904,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let W mean a wrong digit and C a correct one. The probability of exactly one W is the sum of WCC, CWC, and CCW. These probabilities are 0.02·0.10·0.98, 0.98·0.02·0.10, and 0.98·0.98·0.02, respectively. Their sum is 0.023128, which lies from 0.02 to 0.03 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2026,7 +2026,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The line slopes are m and b, so perpendicularity gives mb=−1. At the intersection, mx+b=bx−m; hence x=(m+b)/(b−m). Substitute b=−1/m: x=(m²−1)/(−1−m²)=(1−m²)/(1+m²) (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2082,7 +2082,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "I is true because 0=2·0. II is true: x³+27 factors as (x+3)(x²−3x+9), giving three distinct complex roots. III is true because every real number is either rational or irrational. IV uses the density of the reals: if the intended ordering is a<b, c=(a+b)/2 lies strictly between them. Under that intended reading all four are true (E). Literally, without a<b, IV fails when a>b, so the printed wording is ambiguous.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2138,7 +2138,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Subtract the equations xy+z=105 and x+yz=107 to get (y−1)(x−z)=−2. Since x−z is an integer, y−1 must be ±1 or ±2, so y is 0, 2, 3, or −1. For y=0, (x,z)=(107,105) works; for y=3, (x,z)=(26,27) works. For y=2 the equations give noninteger x,z, and y=−1 makes them inconsistent. Thus there are 2 possible y values (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2194,7 +2194,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let √(21−20i)=a+bi. Squaring gives a²−b²=21 and 2ab=−20. Also a²+b²=|21−20i|=√(21²+20²)=29. Adding and subtracting the first and third equations gives a²=25 and b²=4. Since 2ab is negative, a and b have opposite signs; regardless of which square-root sign is chosen, |a−b|=5+2=7 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2250,7 +2250,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Move 20 to the left and expand: (2x−5)(x−2)(x+1)(x+2)−20=x(2x³−3x²−13x+12)=x(x−3)(2x²+3x−4). The integer roots are 0 and 3. The other roots solve 2x²+3x−4=0, so x=(−3±√41)/4. Thus a=−3, b=41, c=4, and a+b+c=42 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2306,7 +2306,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the first square have area S. Its inscribed circle has area πS/4, so the first concave region has area (1−π/4)S. The square inscribed in a circle has half the circle’s area, so each successive square has half its predecessor’s area. Each square contributes a concave region (1−π/4) times its area and the following convex region (π/4−1/2) times its area. Both totals are geometric series with the same area factor, so their ratio is (1−π/4)/(π/4−1/2)=(4−π)/(π−2) (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2362,7 +2362,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Read each row and column strictly left to right/top to bottom. The equations are p+q+r=17, (s+t)/u=12, (v−w)x=30, (p+s)v=77, (q−t)w=2, and (r+u)x=60. Since s+t≤17, the second equation forces u=1 and s+t=12. From (p+s)v=77 with digits 1–9, the only possible factors give p+s=11 and v=7. Combining (v−w)x=30 with (r+1)x=60 forces x=6,w=2,r=9. The remaining equations yield p=3,q=5,s=8,t=4. Therefore p+t+x=3+4+6=13 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2418,7 +2418,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Apply the definition twice. First, Ω(2,3,4)=(2·2²+3·3−5·4)/2=(8+9−20)/2=−3/2. Then Ω(1,−3/2,5)=(2−9/2−25)/1=−55/2 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2474,7 +2474,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A divisor of 24 has the form 2^i3^j with 0≤i≤3 and 0≤j≤1. For the LCM of a pair to be 24, the maximum 2-exponent must be 3 and the maximum 3-exponent must be 1. This gives (4²−3²)(2²−1²)=7·3=21 ordered pairs. One is (24,24); the remaining 20 split into 10 unordered pairs with a<b (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2530,7 +2530,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The radius CP is perpendicular to the tangent PQ. In right triangle CPQ, CQ=2 and CP=1, so PQ=√(2²−1²)=√3. Since C lies on line QR, the angle between QP and QR has sine 1/2. Therefore [PQR]=(1/2)(PQ)(QR)sin∠PQR=(1/2)(√3)(4)(1/2)=√3 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2586,7 +2586,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Polynomial division gives f(x)=2x²+(b+6)x+(3b+19)+(57+9b)/(x−3). For this to equal 2(x−k)² plus the same remainder, the quadratic part must be a perfect square form. Thus b+6=−4k and 3b+19=2k². Eliminating k gives b²−12b−116=0. The sum of its two roots is 12 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2642,7 +2642,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Since neither a nor b is divisible by 3 but a+b is, their residues modulo 3 are 1 and 2 in some order. Therefore a²≡b²≡1, so a²+b² is 2 mod 3, not divisible (I is false); a²−b²≡0 (II is true); and a³+b³≡1+(−1)≡0 (III is true). Thus II and III only (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2698,7 +2698,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Since AC is the diameter, ∠ADC is a right angle. BD is the altitude to hypotenuse AC, so the right-triangle altitude theorem gives BD²=AB·BC=a·1. Therefore BD=√a (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2754,7 +2754,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "After the first rotation, the vertices are (0,0), (√2/2,√2/2), (0,√2), and (−√2/2,√2/2); the highest vertex is P=(0,√2). The sum of all vertex vectors before the second rotation is (0,2√2). Relative to P their vector sum is (0,−2√2). Rotating this sum 45° clockwise gives (−2,−2); adding 4P for the four translated vertices gives aggregate coordinates (−2,−2+4√2). Their total coordinate sum is 4√2−4 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2810,7 +2810,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By change of base, log_(a²)(b³)=(3 log_a b)/(2)=3·64/2=96 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2866,7 +2866,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A valid gift exchange is a permutation with no 1-cycles (no self-gifting) and no 2-cycles (no mutual pair). Thus its cycle lengths must be at least 3. On 7 people, the only possibilities are one 7-cycle or a 3-cycle together with a 4-cycle. There are 6!=720 seven-cycles. For the second case, choose the three people in C(7,3)=35 ways, arrange their cycle in 2 ways, and the remaining four in 3!=6 ways, giving 420. Total: 720+420=1140 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2918,7 +2918,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Using only X’s and Y’s statements, the possible role assignments are (X knight, Y knave, Z spy), (X knave, Y spy, Z knight), and (X spy, Y knave, Z knight). In the latter two, Z is the knight and must truthfully claim that the first two statements determine the knight; however, those statements allow different people to be the knight, so they do not determine it. Those assignments are impossible. The remaining assignment makes Y the knave (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -2974,7 +2974,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the four outside digits be a,b,d,e. The middle digit is c=a+b+d+e, so the digit sum of the five-digit number is 2c. Divisibility by 9 forces c=9, since c is a nonzero digit. Now count positive ordered quadruples summing to 9. Subtract 1 from each digit; the four nonnegative values sum to 5, giving C(5+4−1,4−1)=C(8,3)=56 numbers (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3030,7 +3030,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The triangle has area (1/2)(3)(4)=6 and perimeter 3+4+5=12. The set within distance 1 of a convex polygon consists of the polygon, a rectangle of area perimeter·1 along its sides, and circular sectors whose angles total 2π (one full disk of area π). Its area is therefore 6+12+π=18+π (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3086,7 +3086,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Use the equation at x=3 and x=−1: f(3)+2f(−1)=9 and f(−1)+2f(3)=1. Subtracting the first equation from twice the second, or solving the pair, gives 3f(3)=−7. Hence f(3)=−7/3 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3142,7 +3142,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The one-digit numbers contribute 9 digits and the two-digit numbers contribute 90·2=180, for 189 digits total. The 2024th digit is therefore the (2024−189)=1835th digit in the three-digit numbers. Since 1835=3·611+2, it is the second digit of the 612th three-digit number, 711. That digit is 1 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3198,7 +3198,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "With n layers, the total balls form the nth tetrahedral number n(n+1)(n+2)/6. Solve n(n+1)(n+2)/6=2024. For n=22, the product is 22·23·24/6=22·23·4=2024, so there are 22 layers (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3254,7 +3254,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "I is divisible by 2024 because the repeated-block number is 2024 times an integer. II is divisible because 24! contains the factors 8, 11, and 23, whose product is 2024. For III, the repeated-4 number is 4 modulo 11, and the repeated-46 number (2023 copies) is 6−4 alternating 2023 times, or 2·2023≡9 modulo 11. Their product is 4·9≡3 modulo 11, so III is not divisible by 2024. Exactly two are divisible (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3310,7 +3310,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For a quick lower-bound check, if S(N)<3 then every remainder in the sum must be 0, 1, or 2 and their total is at most 2. Directly checking N=100,…,999 by the nine remainders N mod 2 through N mod 10 gives no total below 3. The value 360 attains 3: its remainders are 0,0,0,0,0,3,0,0,0 (for divisors 2 through 10). Hence the minimum is 3 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3366,7 +3366,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If the team scores r runs and allows a runs in three games, its winning percentage formula is r²/(r²+a²). Values 0 and 1 are possible when one total is zero; 1/2 is possible when r=a; and 4/13 is possible with r=2,a=3. A value 2/3 would require r²/(r²+a²)=2/3, hence r²=2a². No positive integers satisfy this because √2 is irrational (and zero totals do not give 2/3). So 2/3 is impossible (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3422,7 +3422,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Evaluate from the inside out. Let θ=arctan(15/8), so cosθ=8/17. Then arcsin(cosθ) has sine 8/17 and tangent 8/15. Its arccotangent is an angle whose cotangent is 8/15, so its tangent is 15/8. Finally, sec of that angle is √(1+(15/8)²)=17/8 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3478,7 +3478,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Reading every operation left-to-right gives (p+q)/r=4, (s−t)u=5, and (v+w)x=42. Reading columns top-to-bottom gives (p+s)/v=4, (q+t)/w=3, and r+u+x=13. Using the digits 1–9 exactly once, these constraints narrow to the unique assignment (p,q,r,s,t,u,v,w,x)=(7,1,2,9,8,5,4,3,6). It checks in all six equations; hence p+t+x=7+8+6=21 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3534,7 +3534,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Five silver coins equal two gold coins, so one gold is worth 2.5 silver. Two diamonds equal 11 gold, so one diamond is worth 5.5 gold or 13.75 silver. At 9 copper per silver, one diamond is worth 123.75 copper; three diamonds are worth 371.25 copper. The smallest whole number of copper coins that beats this bid is 372 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3590,7 +3590,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Pad each number from 1 to 999,999 with leading zeroes to make a six-digit string. Choose the position of the single 7 in 6 ways; each of the other five positions has 9 choices (any digit except 7). This gives 6·9⁵=354,294. The extra number 1,000,000 has no 7, so the count remains 354,294 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3646,7 +3646,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The side lengths form a right triangle: x²+((x²−1)/2)²=((x²+1)/2)². Its legs are x and (x²−1)/2, and its hypotenuse is (x²+1)/2. A right triangle’s inradius is (leg₁+leg₂−hypotenuse)/2, which here simplifies to (x−1)/2 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3702,7 +3702,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For the three terms 1,b,c to be arithmetic, c=2b−1. To be geometric, b²=c. Combining gives b²−2b+1=0, so (b−1)²=0 and b=c=1. There is exactly one sequence (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3758,7 +3758,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For f to reduce to a line with a hole at x=3, its numerator must vanish at 3: 2(3²)+3b−9=0, so b=−3. For g(x)=ax²+4x+3, the vertex x-coordinate is −4/(2a)=2, giving a=−1. Hence a+b=−4 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3814,7 +3814,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The first line is 3x+4y=12, with slope −3/4 and y-intercept a=3. A parallel line has form 3x+4y=C. Its distance from the first line is |C−12|/√(3²+4²)=|C−12|/5=2, so C=22 or 2. Since its y-intercept b=C/4 must exceed 3, C=22 and b=11/2. Thus m+b=−3/4+11/2=19/4 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3870,7 +3870,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Check the 4-digit squares 32² through 99² for the repeated-letter pattern W E R E, then check whether the corresponding numbers A R E and E R A are both distinct 3-digit squares with four distinct digits. The matching triple is WERE=3969=63², ARE=169=13², ERA=961=31². Thus W=3 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3926,7 +3926,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Factor by grouping: x⁵−x³+64x²−64=(x²−1)(x³+64)=(x−1)(x+1)(x+4)(x²−4x+16). The nonreal roots come from x²−4x+16=0, so x=2±2i√3. Thus a=2,b=2,c=3 and a+b+c=7 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -3982,7 +3982,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Divide each term in the numerator by tan t: (tan t−sin t cos t)/tan t=1−(sin t cos t)/(sin t/cos t)=1−cos²t=sin²t, wherever the original expression is defined (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4038,7 +4038,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be the knave: then “Y is the knave” would be true, contradicting a knave’s required lie. If Z is the spy, X and Y are knight and knave. X cannot be the knight because Z is not a knight, so X is the knave and Y the knight; but Y’s claim “I am the spy” would be false. Therefore Z is the knight. Then Z’s statement forces Y to be the knave, leaving X as the spy. This is choice E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4160,7 +4160,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Count sequences whose maximum is exactly 5: all four rolls are at most 5, but they are not all at most 4. There are 5⁴−4⁴=625−256=369 such sequences out of 6⁴=1296 equally likely outcomes. The probability is 369/1296=41/144 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4217,7 +4217,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let k be the number of face-down pieces selected. After flipping, the number face-up is 5−(5−k)+k=2k: k selected face-down pieces turn up, while 5−k selected face-up pieces turn down. To finish with at least 8 face-up pieces requires k≥4. The favorable selections are C(15,4)C(5,1)+C(15,5)=9828; all selections number C(20,5)=15504. The probability is 9828/15504=819/1292 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4273,7 +4273,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write A=x²+10x+b and n=x²+6x+2. For A>0, Aⁿ=1 when A=1 or n=0. The A=1 roots have sum −10 for b=1,…,25; n=0 always gives two roots with sum −6. For A<0, equality requires A=−1 and an even integer exponent. Its roots are x=−5±√(24−b), possible for positive b≤24; the corresponding exponents are n=21−b∓4√(24−b). They are both even integers only when 24−b is a square with √(24−b)=1 or 3, giving b=23 or 15. For those two values the extra A=−1 roots sum to −10, so the total distinct-root sum is −10−6−10=−26. No other positive b gives that sum. Therefore the requested sum of b values is 15+23=38 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4329,7 +4329,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If N has prime factorization with exponents eᵢ, its divisor count is the product of (eᵢ+1). Since 2023=7·17², the smallest N with 2023 divisors uses the exponent pattern 16,16,6 on the three smallest primes: N=2¹⁶·3¹⁶·5⁶. Its base-10 logarithm is about 16.64, so every such N has log₁₀(N)>16; 16 is the largest integer guaranteed to be below it (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4385,7 +4385,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Join the center of the circumcircle to consecutive vertices of the regular octagon. The octagon is split into 8 isosceles triangles with sides 16,16 and included angle 360°/8=45°. Its area is 8·(1/2)·16²·sin45°=512√2 square inches (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4441,7 +4441,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A deposit made at the beginning of each year earns interest for 10,9,…,1 years by the end of year 10. Thus the accumulated balance is N(1.06+1.06²+…+1.06¹⁰)=N·1.06(1.06¹⁰−1)/0.06. The factor is about 13.97164, so N must be at least 1,000,000/13.97164≈71,573.55. The smallest whole-dollar deposit is $71,574 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4497,7 +4497,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let C be the common center and put P=(r₁,0). The tangent at P meets the outer circle at Q=(r₁,√(r₂²−r₁²)); R is opposite Q on that circle. Triangle PCQ has area (1/2)r₁√(r₂²−r₁²). Triangle PQR has base QR=2r₂ and altitude from P equal to r₁√(r₂²−r₁²)/r₂, so its area is r₁√(r₂²−r₁²). The ratio is 2 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4553,7 +4553,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Each statement has a counterexample. I: k=√2 is irrational but k²=2 is rational. II: r=0 has r²=0, not positive. III: z=1+i has z²=2i, not real. IV: r=1 has r²=r, not greater. All four statements are false, so the answer is 0 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4609,7 +4609,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Place C=(−25,0), D=(25,0) on the diameter. For a point X on the circle, its x-coordinate is 25−DX²/50. Thus A=(527/25,336/25) and B=(−7,24); these give AB=30>25. The triangle areas are [ACD]=336 and [BCD]=600. Their overlap is bounded above by CA and DB; these lines meet at (11,10.5), making the overlap triangle’s area (1/2)(50)(10.5)=262.5. The union area is 336+600−262.5=673.5 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4665,7 +4665,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The route distance is the same each way. If the outbound speed is v, the return speed is 1.25v, so the return time is 8/1.25 = 6.4 hours. The extra 0.4 hour is 24 minutes (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4721,7 +4721,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The square-free part of 10! contains each prime at most once. The primes at most 10 are 2, 3, 5, and 7; all divide 10!. Their product is 2·3·5·7=210 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4777,7 +4777,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write the decimal number as 100x+10y+z and the hexadecimal number as 256z+16y+x. Equality gives 99x=255z+6y, or 33x=85z+2y. With distinct decimal digits, testing z=1,2,3 (larger z would force x>9) gives the only solution x=3, y=7, z=1. Their sum is 11 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4833,7 +4833,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are 6^4=1296 equally likely roll sequences. A strictly decreasing sequence uses four distinct faces, and each choice of four faces has exactly one decreasing order. Thus the probability is C(6,4)/6^4=15/1296=5/432 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4889,7 +4889,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Multiples of both 3 and 11 are multiples of 33; there are floor(2000/33)=60. Remove those also divisible by 5 (multiples of 165: 12) and those divisible by 7 (multiples of 231: 8). Add back those divisible by both 5 and 7 (multiples of 1155: 1). The result is 60−12−8+1=41 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -4945,7 +4945,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The time interval is 4 hours 26 minutes, so the hour hand turns through θ=(4+26/60)(2π/12)=133π/180 radians. From sector area 28=(1/2)r²θ, the hand length is r=√(56/θ). The tip travels an arc of length rθ=√(56θ)≈11.39 cm, closest to 11.4 cm (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5001,7 +5001,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The denominator is $x(3x-b)$. Since $x=2/3$ is a vertical asymptote, it must be the root of $3x-b$, so $b=2$. Dividing the numerator by the denominator, the linear asymptote has slope $-1/3$ and intercept $(a-2/3)/3$. Its intercept is given as $13/9$, so $(a-2/3)/3=13/9$, which gives $a=5$. Therefore $a+b=5+2=7$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5057,7 +5057,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For each new wall, the time multiplier is either 1/2 or 2 with equal probability, so its expected multiplier is (1/2+2)/2=5/4. The expected times for the four walls are 16, 20, 25, and 125/4 minutes. Their sum is 369/4, so p+q=369+4=373 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5113,7 +5113,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The volume is n(10−2n)(12−2n). Setting it equal to 80 and dividing by 4 gives n³−11n²+30n−20=0=(n−1)(n²−10n+20). The physical solutions must have 0<n<5, namely n=1 and n=5−√5≈2.76. Their sum is about 3.76 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5169,7 +5169,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be a knight, because a knight could not truthfully say “I am the knave.” Z cannot be a knave either, because that sentence would then be true. So Z is the spy. X and Y must be the knight and knave. If Y were the knight, X’s statement would be “I am the knave”; but a knave cannot truthfully make that statement. Thus Y is the knave and X is the knight. (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5225,7 +5225,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For an isosceles triangle with equal side length s and vertex angle θ, area is (1/2)s²sinθ. The equal sides in ABC are twice those in DEF, so their squared-length ratio is 4. The angle in DEF is 2a, hence the area ratio is 4sin(a)/sin(2a)=4sin(a)/(2sin(a)cos(a))=2sec(a) (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5281,7 +5281,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $t=\\log_8 x$. The domain requires $x>0$ and $x\\ne1$, so $t\\ne0$. By change of base, $\\log_8(x^2)=2t$ and $\\log_x8=1/t$. Thus the left side is $(2t)(1/t)^2=2/t$. Setting it equal to $1$ gives $t=2$, hence $x=8^2=64$. This lies in $50<x\\le100$, choice D.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5337,7 +5337,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "First factor $2023=7\\cdot17^2$, so the exponents sought are the prime valuations of $2023!$. Legendre's formula gives $m=v_7(2023!)=\\lfloor2023/7\\rfloor+\\lfloor2023/49\\rfloor+\\lfloor2023/343\\rfloor+\\lfloor2023/2401\\rfloor=289+41+5+0=335$. Similarly, $n=v_{17}(2023!)=\\lfloor2023/17\\rfloor+\\lfloor2023/289\\rfloor=119+7=126$. Therefore $m+n=335+126=461$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5393,7 +5393,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The large right triangle has area $\\tfrac12(6)(8)=24$ and inradius $r=(6+8-10)/2=2$. The smaller triangle is formed by moving each side inward by the same perpendicular distance, 1, so it is parallel and similar to the large triangle. Its inradius is $2-1=1$, giving a linear scale factor $1/2$. Areas scale by the square of the linear factor, so its area is $24(1/2)^2=6$ square units (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5449,7 +5449,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let W(n) count ways to climb n stairs using steps of 1, 2, or 3. The final move comes from n−1, n−2, or n−3, so W(n)=W(n−1)+W(n−2)+W(n−3), with W(0)=1, W(1)=1, W(2)=2. Iterating gives W(3)=4, W(4)=7, W(5)=13, W(6)=24, W(7)=44, W(8)=81, W(9)=149, and W(10)=274 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5505,7 +5505,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Adjacent centers are separated by angle 2π/2023 on the unit circle. The tangent point of each neighboring pair lies halfway along the chord between their centers, on the radius through the chord midpoint. Its distance from the origin is cos(π/2023), the midpoint’s distance from the center of the unit circle. By symmetry all tangent points lie on a circle of that radius, so the requested radius is cos(π/2023) (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5561,7 +5561,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For a fixed exponent n, an n-digit power a^n must satisfy 10^(n−1)≤a^n<10^n. Checking integer bases and exponents, the largest such value occurs at a=9, n=21: 9^21 has 21 digits. The neighboring exponent cases cannot be larger: 9^20 has only 20 digits, while 10^21 has 22 digits and is not a 21-digit power. Thus a+n=9+21=30 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5617,7 +5617,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By the binomial theorem, $N=\\sum_{i=0}^{100}\\binom{100}{i}=2^{100}$. The identity $i\\binom{100}{i}=100\\binom{99}{i-1}$ gives $M=100\\sum_{j=0}^{99}\\binom{99}{j}=100\\cdot2^{99}=50\\cdot2^{100}=5050$. We need $5050^k>2^{100}$. Direct comparison gives $5050^8<2^{100}<5050^9$ (approximately $4.23\\times10^{29}<1.27\\times10^{30}<2.14\\times10^{33}$). The least such integer is $k=9$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5673,7 +5673,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If I, III, IV, and V are all true, then I and III restrict $N$ to 10, 11, or 12. IV says $N$ is odd or $N\\le11$, so 10 and 11 satisfy IV while 12 does not. V says $N$ is a multiple of 3 or 5: among 10 and 11, only 10 qualifies. Thus $N=10$, which satisfies II ($5\\le N\\le15$). Therefore II must be true (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5729,7 +5729,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let x=BC, so AC=20−x. Apply the cosine rule at B, whose adjacent sides are 7 and x: (20−x)²=7²+x²−14x cos(85.9°). The x² terms cancel, giving x=351/(40−14cos85.9°)≈9.0. Therefore BC is 9.0 to the nearest tenth (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5785,7 +5785,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Compare logarithms of the five choices. For example, relative to A, C/A=2021·(2021/2022)²⁰²³, which is greater than 1 (using (1−1/2022)²⁰²³≈e⁻¹). Relative to B, C/B=2021²·(2021/2023)²⁰²², still far above 1 (approximately 2021²e⁻²). C also exceeds D and E by much larger factors; their log ratios are positive. Thus 2021²⁰²⁴ is the greatest (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5841,7 +5841,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "First compute 2$x=2x+2(2)−3x=4−x. Then x$(2$x)=x$(4−x)=x(4−x)+2x−3(4−x)=−x²+9x−12 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -5963,7 +5963,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "After a p% discount, the sale price is 77(1−p/100). Raising that price by q% returns it to 77, so (1−p/100)(1+q/100)=1. Solving gives q/100=p/(100−p), hence q=100p/(100−p) (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6019,7 +6019,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let u=√x and v=√y. Then u+v=29 and u²−v²=x−y=29, so (u−v)(u+v)=29. Thus u−v=1, giving u=15 and v=14. Therefore x+y=15²+14²=421 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6075,7 +6075,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Shifting f three units left gives g(x)=f(x+3). The sum of a polynomial’s coefficients is its value at x=1, so a+b+c+d+e=g(1)=f(4). Compute f(4)=2(4⁴)+4(4³)+26(4²)−60(4)+81=1025 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6131,7 +6131,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "With three distinct digits, a permutation that moves every digit is one of the two cyclic rotations. For N=abc and M=bca, M+N=101a+110b+11c=1092. Reducing modulo 11 gives 2a≡1092≡3 (mod 11), hence a=7; then 10b+c=35, so b=3,c=5. The numbers are 735 and 357, whose difference is 378. The other rotation swaps the numbers and gives the same difference (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6187,7 +6187,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Substitute √7 into P(x)=0 and separate rational and √7 parts, since √7 is irrational. The rational part gives 49B+7C+A=0; the √7 part gives 49A+7C+B=0. Subtracting yields A=B. Then 50A+7C=0. The coprime integer coefficients with A>0 are A=B=7 and C=−50, so A+B+C=−36 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6243,7 +6243,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The claim “if vowel, then even” can be disproved only by a vowel on one side and an odd number on the other. Turn over E to check its number is even, and 7 to check its letter is not a vowel. K and 4 cannot falsify the rule, so two cards are necessary and sufficient (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6299,7 +6299,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be the knight because “I am the spy” would be false. If Z were the spy, X’s claim that Z is a knave would be false. Then X,Y would be knight and knave: X cannot be the knight, while if X is the knave Y would be the knight falsely claiming X is a knight. Thus Z is the knave. X,Y are knight and spy; X cannot be the spy because Y would then be the knight making a false claim. So X is the knight and Y the spy (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6355,7 +6355,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are 3⁴=81 equally likely sequences of four bulb selections. All bulbs are off at the end exactly when each bulb was selected an even number of times: either one bulb was selected all four times (3 sequences), or two bulbs were each selected twice (C(3,2)·C(4,2)=18 sequences). Thus P(all off)=21/81=7/27, so P(at least one on)=1−7/27=20/27 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6411,7 +6411,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For each N, test the positive cubes not exceeding N and check whether N−a³ is a positive square. For 101≤N≤125, the only representable values are 101, 108, 113, and 122, so no three consecutive values work. At 126, 127, and 128, representations are 5³+1², 3³+10², and 4³+8². This is the first possible N, and the requested sum is 5+1+3+10+4+8=31 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6467,7 +6467,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Center the 16-by-16 square at the origin and rotate coordinates so its diagonals are u=0 and v=0. The distance condition becomes |u|≥√2 and |v|≥√2. In these coordinates the square is a diamond |u|+|v|≤8√2. In each of the four sign regions, the remaining points form a right triangle with legs 6√2, area 36. Total area is 4·36=144, out of 16²=256, so the probability is 9/16 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6523,7 +6523,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "From x³+y=1739 and y³+x=1343, positivity and the second equation imply y≤11 (since 12³>1343). Then the first equation gives x³=1739−y, between 1728 and 1738. The only cube in that interval is 12³=1728, so x=12 and y=11. These values satisfy the second equation, and x+y=23 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6579,7 +6579,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If the minute hand completes k extra full turns during the first 10 minutes, its angular travel is 120°+360°k. At a constant rate, after 12 minutes its position is 12/10 times that, or 144°+432°k. Modulo 360°, this is 144°+72°k; as k varies over integers, there are 360/gcd(360,72)=5 distinct positions (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6635,7 +6635,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A cubic sequence has constant third forward differences. From a₀=1, a₁=2, a₂=3, a₃=5, the first differences begin 1,1,2, the second differences 0,1, and the third difference is 1. Newton’s forward formula is aₙ=1+n+C(n,3). Therefore a₁₂=1+12+C(12,3)=13+220=233 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6691,7 +6691,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Drop an altitude h from the vertex opposite PQ. If its foot splits PQ into lengths u and v, the endpoint angles give u=h cot(m) and v=h cot(n). Thus PQ=h(cot(m)+cot(n)). Since the area A=PQ·h/2, eliminating h gives PQ=√(2A(cot(m)+cot(n))). This is the expression for the keyed choice E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6747,7 +6747,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The hypotenuse is √(1050²+1728²)=2022, so the inradius is r=(1050+1728−2022)/2=378. Put A=(0,0), B=(1050,0), and C=(0,1728); then the incenter is P=(378,378). The line BP reaches AC (x=0) at M. Its slope is 378/(378−1050)=−9/16, so AM=9450/16=4725/8. In lowest terms p+q=4725+8=4733 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6803,7 +6803,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For Omar, 91 bags must split into k+1 equal groups of Saturday and Sunday bags, with k between 1 and 6; its only possible k+1 is 7, so k=6. Paula’s 92 bags can split with k+1=4, giving k=3. The other totals (93–96) have no divisor k+1 in the required range that produces k=3. Therefore Paula packed three times as many on Saturday as Sunday (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6859,7 +6859,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "In rad!(2022), each prime p appears once for every multiple of p from 1 through 2022, so its exponent is floor(2022/p). Since 2022=2·3·337 is square-free, the exponent of 2022 dividing the product is the minimum of these three counts: min(1011,674,6)=6. The highest power is 2022⁶ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6915,7 +6915,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For coprime bag sizes 4 and 15, the largest amount that cannot be made is 4·15−4−15=41 (the two-coin Frobenius formula). Directly, 41 cannot be 4a+15b, while every larger number can: for residues modulo 4, amounts 42, 43, 44, and 45 are representable, and adding bags of 4 covers all later amounts. So N=41 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -6971,7 +6971,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The sum of a polynomial’s coefficients equals its value at x=1. Substituting gives (1−2)⁵=(−1)⁵=−1 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7027,7 +7027,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "States 2, 3, and 4 are pairwise adjacent, so they require at least three colors. Three colors suffice: color states 2 and 5 alike, states 1, 4, and 6 alike, and state 3 with the remaining color; the map shows no adjacent states within either repeated-color group. Thus the minimum is 3 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7083,7 +7083,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The number written out is 9,000,355,126,606. Since 5¹⁷=762,939,453,125 and 6¹⁷=16,926,659,444,736, its seventeenth root lies strictly between 5 and 6. The smallest prime greater than a number in that interval is 7 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7139,7 +7139,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The square-sum condition forces the absolute values to be 10, 4, and 2, since 120=100+16+4. Each triple has |x|+|y|+|z|=16. Checking their six orders and eight sign choices in xy+yz−xz=52 gives 12 ordered signed triples. The requested total is 12·16=192 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7195,7 +7195,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Equal side totals give a+b+6=b+c+7=a+c+5. Comparing the first two yields a=c+1; comparing the first and third gives b=c−1. Since b is positive, c≥2. The common total is a+b+6=(c+1)+(c−1)+6=2c+6, minimized at c=2, giving 10 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7251,7 +7251,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The prime factors are 2, 3, and 337. Their exponents in 2022! are v₂=1011+505+252+126+63+31+15+7+3+1=2014, v₃=674+224+74+24+8+2=1006, and v₃₃₇=6. Their sum is 2014+1006+6=3026 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7307,7 +7307,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The largest possible ab is 6·5=30. If ab=30, the remaining values are 1,2,3,4. The largest possible c/d−e/f is 4/1−2/3=10/3, attained by c=4,d=1,e=2,f=3, so the expression is 100/3. If ab≤24, then c/d≤6 and e/f≥1/6, so the expression is at most 24+6−1/6<100/3. Therefore the maximum is 100/3, whose floor is 33 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7363,7 +7363,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Container A initially has 0.6A liters of acid in A liters of solution, and B has 0.8B liters, with A+B=300. After exchanging x liters each, A’s acid concentration becomes 0.64. Its acid amount is 0.6(A−x)+0.8x=0.6A+0.2x, so 0.6A+0.2x=0.64A and x=0.2A. Similarly B’s final concentration gives 0.8B−0.2x=0.78B, so x=0.1B. Hence B=2A; with A+B=300, A=100 and x=20 liters (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7419,7 +7419,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write the negative x-coordinate as −a and the positive one as b, with 1≤a,b≤10. The chord through (−a,a²) and (b,b²) has slope (b²−a²)/(b+a)=b−a; its y-intercept is a²+a(b−a)=ab. Thus the distinct intercepts are the distinct products ab for a,b∈{1,…,10}. Listing them once gives 1,2,3,4,5,6,7,8,9,10,12,14,15,16,18,20,21,24,25,27,28,30,32,35,36,40,42,45,48,49,50,54,56,60,63,64,70,72,80,81,90,100; their sum is 1472 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7475,7 +7475,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If X were the knave, X’s statement “I am the knight” would be false, so Y’s claim that X is not lying would also be false. Y could not be the knight; then Z would have to be the knight, but Z’s statement “I am the spy” is false, a contradiction. If X were the spy, the statement’s content (“I am the knight”) is false, so Y’s claim that X is not lying is false; Y would have to be the knave, leaving Z the knight, who again makes a false statement. Therefore X is the knight. Y cannot also be the knight, so Y is the spy and Z the knave (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7531,7 +7531,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For y²=12x, the standard form y²=4px gives p=3, so the focus is (3,0) and f=3. Complete squares in the hyperbola: x²−y²−6x−8y=8 becomes (x−3)²−(y+4)²=1. Its center is (h,k)=(3,−4), so f+h+k=3+3−4=2 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7587,7 +7587,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Rearrange the equation as sin x−cos x=a(csc x−sec x)=−a(sin x−cos x)/(sin x cos x). Thus every x with sin x=cos x is a solution; x=π/4 and 5π/4 are two distinct allowed solutions for every a∈(0,1). Hence all values of a in the interval work, giving infinitely many (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7709,7 +7709,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are 1000 tiles in a 28-by-17.5-inch rectangle, so the tile side is √(490/1000)=0.7 inch and the grid is 40 by 25. Interior tiles are (40−2)(25−2)=38·23=874. Thus 1000−874=126 tiles are on the edge, or 12.6% (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7765,7 +7765,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For (i), a*b=a+b−ab is unchanged when a and b are swapped, so it is commutative. For (ii), a*b=a+b−ab=1−(1−a)(1−b). Then (a*b)*c=1−(1−a)(1−b)(1−c)=a*(b*c), so it is associative. Both answers are yes (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7821,7 +7821,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let α be the initial clockwise angle from the hour hand to the minute hand. In 33 min 25 sec, the minute hand gains on the hour hand by 5.5° per minute, or 183.7917°. The later angle is α+183.7917° (for the valid solution it has not wrapped past 360°), and it equals 10α; hence α≈20.4213°. At 4:25:SEC, the initial angle is 17.5°+(11/120)SEC, so SEC≈31.87 and rounds to 32 seconds. MIN+SEC=25+32=57 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7877,7 +7877,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Use the complement: count eight-game win/loss strings with no run of three identical results. Let Tₙ be the number of length-n binary strings with no triple run. Track endings of run length 1 or 2; each next game switches outcome or extends the run, unless it would make length 3. Iterating from n=1 gives T₁=2, T₂=4, T₃=6, T₄=10, T₅=16, T₆=26, T₇=42, T₈=68. Thus 256−68=188 strings have a run of at least three, probability 188/256=47/64 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7933,7 +7933,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Joe already has two hearts, so he needs at least three hearts among the five community cards. After his two hearts are removed, 11 hearts remain among 50 cards. The probability is [C(11,3)C(39,2)+C(11,4)C(39,1)+C(11,5)]/C(50,5)≈0.058, which rounds to 6% (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -7989,7 +7989,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let θ be the angle Al has walked around the circle by the first instant of visibility. Since both move at 6 ft/s, θ=6t/150=t/25 radians, and Bob is at distance 150+6t=150(1+θ) from the center. At first visibility, the sight line from Al is tangent to the silo; the radius to Al is perpendicular to that line. This gives cosθ=−150/[150(1+θ)]=−1/(1+θ). The first solution is θ≈1.92 radians, so t=25θ≈48 seconds (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8045,7 +8045,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Alice and Bo start 1000 ft apart along either direction of the track. Walking toward each other gives v_A+v_B=1000/2=500. Walking in the same direction, Bo catches Alice in 10 minutes, so v_B−v_A=1000/10=100. Solving gives v_A=200 ft/min (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8101,7 +8101,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The sample space is a box of volume 1·2·3=6. For a>b>c, the bound b<1 is forced because a<1. For each 0<b<1, the allowed lengths are 1−b for a and b for c, so the favorable volume is ∫₀¹b(1−b)db=1/6. The probability is (1/6)/6=1/36 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8157,7 +8157,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The central regular hexagon has area 3√3s²/2. Extending its sides creates six equilateral triangles of side s, each with area √3s²/4. The six triangles together also have area 3√3s²/2, so the entire star has area 3√3s² (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8213,7 +8213,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Rewrite the left side as $\\bigl(x+\\sin(xy)\\bigr)^2+\\cos^2(xy)$, using $\\sin^2 t+\\cos^2 t=1$. A sum of squares is zero only if both squares are zero. Thus $\\cos(xy)=0$ and $x=-\\sin(xy)$, so $x=1$ or $x=-1$. Since $|xy|\\le4<3\\pi/2$, the only possible cosine-zero values are $xy=\\pm\\pi/2$. If $xy=\\pi/2$, then $x=-1$ and $y=-\\pi/2$; if $xy=-\\pi/2$, then $x=1$ and $y=-\\pi/2$. Both pairs satisfy the bounds, so there are exactly two (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8269,7 +8269,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Solve by the three intervals. For x≤3, a=1 and b=x+2, giving x²+x=(x+2)x+8, so x=−8. For 3<x<7, a=2x−3 and b=x+2; simplifying gives 2x²−7x−4=0, whose only root in that interval is x=4. For x≥7, a=2x−3,b=3; the quadratic roots are both below 7, so there are no solutions there. The sum is −8+4=−4 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8325,7 +8325,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Rearrange 1/a=1/5−1/b to get a=5b/(b−5)=5+25/(b−5). For positive integer a,b, b>5 and b−5 must be a positive divisor of 25: 1, 5, or 25. These give three distinct a values, so the answer is 3 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8381,7 +8381,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Factor 2021=43·47. Legendre’s formula gives v₄₃(2021!)=⌊2021/43⌋+⌊2021/43²⌋=47+1=48, and v₄₇(2021!)=⌊2021/47⌋=43. Therefore |m−n|=5 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8437,7 +8437,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are 5 matches involving Liverpool. If it earns 6 points, its record must be either two wins and three losses, or one win, three draws, and one loss. In either case the other five teams collectively earn 9 points from those matches. Their ten matches against one another award at least 20 points total (each game yields at least 2), so the five rivals' combined score is at least 29. If every rival were below 6, their total would be at most 25; thus 6 points cannot be enough. Seven points can suffice: Liverpool beats team A and draws the other four. Among the remaining teams, choose results so each finishes with 6 points (for example, with A–E as the rivals, let A beat B and C, D beat A, E beat A and C, B beat D, and make B–C, B–E, C–D, and D–E draws). This gives all rivals 6, so Liverpool finishes strictly first with 7. Answer D.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8493,7 +8493,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A repeated real root of ax²+bx+c=0 means b²=4ac. Divide x² by bx+a: the slant asymptote of f(x)=x²/(bx+a) is y=x/b−a/b², whose y-intercept is −a/b²=7. Thus a=−7b². Substituting into b²=4ac gives c=b²/(4a)=−1/28 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8549,7 +8549,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If Y is the spy, X and Z are knight and knave, but both would claim Y is the spy truthfully, impossible for the knave. So Y is not the spy. Y’s statement then determines Z: if Y is the knight, Z is the spy; if Y is the knave, Z is not. Since X and Z both claim Y is the spy, their claims are false, so the knight cannot be either of them. Therefore Y is the knight and Z the spy; X is the knave. (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8605,7 +8605,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the circle radius be R. The inscribed square has diagonal 2R, so its area is (2R)²/2=2R²=a. For a square of side s inscribed in the semicircle, its upper corners satisfy (s/2)²+s²=R², so s²=4R²/5. Since a=2R², the smaller square area is 2a/5 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8661,7 +8661,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Using x=r cosθ and r²=x²+y², the polar equation r=2/(1+cosθ) becomes r+x=2, hence r=2−x. Squaring gives x²+y²=(2−x)², so x+y²/4=1. Thus A=1,B=C=D=0,E=1/4, and |A−B|+|C|+|D−E|=5/4 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8717,7 +8717,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Convert dollars to bitcoin, then to ADA, then to ETH: 5000·(1/47686)·23000·(1/1584)≈1.52 ETH. Rounded to the nearest hundredth, the answer is 1.52 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8773,7 +8773,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Multiply numerator and denominator by a+7i. The real part becomes (3a+35)/(a²+49). Set this equal to 19/25: 25(3a+35)=19(a²+49), or 19a²−75a+56=0. Its roots are 1 and 56/19, so their sum is 75/19 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8829,7 +8829,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Since g(x)=(x−2)², f(g(x))=0 means log_b((x−2)²)=0, so (x−2)²=1 and x∈{1,3}. Meanwhile g(f(x))=0 requires log_b(x)=2, so x=b². For exactly one common solution with b>1, b² must equal 3; therefore b=√3 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8885,7 +8885,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are 10⁶ total passcodes. The invalid ones contain at least one 5 and no 8. With no 8 there are 9⁶ strings; among them, 8⁶ also have no 5. So invalid=9⁶−8⁶ and valid=10⁶−9⁶+8⁶=730,703 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8941,7 +8941,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let t be the minutes after 4:00. The minute hand is at 6t° and the hour hand at 120+0.5t°. Opposite directions require 6t−(120+0.5t)=180, so t=600/11=54+6/11 minutes. That is 54 minutes and about 33 seconds, giving MIN+SEC=87 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -8997,7 +8997,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Only the labeled adjacency graph matters. With four occupied chairs and two empty chairs on a six-chair cycle, the occupied seats can form only these run patterns: one run of 4 (a path $P_4$), runs of 3 and 1 ($P_3$ plus an isolated person), or two runs of 2 (two disjoint pairs). Three occupied runs would require at least three empty separating chairs, so it cannot occur. The number of different labeled graphs is $4!/2=12$ paths $P_4$ (reversal gives the same path), $4\\cdot3=12$ choices for the isolated person and center of the remaining path, and 3 ways to partition four people into two pairs. The total is $12+12+3=27$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9053,7 +9053,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "After the player with pocket kings is dealt, 50 cards remain, including all 4 aces. The other 8 players receive 16 cards in 8 pairs. If exactly $j$ aces are among those 16 cards, the chance they form at least one pair in the same hand is: $0$ for $j<2$, $1/15$ for $j=2$ (8 paired slots out of $\\binom{16}{2}$), $1/5$ for $j=3$, and $28/1820$ for $j=4$ (only the 28 ways to select two complete hand-pairs among $\\binom{16}{4}$ selections). The number of dealt aces has hypergeometric probabilities $\\binom4j\\binom{46}{16-j}/\\binom{50}{16}$. Summing these four cases gives about $0.0361$, or 3.61%. Rounded to the nearest percent, this is 4% (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9109,7 +9109,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Read each diagram as a set of occupied grid squares and apply the stated neighbor rule simultaneously at each turn. For the left pattern, generation 1 has six live cells. Generation 2 consists of the six cells at relative coordinates $(-1,0),(-1,1),(0,-1),(0,2),(1,0),(1,1)$, where the initial top row is $y=0$ and columns increase to the right. Applying the rule leaves this same set at generation 3, so the first stable turn is $M=2$. For the right pattern, counting live cells after each update gives 6, 5, 3, 2, then 0; it first becomes empty after five turns, so $N=5$. Hence $M+N=2+5=7$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9165,7 +9165,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Beakers C and D contain $300$ mL in total and $120$ mL of salt ($100(0.30)+200(0.45)$). If $x$ mL comes from A and $y$ from B, then $x+y=300$ and $0.20x+0.50y=120$. Substituting $y=300-x$ gives $0.20x+0.50(300-x)=120$, so $x=100$ and $y=200$. Beaker B therefore has $800-200=600$ mL left (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9221,7 +9221,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write the consecutive odd integers as $n,n+2,n+4,n+6$. If the first rectangle has side-sum $S_1$ and the second $S_2$, their perimeters give $S_1=2S_2-22$. Checking the three ways to partition these four numbers into two pairs, and both orders of the rectangles, gives odd possibilities $n=5$ or $n=11$; the other algebraic candidates are even. For $n=5$, the required order is $(5,9)$ then $(7,11)$, and the area sum is $5\\cdot9+7\\cdot11=122$. For $n=11$, the pairing yielding the perimeter condition has area sum $13\\cdot17+11\\cdot15=386>150$, so it is excluded. Thus the sum is 122 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9343,7 +9343,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Use weights of $1,3,9,27$ pounds. With each weight placeable on either pan, balanced ternary represents every integer from $-40$ through $40$, so every object weight from 1 to 40 can be measured. Four weights are necessary: to measure 1, the smallest weight must be 1; to cover every integer without gaps, each next weight must be at most one more than twice the sum of the earlier weights. With only three weights the largest possible total is therefore $1+3+9=13$, too small to weigh 40 pounds. The least number is 4 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9399,7 +9399,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Each red unit circle has its center $\\sqrt2$ from the origin. The overlap area of two unit circles whose centers are $\\sqrt2$ apart is $2\\cos^{-1}(\\sqrt2/2)-\\tfrac{\\sqrt2}{2}\\sqrt{4-2}=\\pi/2-1$. The two red disks are tangent to one another, so their overlaps with the blue disk have no positive-area overlap. The blue area left is therefore $\\pi-2(\\pi/2-1)=2$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9455,7 +9455,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Put $s=\\sqrt K$. The first bracket is $1+\\cdots +(s-1)=s(s-1)/2$. Since $K=1+2+\\cdots+D=s^2$, the second bracket, from $s+1$ through $D$, is $K-(1+\\cdots+s)=s^2-s(s+1)/2=s(s-1)/2$. The two sums are equal, so their difference is 0 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9511,7 +9511,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Measure positions from the starting line: Achilles starts at 100 m, the tortoise at 1000 m, and the hare at 0 m. Achilles first catches the tortoise when $100+1000t=1000+10t$, giving $t=10/11$ minute. The hare catches Achilles when $1050t=100+1000t$, giving $t=2$ minutes. Thus Achilles is in front of both from $10/11$ until minute 2, a duration $2-10/11=12/11$ minutes (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9567,7 +9567,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The coin count and value equations are $D+N+Q=62$ and $10D+5N+25Q=830$. Divide the value equation by 5 to get $2D+N+5Q=166$. Subtracting the count equation gives $D+4Q=104$, so $D=104-4Q$ and $N=3Q-42$. Nonnegativity requires $14\\le Q\\le26$, so as integer $Q$ runs from 14 through 26, $N$ takes the values $0,3,6,\\ldots,36$. Their sum is $3(0+1+\\cdots+12)=3(78)=234$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9602,7 +9602,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $t$ be minutes after 3:00. The signed minute-minus-hour hand angle is $6t-(90+0.5t)=5.5t-90$ degrees. An observed 30-degree smaller angle first allows signed differences $-30$ or $30$, giving $t=120/11$ or $240/11$ minutes. Ten minutes later the signed difference is 55 degrees larger. From $-30$ it becomes 25 degrees, not 85; from $30$ it becomes 85, as observed. Thus $t=240/11=21+9/11$ minutes, or about 21 minutes 49 seconds after 3:00. The time is 3:21:49.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9658,7 +9658,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For any matrices, $A\\#B=AB+BA=BA+AB=B\\#A$, so the operation is commutative. It is not associative: let $A=B=\\begin{pmatrix}1&0\\\\0&0\\end{pmatrix}$ and $C=\\begin{pmatrix}0&1\\\\0&0\\end{pmatrix}$. Then $(A\\#B)\\#C=2C$, whereas $A\\#(B\\#C)=C$. Hence the answers are “Yes” and “No” (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9714,7 +9714,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be the knight because “I am the spy” would be false. If Z were the knave, Y’s claim that Z is the spy would be false, so Y would have to be the spy and X the knight. But a knight asked who the spy is would not say that the knave Z is the spy, making X’s statement false. Hence Z is the spy. Y’s claim is true, so Y is the knight and X the knave; a knave would not truthfully say Z is the spy, so X’s hypothetical statement is false as required. (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9826,7 +9826,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A palindrome is $10001a+1010b+100c$. Modulo 37, $10001\\equiv11$, $1010\\equiv11$, and $100\\equiv26\\equiv-11$, so divisibility by 37 is equivalent to $11(a+b-c)\\equiv0\\pmod{37}$. Since 11 is invertible modulo 37 and $-9\\le a+b-c\\le18$, this forces $c=a+b$. For each $a=1,\\ldots,9$, there are $10-a$ choices of $b$ with $0\\le b\\le9-a$. The total is $9+8+\\cdots+1=45$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9882,7 +9882,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A removable discontinuity at 2 means numerator and denominator share a factor $(x-2)$. After cancellation, the vertical asymptote at 7 requires denominator factor $(x-7)$; the two real zeros and no nonreal zeros make the reduced numerator $(x-4)(x+3)$. These reduced degrees differ by 1, as required for a slant asymptote. Since the original numerator and denominator are monic and have degree at most 3, they are $n(x)=(x-2)(x-4)(x+3)$ and $m(x)=(x-2)(x-7)$. Their constant terms are 24 and 14, so $M+N=38$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9938,7 +9938,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Only the last three digits affect the product modulo 1000. Compute $594\\cdot163=594(160+3)=95{,}040+1{,}782=96{,}822$. The product therefore ends in 822, whose hundreds digit is 8 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -9994,7 +9994,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If a number has exactly 18 positive divisors, the prime-exponent pattern must be $17$, $8+1$, $5+2$, or $2+2+1$, because $18=18$, $9\\cdot2$, $6\\cdot3$, or $3\\cdot3\\cdot2$ in the divisor-count formula. Below 200, the first three patterns are impossible: the smallest examples are $2^{17}$, $2^8\\cdot3$, and $2^5\\cdot3^2$, all at least 200. For pattern $2+2+1$, the only product below 200 is $2^2\\cdot3^2\\cdot5=180$. The sum of its divisors factors as $(1+2+4)(1+3+9)(1+5)=7\\cdot13\\cdot6=546$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10050,7 +10050,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "From $rs+t=14$, $t=14-rs$. Substitute into the second equation to get $r+14s-rs^2=13$, or $r(s^2-1)=14s-13$. If $s=0$, this gives $r=13,t=14$, one solution. $s=1$ is impossible. For $s\\ge2$, $r$ is positive; if $r\\ge2$, then $2(s^2-1)\\le14s-13$, which forces $s\\le6$. Checking $s=2,3,4,5,6$ in $r=(14s-13)/(s^2-1)$ gives only the integer case $s=2$, with $r=5,t=4$. If $r=1$, the equation becomes $s^2-14s+12=0$, which has no integer root. There are exactly 2 triples (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10106,7 +10106,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The altitude to the base bisects the 24-unit base, making two right triangles with hypotenuse 20 and one leg 12. The height is $\\sqrt{20^2-12^2}=16$, so the triangle's area is $\\tfrac12(24)(16)=192$. Its semiperimeter is $(20+20+24)/2=32$. Since area equals inradius times semiperimeter, the inradius is $192/32=6$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10162,7 +10162,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For $|x|\\le2$, substitute $f(x)=2\\sin x$ and subtract the right side to get $2\\sin x\\cos(x\\sin x)=0$. This gives $x=0$. Also $x\\sin x$ is even and increases from 0 to $2\\sin2>\\pi/2$ on $[0,2]$, so $x\\sin x=\\pi/2$ has one root on $(0,2)$ and its negative counterpart. These add two roots, for three in this piece. For $|x|>2$, $f(x)=2$ and the equation reduces to $\\sin x+\\cos x=1$, whose solutions in $(-2\\pi,2\\pi)$ are $x=0$ or $x=\\pi/2$ modulo $2\\pi$. Only $-3\\pi/2$ and $3\\pi/2$ lie in this outer piece, adding two roots. The total is 5 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10218,7 +10218,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $E_1$ be the expected additional rolls when the previous roll was 1, and let $E_o$ be the expectation after a previous roll that was not 1. From state 1, the next roll ends the process if it is 1 or 2; otherwise (probability $3/10$) the process continues in state $o$. Thus $E_1=1+\\tfrac3{10}E_o$. From state $o$, the next roll gives state 1 with probability $1/2$, state $o$ (a 2) with probability $1/5$, or state $o$ (other) with probability $3/10$, so $E_o=1+\\tfrac12E_1+\\tfrac12E_o$. Hence $E_o=2+E_1$, and solving gives $E_1=16/7$, $E_o=30/7$. Before the first roll there is no prior state, but after that roll the process is in state 1 with probability $1/2$ and state $o$ with probability $1/2$. Therefore the total expectation is $1+\\tfrac12E_1+\\tfrac12E_o=1+23/7=30/7$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10274,7 +10274,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Cara runs $1/10$ mile, or $161$ m, in some time $t$. Kim runs $2255$ decimeters $=225.5$ m in twice that time, so the speed ratio is $v_K/v_C=225.5/(2\\cdot161)=225.5/322$. Starting 1000 m apart and running toward each other, Kim covers the fraction $v_K/(v_K+v_C)=225.5/(225.5+322)$ of the separation, or about 411.87 m. To the nearest meter this is 412 m (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10330,7 +10330,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write the addition column by column. The units column has $2E=O+10c_1$. The tens column has $2N+c_1=W+10c_2$. Since $N$ and $W$ are even and $c_1$ is 0 or 1, the tens equation forces $c_1=0$; hence $2E=O$. In the hundreds column $2O+c_2=T$. Because $O$ is even and $T$ is the only odd digit, $c_2=1$, so $N\\ge5$ and $T=2O+1\\le9$. Thus $O$ is 2 or 4. $O=2$ forces $E=1$, contradicting that T is the only odd digit. Therefore $O=4,E=2,T=9$. The even digits $N\\ge5$ available are 6 and 8; $N=6$ would make $W=2=E$, violating distinctness, while $N=8$ gives $W=6$. Thus $N=8$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10386,7 +10386,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Compare the choices to $6^{500}$. It is larger than $2^{1000}$ because $6^{500}>4^{500}=2^{1000}$. It is larger than $30^{200}$ because $(6^5)^{100}=7776^{100}>900^{100}=(30^2)^{100}$. It exceeds $50^{100}$ since $6^5=7776>50$. Finally, $6^4=1296>1000$, so $6^{500}=(6^4)^{125}6^0>1000^{125}>1000^{75}$. Therefore $6^{500}$ is greatest (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10508,7 +10508,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For $M$, the numbers congruent to 2 modulo 3 are $2,5,8,11,14,\\ldots$; the first that is 4 modulo 5 is 14. For $N$, the conditions are $N\\equiv-1\\pmod7$ and $N\\equiv-1\\pmod9$, so $N\\equiv-1\\pmod{63}$ and its least positive value is 62. Thus $M+N=14+62=76$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10564,7 +10564,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Locker $k$ is toggled once for each positive divisor of $k$. It ends open exactly when that divisor count is odd, which occurs precisely for perfect squares: non-square divisors pair as $d$ and $k/d$, while a square has one unpaired divisor $\\sqrt{k}$. The open lockers are therefore the squares at most 200, namely $1^2$ through $14^2$. There are 14 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10620,7 +10620,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A linear function must satisfy $f(0)=0$. Of the four given functions, $f_1(x)=3x$ and $f_4(x)=0$ do; $f_2(x)=3x+2$ and the nonzero constant $f_3(x)=2$ do not. Thus 2 are linear (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10676,7 +10676,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are $2^7=128$ choices for the last seven binary digits, and every number has leading digit 1. The leading-place contribution to the total is $128\\cdot10^7=1{,}280{,}000{,}000$. For each of the other seven decimal places, exactly half the choices have digit 1, so the combined contribution is $64(10^6+10^5+\\cdots+1)=64(1{,}111{,}111)=71{,}111{,}104$. The sum is $1{,}351{,}111{,}104$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10732,7 +10732,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Complete the square: $f(x)=2(x+7)^2-7$. Put $y=x+7$; in this shifted coordinate, applying $f$ and then adding 7 transforms $y$ to $2y^2$. Three iterations give $f^{\\circ3}(x)+7=128y^8$. Setting $f^{\\circ3}(x)=1$ yields $128y^8=8$, so $y^8=1/16$ and the two real values are $y=\\pm1/\\sqrt2$. Shifting both by $-7$ does not change their distance, which is $\\sqrt2$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10788,7 +10788,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be the knight because “I am the spy” would be false. If Z were the spy, X and Y would be knight and knave: when X is the knight, Y falsely says X is telling the truth (impossible for a knave); when X is the knave, Y the knight falsely says X is telling the truth. Thus Z is the knave. X and Y are knight and spy. X must be the knight because if X were spy, Y the knight would make a false claim. Therefore X is knight, Y spy, Z knave (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10844,7 +10844,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Since $e^{-x}$ is never zero, the equation reduces to $\\sin x-\\cos x=0$, or $\\tan x=1$. In $0\\le x<2\\pi$, the solutions are $\\pi/4$ and $5\\pi/4$, whose sum is $M=3\\pi/2$. Therefore $\\csc M=-1$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10900,7 +10900,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The polar conic form $r=\\ell/(1+e\\cos\\theta)$ has eccentricity $e$. Here $e=0.5<1$, which describes an ellipse (with focus at the pole). The answer is E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -10956,7 +10956,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $P_0$ be the probability of eventual success before a relevant previous roll and $P_1$ the probability after a 1. A non-1 roll from the initial state leaves the process in the initial state, so $P_0=\\tfrac12P_1+\\tfrac12P_0$, hence $P_0=P_1$. From state 1, a 1 wins with probability $1/2$, a 2 loses with probability $1/5$, and any other roll (probability $3/10$) returns to the initial state. Thus $P_1=\\tfrac12+\\tfrac3{10}P_0$. Substituting $P_0=P_1$ gives $P_1=5/7$. The probability the process ends with consecutive 1s is $5/7$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11012,7 +11012,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Factor the numerator: $x^3-1/8=(x-1/2)(x^2+x/2+1/4)$. The denominator is $(x-1/2)^2$, so the zeros of the function are the roots of $x^2+x/2+1/4=0$; the factor $x-1/2$ is not a zero because the function is undefined there. By Vieta's formula the sum of the two complex roots is $-1/2$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11068,7 +11068,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By stars and bars, the number of nonnegative integer solutions to $a+b+c+d+e+f=12$ is $\\binom{12+6-1}{6-1}=\\binom{17}{5}=6188$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11124,7 +11124,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Use affine coordinates for the parallelogram: set $A=(0,0)$, $B=(1,0)$, $D=(0,1)$, so $C=(1,1)$. Since $E$ lies beyond $C$ on $BC$, write $E=(1,1+s)$ with $s>0$. Points on $AE$ have form $\\lambda E$. Its intersection $G$ with $CD$ (where $y=1$) has $\\lambda_G=1/(1+s)$. Its intersection $F$ with diagonal $BD$ (where $x+y=1$) has $\\lambda_F=1/(2+s)$. Hence $FG/EG=(\\lambda_G-\\lambda_F)/(1-\\lambda_G)=1/[s(s+2)]$. The given ratio is $12/15=4/5$, so $s(s+2)=5/4$ and, since $s>0$, $s=1/2$. Now $EG=(1-\\lambda_G)AE=\\tfrac13AE=15$, so $AE=45$. Finally $AF=\\lambda_F AE=(1/2.5)45=18$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11180,7 +11180,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Set $y=x-m$. Intersections satisfy $by^2+n=y$, or $by^2-y+n=0$. For this quadratic to have a real solution, its discriminant must be nonnegative: $1-4bn\\ge0$. Therefore $bn\\le1/4$, and the greatest possible value is $1/4$, attained when the discriminant is zero (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11236,7 +11236,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $A$ and $B$ denote membership in Physics and Quiz, within the Math Club population. The intersection is at least $69\\%+79\\%-100\\%=48\\%$, because the union cannot exceed 100%. It is at most the smaller marginal percentage, 69%. These bounds are attainable from the given information, so the largest guaranteed lower bound is 48% and the smallest guaranteed upper bound is 69%. Their sum is 117% (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11292,7 +11292,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Label the eight side counts cyclically as $(1,1,3,2,0,0,0,0)$. A move adds 1 to two adjacent entries, one in an odd position and one in an even position, so the alternating sum $x_1-x_2+x_3-x_4+x_5-x_6+x_7-x_8$ never changes. Initially it is $1-1+3-2=1$. If all eight sides had equal counts, the alternating sum would be 0. Since it is invariant and starts at 1, equal counts can never be reached. This is impossible (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11348,7 +11348,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Treat each proposed five-letter sequence as a candidate least-to-greatest order and count positions matching the actual order. The first clue requires at least three positions to match $edcba$. A permutation can differ from $edcba$ in at most two positions; any nontrivial permutation moves at least two, so the candidates are $edcba$ itself and its ten orders obtained by swapping one pair of positions. Applying the odd-match condition against $ebcda$ leaves five candidates: $adcbe,cdeba,ebcda,edabc,edcba$. The third clue excludes $adcbe$, leaving $cdeba,ebcda,edabc,edcba$. Their relative orders on $b,c,d$ are respectively $cdb,bcd,dbc,dcb$, all distinct. Therefore asking for the order of $b,c,d$ always identifies the full order (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11404,7 +11404,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Convert 16,800 mm to centimeters: $16{,}800/10=1{,}680$ cm. One foot is $12(2.54)=30.48$ cm, so the required number of feet is at least $1680/30.48\\approx55.12$. Since rope is sold by whole feet, she must buy 56 feet (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11460,7 +11460,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A four-element set has $2^4=16$ subsets; 15 are proper because only the full set is excluded (the empty set is proper). The distinct differences of two different elements are $\\pm1,\\pm2,\\pm3$, so $N=6$. Thus $M+N=15+6=21$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11516,7 +11516,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $a,b,c,d$ be the numbers of $20,10,5,1$ dollar bills returned. The equation is $20a+10b+5c+d=50$, and $d$ is then determined and nonnegative whenever $20a+10b+5c\\le50$. For $a=0$, the counts of choices for $c$ as $b=0,1,\\ldots,5$ are $11,9,7,5,3,1$, totaling 36. For $a=1$, the counts for $b=0,1,2,3$ are $7,5,3,1$, totaling 16. For $a=2$, the counts for $b=0,1$ are 3 and 1, totaling 4. Thus there are $36+16+4=56$ ways (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11572,7 +11572,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The altitude bisects the 48-unit base, giving right triangles with legs 24 and $h=\\sqrt{40^2-24^2}=32$. The triangle's area is $\\tfrac12(48)(32)=768$. Its circumradius is $R=abc/(4K)$, where the side lengths are 40, 40, 48 and area $K=768$. Hence $R=(40\\cdot40\\cdot48)/(4\\cdot768)=25$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11628,7 +11628,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Factor $2019=3\\cdot673$, with 673 prime, so its largest prime factor is 673. In binary, $673=512+128+32+1=(1010100001)_2$, which has 10 digits, so $M=10$. In hexadecimal, $2019=(7E3)_{16}$, which has 3 digits, so $N=3$. Therefore $M-N=7$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11684,7 +11684,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The triangle's area is half the absolute determinant of the two side vectors from $(8,8)$: $\\tfrac12|(-2)(-1)-(-4)(2)|=5$. The side lengths are $5$, $\\sqrt5$, and $2\\sqrt5$. For a side of length $s$, the corresponding altitude is $2K/s=10/s$, where $K=5$. The three altitudes sum to $2+2\\sqrt5+\\sqrt5=2+3\\sqrt5\\approx8.7$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11740,7 +11740,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Divisibility by $x+1$ means the polynomial is zero at $x=-1$: $-2+1-c+d=0$, so $d-c=1$. Together with $d+c=29$, this gives $c=14$ and $d=15$. By Vieta, the sum of all three roots is $-1/2$. One root is $-1$, so the two nonreal roots sum to $-1/2-(-1)=1/2$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11796,7 +11796,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The smallest integer $N>2$ for which $N^{N-1}$ is not a square is 6: for $N=3,4,5$ the powers $3^2,4^3,5^4$ are squares, while $6^5$ is not. The rational-root theorem says a reduced rational root is $p/q$ with $p\\mid6$ and $q\\mid5$. The candidates are $\\pm1,\\pm2,\\pm3,\\pm6,\\pm1/5,\\pm2/5,\\pm3/5,\\pm6/5$; each can occur for suitable integer coefficients. The product of the eight positive candidates is $(1\\cdot2\\cdot3\\cdot6)(1\\cdot2\\cdot3\\cdot6)/5^4=1296/625$. Including each negative partner multiplies by the square of that product, giving $(1296/625)^2\\approx4.2998$, or 4.30 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11852,7 +11852,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If X is the knave, X’s claim “I am a spy” is false. Then Y’s claim that X is telling the truth is false, so Y cannot be the knight; the remaining roles force Y to be the spy and Z the knight. These statements are consistent, giving X knave, Y spy, Z knight (E). If X is the spy, that claim is true, so Y cannot be the knave. With Y the knight, Z would be the knave, whose claim “I am not a spy” would be true, impossible. X cannot be the knight because the opening claim would be false. Thus the consistent assignment is E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11908,7 +11908,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Represent dot by 0 and dash by 1. The first transmission is $01101$, and choices A–D are $01110$, $11001$, $01010$, and $00000$. If A is correct, the Hamming distances from it to the other four transmissions are respectively 2 (first), 4 (B), 1 (C), and 3 (D), exactly the distinct error counts 1, 2, 3, and 4. The distances from any other candidate are not these four distinct values. Therefore A is the correct transmission.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -11964,7 +11964,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Count paths from the lower-left start to the upper-right finish using a grid dynamic program: each open square receives the sum of the counts immediately below it and immediately to its left; a blocked square gets 0. Reading each row left-to-right, from bottom to top, the counts are $(1,1,1,1,1)$, $(1,2,3,0,1)$, $(1,0,3,3,4)$, $(1,1,4,0,4)$, and $(1,2,6,6,10)$. The last entry is the number of valid paths to the upper-right corner, so there are 10 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12020,7 +12020,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The multiple-angle identity gives $\\cos(8t)=128\\cos^8t-256\\cos^6t+160\\cos^4t-32\\cos^2t+1$. Only even powers of $\\cos t$ occur, so the coefficient of $(\\cos t)^3$ is 0 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12076,7 +12076,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A direction vector for the line is $(3,-4)$, so a normal vector is $(4,3)$. The line through $(7,8)$ therefore has equation $4x+3y-52=0$. Its distance from the circle's center $(-3,2)$ is $|4(-3)+3(2)-52|/\\sqrt{4^2+3^2}=58/5=11.6$. The shortest distance to the circle is this center-to-line distance minus its radius $\\sqrt3$, or about $9.87$, which rounds to 9.9 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12132,7 +12132,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Factor $2019=3\\cdot673$. Let $g=\\gcd(a,b)$; then $g$ divides 2019 and the primitive Pythagorean triple has hypotenuse $2019/g$. A primitive hypotenuse must be a sum of two squares, so the factor 3 cannot occur to an odd exponent. Among $2019,673,3,1$, only 673 can be the hypotenuse for positive legs. Since $673=23^2+12^2$, the primitive legs are $23^2-12^2=385$ and $2\\cdot23\\cdot12=552$. Here $g=3$, so $(a,b)$ are $1155$ and $1656$, and $a+b=2811$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12188,7 +12188,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The third equation is a linear combination of the first two: multiply the first equation by $5/2$ and the second by $1/2$, then add. The left side becomes $x-19y-17z$ and the right side is $37.5-32.5=5$, exactly the third equation. So only two independent planes constrain three variables. Their consistent intersection is a line (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12244,7 +12244,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Symmetry about the $y$-axis gives $b=0$, and a maximum of 4 means the vertex is $(0,c)=(0,4)$. Let the $x$-intercepts be $(\\pm r,0)$. For these three intercepts to form an equilateral triangle, the base length $2r$ must equal the other side $\\sqrt{r^2+4^2}$. Thus $4r^2=r^2+16$, so $r^2=16/3$. Since the roots satisfy $r^2=-c/a$, we get $a=-4/r^2=-3/4$. Therefore $a+b+c=-3/4+0+4=13/4$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12300,7 +12300,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Check each function on $\\mathbb R$. $g(x)=\\ln(e^x)=x$ and $h(x)=x|x|$ are continuous and strictly increasing, hence one-to-one. $k(x)=x^2$ and $n(x)=x/(x^2+1)$ are not one-to-one; for the latter, for instance, $n(1/2)=n(2)=2/5$. $m(x)=1/(x+1)$ is not defined at $-1$, and $p(x)=\\sin x$ is not one-to-one. $q(x)=\\arctan x$ is continuous and strictly increasing. Finally, $r(x)=x/(|x|+1)$ is continuous and strictly increasing: on $x<0$ it is $x/(1-x)$, and on $x\\ge0$ it is $x/(x+1)$, with both pieces increasing and meeting at 0. Thus $g,h,q,r$ qualify, for a total of 4 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12356,7 +12356,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The arithmetic-sequence sum is $100m+\\frac{100\\cdot99}{2}d=100m+4950d$. The geometric-sequence sum is $k(2^{10}-1)=1023k$. Since they are equal, $100m+4950d=1023k$. Both 4950 and 1023 are divisible by 33, so $100m$ is divisible by 33. As $\\gcd(100,33)=1$, 33 must divide $m$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12412,7 +12412,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For every mile of the one-way route, that mile is traversed once in each direction. A level mile takes $1/4+1/4=1/2$ hour. An uphill mile one way becomes downhill on the return, taking $1/3+1/6=1/2$ hour; a downhill mile similarly takes $1/6+1/3=1/2$ hour. Thus the total round-trip time is half the one-way distance. Eight hours means a one-way distance of 16 miles, so the total distance hiked is $2(16)=32$ miles (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12468,7 +12468,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "On the first roll, the shooter wins immediately with probability $(6+2)/36=2/9$. A point of 4 or 10 occurs with probability $6/36$ and is made before 7 with probability $3/(3+6)=1/3$. A point of 5 or 9 occurs with probability $8/36$ and is made first with probability $4/(4+6)=2/5$. A point of 6 or 8 occurs with probability $10/36$ and is made first with probability $5/(5+6)=5/11$. Thus the total win probability is $2/9+(6/36)(1/3)+(8/36)(2/5)+(10/36)(5/11)=244/495$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12524,7 +12524,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Using x#y=xy²+yx² over 5+x²y², first compute 5#2=(5·2²+2·5²)/(5+5²·2²)=70/105=2/3. Then 2#(2/3)=[2(2/3)²+(2/3)·2²]/[5+2²(2/3)²]=(32/9)/(61/9)=32/61 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12580,7 +12580,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The definition in problem 1 is symmetric in $x$ and $y$, so $x\\#y=y\\#x$ for all real inputs. It is not associative: $1\\#1=1/3$, so $(1\\#1)\\#2=2/7$, while $1\\#2=2/3$ and $1\\#(1\\#2)=10/49$. Since $2/7\\ne10/49$, the answers are Yes and No (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12636,7 +12636,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The grid has $(40+1)(30+1)=1271$ corner posts. Its vertical fence sections number $41\\cdot30=1230$ and its horizontal sections number $31\\cdot40=1240$, for $F=2470$. Therefore $P+F=1271+2470=3741$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12692,7 +12692,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The line from the circle's center $C$ to the external point $X$ bisects the angle between the equal tangents, so $\\angle ACX=60^\\circ$. In right triangle $ACX$, $AC=6$ and $AX=6\\tan60^\\circ=6\\sqrt3$. Its area is $\\tfrac12(6)(6\\sqrt3)=18\\sqrt3$. Triangle $BCX$ has the same area, so quadrilateral $XACB$ has area $36\\sqrt3$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12748,7 +12748,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Column subtraction with distinct nonzero digits gives the two assignments $S,E,V,N,I,G,H,T=(2,1,5,4,6,8,7,3)$ and $(5,4,1,6,7,3,8,2)$. They verify as $21514-4641=16873$ and $54146-6764=47382$, respectively. The only possible values of $N$ are 4 and 6, whose sum is 10 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12804,7 +12804,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If $b$ has $k$ digits, its square has either $2k-1$ or $2k$ digits. The total number of digits used in $b$ and $x=b^2$ would therefore be either $k+(2k-1)=3k-1$ or $3k$. Neither can equal 91: 91 is congruent to 1 modulo 3, while $3k$ is 0 and $3k-1$ is 2 modulo 3. Thus no such split is possible, regardless of the chosen digits, so the probability is 0 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12860,7 +12860,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Choose multiplicities $r_1,r_2,r_3\\in\\{0,1\\}$, $r_4,r_5\\in\\{0,1,2\\}$, and $r_6\\in\\{0,1,2,3\\}$ with total 8. For each choice the distinct arrangements number $8!/(r_1!r_2!r_3!r_4!r_5!r_6!)$. Summing over these allowed multiplicities gives $8![t^8](1+t)^3(1+t+t^2/2!)^2(1+t+t^2/2!+t^3/3!)=84{,}000$. All digits are nonzero, so every arrangement is an eight-digit number. The answer is D.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -12982,7 +12982,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be a knight because “I am the spy” would be false. If Z were the spy, X and Y would be knight and knave: X’s claim that Z is a knave is false, and either assignment would force a knight to make a false claim. Thus Z is the knave. With X and Y the knight and spy, X cannot be the spy because Y would then be a knight falsely claiming X is a knight. So X is knight, Y spy, Z knave (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13038,7 +13038,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Rearranging gives $x^2-xy+y-x=0$, which factors as $(x-1)(x-y)=0$. Thus the graph is the union of the two lines $x=1$ and $y=x$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13094,7 +13094,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "This is the every-other-person Josephus process, but with the first removal at #1. For $n=2^m+r$ where $0\\le r<2^m$, the usual $k=2$ survivor is $2r+1$; shifting the starting removal one place earlier gives survivor #$2r$ when $r>0$ (and #$n$ when $r=0$). Since $125=64+61$, the dog gets #$2\\cdot61=122$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13150,7 +13150,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $t=\\log_8x$; the domain requires $x>0$ and $x\\ne1$. Then $\\log_8x^2=2t$ and $\\log_x8=1/t$, so the equation becomes $(2t)(1/t)^2=1$, giving $t=2$ and $x=64$. Therefore $50<x\\le100$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13206,7 +13206,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For $n\\ge5$, $n!$ is divisible by 15, so only the first four terms affect the remainder: $1!+2!+3!+4!=33\\equiv3\\pmod{15}$. The smallest integer $N>1$ for which $N^N$ is a square is 2, since $2^2=4$. Thus $R+N=3+2=5$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13262,7 +13262,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Use the intercept form $x/p+y/q=1$, where $p+q=14$. Passing through $(-9,10)$ gives $-9/p+10/q=1$. With $q=14-p$, this simplifies to $p^2+5p-126=0$, whose roots are 9 and $-14$. The negative-slope condition requires $p,q$ to have the same sign; since their sum is positive, both are positive, so $p=9,q=5$. Thus $A=1/p=1/9$ and $B=1/q=1/5$, giving $A+B=14/45$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13318,7 +13318,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By Vieta, $r+s=-b/a$ and $rs=c/a$. For $u=r/(1+r)$ and $v=s/(1+s)$, their sum is $(r+s+2rs)/(1+r+s+rs)=(2c-b)/(a-b+c)$ and product is $rs/(1+r+s+rs)=c/(a-b+c)$. The monic quadratic with roots $u,v$ has $d=-(u+v)$ and $e=uv$, so $d+e=(b-c)/(a-b+c)$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13374,7 +13374,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the inner and outer radii be $r$ and $R$. A chord of the outer circle tangent to the inner one has half-length $\\sqrt{R^2-r^2}=\\sqrt{19}$, so $R^2-r^2=19$. Since $R-r=1$, we get $R+r=19$, hence $R=10,r=9$. Every small circle tangent to both boundaries has radius $1/2$ and its center lies on the circle of radius $(R+r)/2=9.5$. Adjacent centers must be at least 1 apart. For $n$ equally spaced centers the chord spacing is $19\\sin(\\pi/n)$, which is at least 1 for $n=59$ but less than 1 for $n=60$. Thus the maximum is 59 (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13430,7 +13430,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Every four-digit repdigit is $1111a$, so the largest prime dividing all of them is the largest prime factor of $1111=11\\cdot101$, namely $P=101$. A parabola with roots $2\\pm\\sqrt3$ has form $y=a((x-2)^2-3)$. Its $y$-intercept is $a=-3$, so its vertex height is $K=-3(-3)=9$. Hence $P+K=110$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13486,7 +13486,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "An arithmetic progression has middle term equal to the average of the other two: $2(4x+2)=(8x-1)+(2x-6)$. This gives $8x+4=10x-7$, so $x=11/2$. The sum is $(8x-1)+(4x+2)+(2x-6)=14x-5=72$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13542,7 +13542,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For a round trip over the same distance $d$, total time is $d/60+d/20=d/15$. The total distance traveled is $2d$, so average speed is $2d/(d/15)=30$ mph (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13598,7 +13598,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For three fair dice, a sum of 5 has the six ordered outcomes that permute $(1,1,3)$ or $(1,2,2)$, so $P_1=6/216=1/36$. Let the biased die's probabilities for 1 and 2 be $p$. The rules give probabilities $(p,p,2p,3p,8p,24p)$, whose sum is $39p=1$; hence $P_2=1/39$. Among 1 through 999, $\\lfloor999/39\\rfloor=25$ values are multiples of 39, so $P_3=25/999$. Comparing gives $1/36>1/39>25/999$, so $P_1>P_2>P_3$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13654,7 +13654,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If the high and low Fahrenheit temperatures are $H$ and $L$, their Celsius sum is $\\frac59(H-32)+\\frac59(L-32)=\\frac59((H+L)-64)$. Since $H+L=68$, this is $\\frac59\\cdot4=20/9$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13710,7 +13710,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "With three posts, the minimum number of moves for $n$ distinct rings obeys $T_n=2T_{n-1}+1$: move the top $n-1$ rings aside, move the largest ring, then move the smaller stack onto it. With $T_1=1$, this gives $T_n=2^n-1$. For four rings, $T_4=16-1=15$ moves (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13766,7 +13766,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The outer absolute value is zero exactly when $|3-|2-|1-x|||=4$. Since $|2-|1-x||\\ge0$, this forces $|2-|1-x||=7$. Thus $|1-x|=9$, giving $x=-8$ or $x=10$. Their sum is 2 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13822,7 +13822,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $a$ be the common apothem. The intersection of a regular pentagon and its copy rotated $36^\\circ$ is a regular decagon: the ten side-normal directions alternate every $36^\\circ$, and all supporting lines are distance $a$ from the common center. A regular $n$-gon with apothem $a$ has area $na^2\\tan(\\pi/n)$. Thus the area ratio is $\\frac{10a^2\\tan18^\\circ}{5a^2\\tan36^\\circ}=\\frac{2\\tan18^\\circ}{\\tan36^\\circ}\\approx0.8944$, which rounds to 89% (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13878,7 +13878,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The line $2y-x=2$ meets the $y$-axis at $Q=(0,1)$, and its intersection with $3x+4y=12$ is $P=(8/5,9/5)$. The other axis intercept of the latter line is $R=(4,0)$, so the quadrilateral has vertices $(0,0),R,P,Q$ and area $\\frac12(4\\cdot9/5+8/5\\cdot1)=22/5$. Half its area is $11/5$. The ray $y=kx$ meets the segment $PR$ of $3x+4y=12$ at height $y=12k/(3+4k)$. The part of the quadrilateral below the ray is triangle with base 4 on the $x$-axis and that height, so its area is $2y$. Set $2y=11/5$, giving $y=11/10$ and $12k/(3+4k)=11/10$. Solving yields $76k=33$, so $k=33/76$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13934,7 +13934,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The square root must be the three-digit palindrome $MYM=101M+10Y$, with distinct nonzero digits $M,Y$. Testing the 72 possibilities for $(M,Y)$ against the six-digit pattern $AMATYC$ leaves $MYM=363$: $363^2=131{,}769$, which matches $A=1,M=3,T=7,Y=6,C=9$, all distinct and nonzero. Hence $T=7$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -13990,7 +13990,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The radius from the center $(-1,1)$ to the tangency point $(3,4)$ has slope $3/4$, so the tangent slope is its negative reciprocal, $m=-4/3$. Using $(3,4)$ in $y=mx+b$ gives $b=4-3m=8$. Hence $m+b=8-4/3=20/3$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14046,7 +14046,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The terms $i^n+i^{-n}$ repeat every four exponents: for $n\\equiv1,3\\pmod4$ they are 0, for $n\\equiv2$ they are $-2$, and for $n\\equiv0$ they are 2. Each block of four sums to 0. The first 2016 terms are 504 complete blocks; the final two terms contribute 0 and $-2$. The sum is $-2$ (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14102,7 +14102,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Z cannot be a knight, because then “I am a Knave” would be false, and cannot be a knave, because that statement would be true. Therefore Z is the spy. X and Y must be the knight and knave. Since Z is not a knight, X's claim “Z is a Knight” is false, so X is the knave and Y is the knight. This is choice E.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14158,7 +14158,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Set $u=\\ln A$ and $v=\\ln B$. Since $A>B>1$, we have $u>v>0$. The equality $\\log_A B=\\log_B A$ becomes $v/u=u/v$, so $u^2=v^2$. Positivity implies $u=v$, contradicting $u>v$. The conditions cannot hold (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14214,7 +14214,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For even $M$, $M!(M+1)!/2=(M!)^2(M+1)/2$ has an odd exponent of 2 in its prime factorization, so it cannot be a square. For odd $M$, it is a square exactly when $(M+1)/2$ is a square. Below 30 the candidates $M=2r^2-1$ are 1, 7, and 17; thus the greatest is $M=17$. For $N$, $c^4-c^2=c^2(c-1)(c+1)$ is divisible by 3 for every integer $c$, and by 4 because either $c$ is even (so $4\\mid c^2$) or $c$ is odd (so $8\\mid c^2-1$). Hence 12 divides every value; at $c=2$ the value is 12, so the greatest such divisor is $N=12$. Therefore $M+N=29$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14270,7 +14270,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Without the two stock limits, the number of nonnegative solutions assigning 12 bagels among 11 types is $\\binom{22}{10}=646{,}646$. Subtract choices with at least 4 onions: shifting that count down by 4 leaves 8 bagels among 11 types, $\\binom{18}{10}=43{,}758$. Subtract choices with at least 6 plain: $\\binom{16}{10}=8{,}008$. Add back choices meeting both limits: after assigning 4 onions and 6 plain, choose the remaining 2 among 11 types, $\\binom{12}{10}=66$. Thus $646{,}646-43{,}758-8{,}008+66=594{,}946$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14326,7 +14326,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let $E_0$ be the expected number of flips from the start and $E_H$ the expected additional flips after one head. Then $E_0=1+\\tfrac12E_0+\\tfrac12E_H$: after the next flip, a tail leaves no trailing head and a head enters state $H$. From state $H$, the next flip ends the process if it is a head; a tail resets to state 0, so $E_H=1+\\tfrac12E_0$. Substituting gives $E_0=1+\\tfrac12E_0+\\tfrac12(1+\\tfrac12E_0)$, hence $E_0=6$ flips (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14382,7 +14382,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the four numbers be $a<b<c<d=z$. The two smallest pair sums are $a+b=2$ and $a+c=3$, so $c=b+1$ and $a=2-b$. The next two sums are $b+c$ and $a+d$, in some order, and they are 4 and 5. Since $b+c=2b+1$, there are two cases. If $b+c=4$, then $b=3/2$, $a=1/2$, $c=5/2$, and $a+d=5$ gives $d=9/2$. If $b+c=5$, then $b=2$, $a=0$, $c=3$, and $a+d=4$ gives $d=4$. In both cases the last sums are larger than 5, as required. The possible greatest elements sum to $9/2+4=17/2$ (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14438,7 +14438,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Check domains and simplify. $g(x)=\\ln(e^x)=x$ and $m(x)=\\sqrt[3]{x^3}=x$ for every real $x$. Also $s(x)=0.\\overline9\\,x=x$. The other expressions fail at least one condition: $h$ requires $x>0$; $k(x)=\\sqrt{x^2}=|x|$; $n$ is undefined at $x=-1$; $p$ is defined only for $|x|\\le1$; $q(x)=\\arctan(\\tan x)$ is undefined at tangent's poles and is not globally the identity; and $r(x)=\\pm|x|$ is not single-valued as written. Exactly three qualify (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14494,7 +14494,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Complete the square: $y=(x-k)^2+k-k^2$. The vertex's $y$-coordinate is $b=k-k^2=-(k-1/2)^2+1/4$, whose greatest possible value is $1/4$ (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14550,7 +14550,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Equating the decimal and hexadecimal values gives $100a+10b+c=256c+16b+a$, or $33a-2b=85c$ after dividing by 3. Here $a,c$ are nonzero decimal digits and $b$ is a decimal digit. The bounds imply $c\\le3$. For $c=1$, the equation forces $a=3,b=7$. For $c=2$, no multiple $33a$ lies between 170 and 188. For $c=3$, the only possible $33a$ in 255 through 273 is 264, but then $b=4.5$, not a digit. Thus $(a,b,c)=(3,7,1)$ and the sum is 11 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14585,7 +14585,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "With $n$ layers, the number of spheres is $S_n=1^2+2^2+\\cdots+n^2=n(n+1)(2n+1)/6$. Since the single-layer square has side $k<100$, its sphere count is $k^2\\le9801$. Also $S_{30}=9455$ and $S_{31}=10416$, so only $1\\le n\\le30$ need checking. Evaluating the formula over those 30 integers gives square values only at $S_1=1=1^2$ and $S_{24}=4900=70^2$. The largest possible $k$ is therefore 70.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14641,7 +14641,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The numbers $1$ through $99$ form 49 complementary pairs summing to 100: $(1,99),\\ldots,(49,51)$, plus the single number 50, which cannot be used twice in a set. At most one member of each pair may be chosen, and choosing one from every pair plus 50 is allowed, so $M=50$. The coefficient of $x^5$ in $(x-0.5)^8$ is $\\binom85(-0.5)^3=-7$. Therefore $|C-M|=|-7-50|=57$ (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14697,7 +14697,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Since $f(x)=g(x)$ on the domain of $f$, the numerator must be $(x+2)(ax^2+bx+4)$. Expanding gives $ax^3+(b+2a)x^2+(4+2b)x+8$. Matching coefficients with $x^3+x^2+cx+d$ yields $a=1$ and $b+2=1$, so $b=-1$. Thus $g(3)=3^2-3+4=10$. The removable hole at $x=-2$ does not affect this value (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -14753,7 +14753,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The rule is aΔb=ab²−|a|. First, (−2)Δ5=(−2)·25−2=−52. Then (−52)Δ(−1)=(−52)·1−52=−104 (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -15211,7 +15211,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "X cannot be a knave because “I am not a spy” would be true, and if X were the spy then Y and Z would be knight and knave; Y would have to be the knight to say X is a knave, but X is not a knave. Therefore X is the knight. Then Y’s claim that X is a knave is false, so Y is the knave; Z is the spy. Z’s claim that Y is a spy is false, which a spy may say (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -16503,7 +16503,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let the radiator hold $C$ quarts. After the 11 quarts are added to fill it, the amount left after draining half is $C-11$, so before draining there were $2(C-11)$ quarts. That amount was also $\\frac{2}{3}C+4$. Solve $2(C-11)=\\frac{2}{3}C+4$ to get $C=\\frac{39}{2}$ quarts. Divide by 4 quarts per gallon: $\\frac{39}{8}=4.875$ gallons (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -16895,7 +16895,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The point $C=(3,4)$ has distance 5 from the origin. To rotate it to $(0,5)$, use $\\cos\\theta=4/5$ and $\\sin\\theta=3/5$. Then $B=(3,0)$ rotates to $B'=(12/5,9/5)$. In the overlap, the lower boundary is $y=3x/4$; the upper boundary is $y=4x/3$ up to where the two upper edges meet at $x=15/8$, then $y=5-4x/3$ until $x=12/5$. Thus the area is $\\int_0^{15/8}(4x/3-3x/4)\\,dx+\\int_{15/8}^{12/5}(5-4x/3-3x/4)\\,dx=21/16$ square units (A).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -29317,7 +29317,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let c=a#b. Then c#3=3²c+c=10c=250, so c=25. Since a#b=a(b²+1), we need a(b²+1)=25. The positive-integer solution is a=5,b=2, giving a+b=7 (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -29373,7 +29373,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Let W(n) be the number of ways to climb n steps using moves of 1, 2, or 4. The last move gives W(n)=W(n−1)+W(n−2)+W(n−4), with W(0)=1 and W(n)=0 for n<0. Iteration gives W(1)=1, W(2)=2, W(3)=3, W(4)=6, W(5)=10, W(6)=18, W(7)=31, W(8)=55, W(9)=96, and W(10)=169 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -30391,7 +30391,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "If the square has side $s$, each half is a rectangle with sides $s$ and $s/2$. Its perimeter is $2(s+s/2)=3s=36$, so $s=12$. The square's area is $s^2=144$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -33032,7 +33032,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Write the integer dimensions as $l\\ge w\\ge h\\ge1$ with $lwh=60$. For $h=1$, the possible $(l,w)$ pairs are $(60,1),(30,2),(20,3),(15,4),(12,5),(10,6)$, giving 6 boxes. For $h=2$, the pairs are $(15,2),(10,3),(6,5)$, giving 3. For $h=3$, only $(l,w)=(5,4)$ works, giving 1. No larger height works. Since the dimensions are ordered to avoid counting rotations again, there are $6+3+1=10$ distinct solids (C).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -33796,7 +33796,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "By definition, xΔ(x−1)=x(x−1)+(x−1)=(x+1)(x−1)=x²−1=323, so x=18 because x is positive. Then xΔ(x+1)=x(x+1)+(x+1)=(x+1)²=19²=361 (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -35088,7 +35088,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "The segment from (0,0) to (a,b) contains an intermediate lattice point exactly when a and b share a common integer divisor greater than 1. Thus the point is visible exactly when gcd(a,b)=1. The gcds for the listed points are 14, 1, 4, 2, and 7, respectively. Only (28,15) is visible (B).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -35830,7 +35830,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "For an isosceles triangle with equal side s and vertex angle θ, area is (1/2)s²sinθ. Here the equal sides in ABC are twice those in DEF, so their squared-length ratio is 4; also ∠D=2∠A. The area ratio is 4sin(A)/sin(2A)=4sin(A)/(2sin(A)cos(A))=2sec(A), which is choice B.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -37163,7 +37163,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Compute inside parentheses: 3Δ2=3·2+2=8 and 2Δ3=2·3+3=9. Therefore (3Δ2)Δ(2Δ3)=8Δ9=8·9+9=81 (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -37947,7 +37947,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "A regular polygon with $n$ sides has exterior angle $360/n$ degrees. For the angle to be an integer, the integer must divide 360. Each positive integer from 1 through 6 divides 360, but 7 does not. Therefore 7 is the smallest positive integer that cannot be an exterior angle measure (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -39683,7 +39683,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "Multiplying the matrices gives $5a-3b=0$ and $5c-3d=0$ (the second column repeats these equations). Since $a,b,c,d$ are positive integers, the smallest solutions are $(a,b)=(3,5)$ and $(c,d)=(3,5)$. Their sum is $3+5+3+5=16$ (D).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
@@ -44629,7 +44629,7 @@
     "grading_policy": "standard",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": null,
+    "written_solution": "There are $\\binom{10}{3}=120$ three-element subsets in total. Count the subsets with no consecutive integers by shifting each chosen value left by its position: this gives $\\binom{10-3+1}{3}=\\binom{8}{3}=56$. Therefore $120-56=64$ subsets contain at least one consecutive pair (E).",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": false,
