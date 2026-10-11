@@ -53,6 +53,12 @@ test("currency stays prose beside inline and display math", () => {
   ]);
   assert.equal(mathSegments("Worth $1.05, so one dollar buys 3/1.05 ADA. Two BTC are worth $124,000.").every(s=>s.kind === "text"),true);
   assert.deepEqual(mathSegments(String.raw`$\text{price \$5}$`), [{kind:"inline",value:String.raw`\text{price \$5}`}]);
+  const units = String.raw`25\cdot0.10=\boxed{2.50\text{ dollars}}`;
+  assert.deepEqual(mathSegments(`The saving is $${units}$.`), [
+    {kind:"text",value:"The saving is "},
+    {kind:"inline",value:units},
+    {kind:"text",value:"."},
+  ]);
 });
 
 test("known Supabase explanations receive format fixes while admin edits are retained", () => {

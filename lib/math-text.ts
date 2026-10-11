@@ -14,7 +14,8 @@ export function mathSegments(text: string): MathSegment[] {
     if (end < 0) { prose += text[i++]; continue; }
     const value = text.slice(i+delimiter.length,end);
     // Preserve older unescaped currency when a second price occurs in prose.
-    if (delimiter === "$" && /^\d/.test(value) && /\b(?:worth|dollars|buys|buy|so)\b/.test(value)) {
+    // Explicit TeX (for example \text{ dollars}) identifies a real formula.
+    if (delimiter === "$" && /^\d/.test(value) && !/\\[A-Za-z]+/.test(value) && /\b(?:worth|dollars|buys|buy|so)\b/.test(value)) {
       prose += text[i++]; continue;
     }
     flush();
