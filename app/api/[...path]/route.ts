@@ -85,6 +85,7 @@ async function handle(
       if (resource === "leaderboard") return NextResponse.json(sampleProfiles);
       if (resource === "profile") {
         const p = sampleProfiles.find((p) => p.username === id);
+        if (p && action === "dashboard") return NextResponse.json({ practice: [], contests: [] });
         return p ? NextResponse.json(p) : error("Profile not found", 404);
       }
       return error(
@@ -131,6 +132,10 @@ async function handle(
       return NextResponse.json(result);
     }
     if (resource === "leaderboard" || resource === "profile") {
+      if (resource === "profile" && action === "dashboard" && method === "GET") {
+        const dashboard = await query(db.rpc("public_dashboard", { requested_username: id }));
+        return dashboard ? NextResponse.json(dashboard, { headers: { "Cache-Control": "private, no-store" } }) : error("Profile not found", 404);
+      }
       const data = await query(
         db.rpc("public_profiles", {
           requested_username: resource === "profile" ? (id ?? null) : null,

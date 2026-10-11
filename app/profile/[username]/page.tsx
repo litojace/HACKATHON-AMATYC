@@ -5,13 +5,18 @@ import type { Profile } from "@/types/problem";
 import { api } from "@/lib/client";
 import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
+import DashboardContent from "@/components/DashboardContent";
+import type { DashboardActivity } from "@/lib/dashboard";
+import { dashboardActivity } from "@/lib/dashboard";
 import { getCodeforcesTitle } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
 import AdminProblemActions from "@/components/AdminProblemActions";
 import { CalendarDays, Trophy } from "lucide-react";
 export default function PublicProfile() {
   const { username } = useParams<{ username: string }>(),
-    { demo } = useApp();
+    { demo, profile, activity, problems, user } = useApp();
+  const [dashboard, setDashboard] = useState<DashboardActivity | null>(null);
+  const [dashboardError, setDashboardError] = useState("");
   const [p, setP] = useState<
       | (Profile & {
           rating_history: { new_rating: number; created_at: string }[];
@@ -20,12 +25,21 @@ export default function PublicProfile() {
     >(null),
     [error, setError] = useState("");
   useEffect(() => {
+    let active = true;
+    setP(null);
+    setError("");
+    setDashboard(null);
+    setDashboardError("");
     api<typeof p>("profile/" + username)
-      .then(setP)
-      .catch((e) => setError(e.message));
+      .then(value => { if (active) setP(value); })
+      .catch((e) => { if (active) setError(e.message); });
+    api<DashboardActivity>("profile/" + username + "/dashboard")
+      .then(value => { if (active) setDashboard(value); })
+      .catch(e => { if (active) setDashboardError(e.message); });
+    return () => { active = false; };
   }, [username]);
   return (
-    <main className="mx-auto max-w-4xl px-5 py-10">
+    <main className="mx-auto max-w-7xl px-5 py-10">
       {error ? (
         <p className="panel p-8" role="alert">
           {error}
@@ -67,6 +81,11 @@ export default function PublicProfile() {
             </div>
             <AdminProblemActions profileUserId={p.id} />
           </section>
+          {user?.id === p.id && profile?.id === p.id ? (
+            <DashboardContent activity={dashboardActivity(activity)} problems={problems} profile={p} demo={demo} />
+          ) : dashboard ? (
+            <DashboardContent activity={dashboard} problems={problems} profile={p} publicView />
+          ) : dashboardError ? <p className="panel p-5" role="alert">Dashboard unavailable: {dashboardError}</p> : <Loading />}
           <p className="mt-5 text-xs muted">
             Private practice and exam answers are not exposed on public
             profiles.
