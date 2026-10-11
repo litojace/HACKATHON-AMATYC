@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
+const accountItemClass = "flex min-h-11 w-full items-center rounded-lg px-3 text-left transition-[color,background-color,transform] duration-200 ease-out hover:translate-x-1 hover:bg-emerald-400/10 hover:text-emerald-400 focus-visible:translate-x-1 focus-visible:bg-emerald-400/10 focus-visible:text-emerald-400 motion-reduce:transform-none motion-reduce:transition-none";
 export default function Navbar() {
   const path = usePathname(),
     { user, profile, demo } = useApp();
@@ -97,16 +98,16 @@ export default function Navbar() {
                 <span className="max-w-40 truncate">{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</span>
                 <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 ease-in-out group-open:rotate-180 motion-reduce:transition-none" />
               </summary>
-              <div className="motion-menu panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
-                <Link className="block" href="/settings" onClick={closeAccountMenu}>
+              <div className="motion-menu panel absolute right-0 top-9 w-44 space-y-1 p-2 text-sm">
+                <Link className={accountItemClass} href="/settings" onClick={closeAccountMenu}>
                   Settings
                 </Link>
                 {profile && (
-                  <Link className="block" href={"/profile/" + profile.username} onClick={closeAccountMenu}>
+                  <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={closeAccountMenu}>
                     Public profile
                   </Link>
                 )}
-                <button onClick={() => { closeAccountMenu(); void supabase?.auth.signOut(); }}>
+                <button className={accountItemClass} onClick={() => { closeAccountMenu(); void supabase?.auth.signOut(); }}>
                   Sign out
                 </button>
               </div>
@@ -145,9 +146,9 @@ export default function Navbar() {
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">
             <p className="flex items-center gap-3 break-words px-3 pb-2 font-semibold">{profile?.avatar_url && <img src={profile.avatar_url} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />}{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</p>
-            <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href="/settings" onClick={() => setOpen(false)}>Settings</Link>
-            {profile && <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
-            <button className="min-h-11 w-full rounded-lg px-3 text-left hover:bg-ink" onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
+            <Link className={accountItemClass} href="/settings" onClick={() => setOpen(false)}>Settings</Link>
+            {profile && <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
+            <button className={accountItemClass} onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
           </div> : <div className="grid grid-cols-2 gap-3">
             <Link href="/login" className="btn-secondary justify-center" onClick={() => setOpen(false)}>{demo ? "Account setup" : "Log in"}</Link>
             <Link href="/signup" className="btn justify-center" onClick={() => setOpen(false)}>Sign up</Link>

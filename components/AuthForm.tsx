@@ -5,7 +5,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase, setRememberMe } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
-import { safeReturnPath } from "@/lib/auth";
 
 function authSiteOrigin() {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -40,9 +39,7 @@ export default function AuthForm({
     setMessageIsError(false);
     try {
       if (mode === "login") setRememberMe(rememberMe);
-      const next = safeReturnPath(new URLSearchParams(location.search).get("next"));
       const callback = new URL("/auth/callback", authSiteOrigin());
-      callback.searchParams.set("next", next);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -98,7 +95,7 @@ export default function AuthForm({
       if (result.error) throw result.error;
       if (mode === "login") {
         notify("Signed in successfully.");
-        router.push(safeReturnPath(new URLSearchParams(location.search).get("next")));
+        router.replace("/");
       } else
         setMessage(
           mode === "signup"

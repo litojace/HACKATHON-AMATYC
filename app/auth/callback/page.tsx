@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { safeReturnPath } from "@/lib/auth";
 import { Loading } from "@/components/Shared";
 
 export default function AuthCallback() {
@@ -21,7 +20,7 @@ export default function AuthCallback() {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
         if (!data.session) throw new Error("Sign-in did not finish. Please try again.");
-        if (active) router.replace(safeReturnPath(params.get("next")));
+        if (active) router.replace("/");
       } catch (error) {
         if (active) setError((error as Error).message);
       }
