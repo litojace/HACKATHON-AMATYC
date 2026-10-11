@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
-const accountItemClass = "flex min-h-11 w-full items-center rounded-lg px-3 text-left transition-[color,background-color,transform] duration-200 ease-out hover:translate-x-1 hover:bg-emerald-400/10 hover:text-emerald-400 focus-visible:translate-x-1 focus-visible:bg-emerald-400/10 focus-visible:text-emerald-400 motion-reduce:transform-none motion-reduce:transition-none";
+const accountItemClass = "flex min-h-11 w-full items-center px-3 text-left transition-colors duration-200 ease-out hover:text-emerald-400 focus-visible:text-emerald-400 motion-reduce:transition-none";
 export default function Navbar() {
   const path = usePathname(),
     { user, profile, demo } = useApp();
