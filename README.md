@@ -50,7 +50,7 @@ Both public Supabase settings must be provided before building. Incomplete setti
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 008, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 009, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 1. Run these migrations in order in the SQL editor:
    - `supabase/migrations/001_platform.sql`
@@ -61,6 +61,7 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/006_problem_submission_stats.sql`
    - `supabase/migrations/007_profile_avatars.sql`
    - `supabase/migrations/008_avatar_upload_limit.sql`
+   - `supabase/migrations/009_remove_demonstration_set.sql`
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
 4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
@@ -150,3 +151,5 @@ docker run --rm -p 3000:3000 amatyc-code
 Build args `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` embed public settings. `DEMO_SESSION_SECRET` is a runtime server-only environment variable. The Node 22 Alpine multi-stage image uses a non-root runner. For a TLS-inspecting proxy, supply a trusted CA with BuildKit `--secret id=npm_ca,src=/path/to/ca.pem` plus the HTTP_PROXY/HTTPS_PROXY build arguments. DNS overrides may be required by a cloud BuildKit sandbox. Keep TLS verification enabled; CA build secrets are not retained in the image.
 
 No GitHub push, Vercel/Render deployment, or cloud publication is performed automatically. Review and commit the files, then deploy using your own accounts. The pre-upgrade app is preserved as `AMATYC-Code-v1.zip` outside the checkout.
+
+Migration 009 permanently removes the redundant Original Demonstration Set, its mock contest, and their associated activity. The seed now imports only the 820 historical questions and 42 historical contests. Demo source files remain as development fixtures.

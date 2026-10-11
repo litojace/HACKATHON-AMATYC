@@ -1,8 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import demo from "../data/demo/questions.json";
 import historical from "../data/historical/questions.json";
 import historicalContests from "../data/historical/contests.json";
-const questions = [...demo, ...historical];
+const questions = [...historical];
 import { importProblemSchema } from "../lib/validation";
 async function main() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -37,23 +36,11 @@ async function main() {
     }).eq("problem_id", p.id).eq("correct_answer", p.correct_answer);
     if (updated.error) throw Error(updated.error.message);
   }
-  const c = {
-    kind: "historical_mock", correct_points: 2, incorrect_points: -0.5, blank_points: 0,
-    starts_at: null, ends_at: null, review_at: null, rating_enabled: false,
-    id: "demo-challenge",
-    name: "The Mathematics Challenge",
-    description: "20 original demonstration problems. Unrated mock exam.",
-    year: 2026,
-    semester: "Demo",
-    duration_seconds: 3600,
-    question_count: 20,
-    published: true,
-  };
-  const contests = [c, ...historicalContests.map(p => ({ ...p, published: true }))];
+  const contests = historicalContests.map(p => ({ ...p, published: true }));
   const result = await db.from("contests").upsert(contests);
   if (result.error) throw Error(result.error.message);
   const mappings = contests.flatMap(contest => {
-    const problems = contest.id === c.id ? demo : historical.filter(p => p.id.startsWith(contest.id + "-q"));
+    const problems = historical.filter(p => p.id.startsWith(contest.id + "-q"));
     return problems.map((p, i) => ({ contest_id: contest.id, problem_id: p.id, position: i + 1 }));
   });
   const mapping = await db.from("contest_problems").upsert(mappings);

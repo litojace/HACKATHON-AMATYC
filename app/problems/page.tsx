@@ -31,10 +31,13 @@ export default function Problems() {
   const [filters, setFilters] = useState<Record<string, string>>({}),
     [page, setPage] = useState(1);
   useEffect(() => {
-    setFilters(Object.fromEntries(new URLSearchParams(location.search)));
+    const params = new URLSearchParams(location.search);
+    setFilters(Object.fromEntries(params));
+    const number = Number(params.get("page"));
+    setPage(Number.isSafeInteger(number) && number > 0 ? number : 1);
   }, []);
   function change(key: string, value: string) {
-    const next = { ...filters, [key]: value };
+    const next = { ...filters, [key]: value, page: "" };
     setFilters(next);
     setPage(1);
     const params = new URLSearchParams(
@@ -46,6 +49,15 @@ export default function Problems() {
       "/problems" + (params.size ? "?" + params.toString() : ""),
     );
   }
+  function navigatePage(number: number) {
+    setPage(number);
+    const params = new URLSearchParams(location.search);
+    params.set("page", String(number));
+    history.replaceState(null, "", "/problems?" + params.toString());
+  }
+  const returnParams = new URLSearchParams(Object.entries(filters).filter(([key, value]) => key !== "page" && value));
+  returnParams.set("page", String(page));
+  const returnTo = "/problems?" + returnParams.toString();
   const visible = filterProblems(
     problems,
     filters,
@@ -201,7 +213,7 @@ export default function Problems() {
                       <td className="p-4">
                         <Link
                           className="font-medium hover:text-emerald-400"
-                          href={"/problems/" + p.id}
+                          href={"/problems/" + p.id + "?returnTo=" + encodeURIComponent(returnTo)}
                         >
                           {p.title}
                         </Link>
@@ -253,7 +265,7 @@ export default function Problems() {
               <button
                 className="btn-secondary"
                 disabled={page === 1}
-                onClick={() => setPage(page - 1)}
+                onClick={() => navigatePage(page - 1)}
               >
                 Previous
               </button>
@@ -263,7 +275,7 @@ export default function Problems() {
               <button
                 className="btn-secondary"
                 disabled={page * 12 >= visible.length}
-                onClick={() => setPage(page + 1)}
+                onClick={() => navigatePage(page + 1)}
               >
                 Next
               </button>

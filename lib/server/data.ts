@@ -4,7 +4,7 @@ import historical from "@/data/historical/questions.json";
 import exams from "@/data/historical/contests.json";
 import type { AMATYCProblem, PublicProblem, Contest } from "@/types/problem";
 export const demoQuestions = raw as AMATYCProblem[];
-export const libraryQuestions = [...demoQuestions, ...historical] as AMATYCProblem[];
+export const libraryQuestions = [...historical] as AMATYCProblem[];
 export function publicProblem(p: AMATYCProblem): PublicProblem {
   const {
     id,
@@ -100,5 +100,5 @@ export const sampleProfiles = [
   },
 ];
 
-export const libraryContests = [demoContest, ...exams] as Contest[];
+export const libraryContests = [...exams] as Contest[];
 export function questionsForContest(id: string) { return id === demoContest.id ? demoQuestions : libraryQuestions.filter(p => p.id.startsWith(id + "-q")); }

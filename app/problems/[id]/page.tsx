@@ -1,5 +1,6 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, ServiceError } from "@/components/Shared";
@@ -8,6 +9,12 @@ export default function ProblemPage() {
   const { id } = useParams<{ id: string }>(),
     router = useRouter(),
     { problems, loading, error } = useApp();
+  const [returnTo, setReturnTo] = useState("/problems");
+  useEffect(() => {
+    const value = new URLSearchParams(location.search).get("returnTo");
+    if (value === "/problems" || value?.startsWith("/problems?")) setReturnTo(value);
+  }, [id]);
+  const suffix = "?returnTo=" + encodeURIComponent(returnTo);
   if (loading)
     return (
       <main className="mx-auto max-w-4xl px-5">
@@ -26,12 +33,12 @@ export default function ProblemPage() {
     return (
       <main className="p-10">
         <h1>Problem not found or not released.</h1>
-        <Link href="/problems">Back to problems</Link>
+        <Link href={returnTo}>Back to problems</Link>
       </main>
     );
   return (
     <main className="mx-auto max-w-7xl px-5 py-8">
-      <Link href="/problems" className="text-sm muted">
+      <Link href={returnTo} className="text-sm muted">
         ← Back to problems
       </Link>
       <div className="mt-6">
@@ -41,14 +48,14 @@ export default function ProblemPage() {
           problem={problem}
           onPrevious={
             index > 0
-              ? () => router.push("/problems/" + problems[index - 1].id)
+              ? () => router.push("/problems/" + problems[index - 1].id + suffix)
               : undefined
           }
           onNext={() =>
             router.push(
               index + 1 < problems.length
-                ? "/problems/" + problems[index + 1].id
-                : "/problems",
+                ? "/problems/" + problems[index + 1].id + suffix
+                : returnTo,
             )
           }
         />
