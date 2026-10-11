@@ -110,29 +110,29 @@ export default function HomeCommunityGallery() {
   }
 
   return (
-    <aside className="panel min-w-0 overflow-hidden p-4 sm:p-5" aria-label="AMATYC community"
+    <aside className="panel min-w-0 overflow-hidden p-4 sm:p-5" aria-label="MAT Community"
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Image
             src="/images/amatyc-logo.png"
-            alt="AMATYC logo"
+            alt="MAT logo"
             width={58}
             height={64}
             className="h-14 w-auto rounded-md"
           />
           <div>
-            <p className="text-sm font-semibold">AMATYC community</p>
+            <p className="text-sm font-semibold">MAT Community</p>
             <p className="mt-1 text-xs muted">Math, friends, and competition</p>
           </div>
         </div>
-        <nav aria-label="AMATYC social links" className="flex gap-2">
+        <nav aria-label="MAT social links" className="flex gap-2">
           <a
             href="https://www.instagram.com/mat_occ/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Visit AMATYC on Instagram"
+            aria-label="Visit MAT on Instagram"
             className="flex h-10 w-10 items-center justify-center rounded-lg border border-edge bg-ink transition hover:border-emerald-500"
           >
             <InstagramIcon />
@@ -141,7 +141,7 @@ export default function HomeCommunityGallery() {
             href="https://discord.gg/8xN546mwQ"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Join the AMATYC Discord"
+            aria-label="Join the MAT Discord"
             className="flex h-10 w-10 items-center justify-center rounded-lg border border-edge bg-ink transition hover:border-emerald-500"
           >
             <DiscordIcon />

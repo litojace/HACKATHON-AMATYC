@@ -53,7 +53,7 @@ try {
   ]}));
   await page.goto(base);
   await page.getByText("Edited caption", {exact: true}).waitFor();
-  await page.waitForFunction(() => Array.from(document.querySelectorAll('aside[aria-label="AMATYC community"] img')).some(image => image.parentElement.style.visibility === "visible"));
+  await page.waitForFunction(() => Array.from(document.querySelectorAll('aside[aria-label="MAT Community"] img')).some(image => image.parentElement.style.visibility === "visible"));
   assert.equal(await page.getByRole("link", {name: "Edit carousel"}).count(), 0);
   await page.mouse.move(0, 0);
   await page.getByText("Second slide", {exact: true}).waitFor({timeout: 8000});
@@ -70,7 +70,7 @@ try {
   const strip = page.getByLabel("Choose a photo");
   assert.ok(await strip.evaluate(el => el.scrollWidth > el.clientWidth));
   assert.ok(await strip.evaluate(el => new Set([...el.children].map(child => child.offsetTop)).size === 1));
-  const retainedImage = await page.locator('aside[aria-label="AMATYC community"] img[alt]').nth(1).elementHandle();
+  const retainedImage = await page.locator('aside[aria-label="MAT Community"] img[alt]').nth(1).elementHandle();
   await page.getByRole("button", {name: "Show photo 10: Slide 10", exact: true}).click();
   await page.getByText("Slide 10", {exact: true}).waitFor();
   assert.ok(await retainedImage.evaluate(el => el.isConnected));

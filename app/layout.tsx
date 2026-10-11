@@ -32,11 +32,11 @@ export default function RootLayout({
                   className="h-16 w-auto rounded-lg"
                 />
                 <div>
-                  <p className="text-sm font-semibold text-slate-300">
+                  <p className="text-sm font-semibold text-[var(--text)]">
                     AMATYC Arena
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
-                    Built for the next problem.
+                    Build to push your limits
                   </p>
                 </div>
               </div>
@@ -67,10 +67,7 @@ export default function RootLayout({
                 </a>
               </nav>
             </div>
-            <div className="mt-5 flex flex-wrap justify-between gap-2 border-t border-edge pt-4 text-xs text-slate-500">
-              <span>Independent training platform</span>
-              <span>Not affiliated with AMATYC</span>
-            </div>
+
           </footer>
         </Providers>
       </body>
