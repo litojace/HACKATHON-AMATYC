@@ -37,6 +37,13 @@ page.on("pageerror", error => errors.push(error.message));
 try {
   await page.goto(base + "/training");
   await page.getByRole("button", { name: "Start training" }).click();
+  await page.getByText("Question 1 of 5", { exact: true }).waitFor();
+  await page.keyboard.press("a");
+  assert.equal(await page.locator('button[aria-pressed="true"]').count(), 1);
+  await page.keyboard.press("ArrowRight");
+  await page.getByText("Question 2 of 5", { exact: true }).waitFor();
+  await page.keyboard.press("ArrowLeft");
+  await page.getByText("Question 1 of 5", { exact: true }).waitFor();
   await page.getByRole("link", { name: "Problems", exact: true }).first().click();
   const trainingDialog = page.getByRole("dialog", { name: "Leave this training session?" });
   await trainingDialog.waitFor();
@@ -53,8 +60,15 @@ try {
 
   await page.goto(base + "/training");
   await page.getByRole("button", { name: "Start training" }).click();
-  for (let i = 0; i < 4; i++) await page.getByRole("button", { name: "Next", exact: true }).click();
-  await page.getByRole("button", { name: "Submit test", exact: true }).click();
+  for (let i = 0; i < 4; i++) {
+    await page.getByText(`Question ${i + 1} of 5`, { exact: true }).waitFor();
+    await page.keyboard.press("ArrowRight");
+  }
+  await page.getByText("Question 5 of 5", { exact: true }).waitFor();
+  await page.keyboard.press("ArrowRight");
+  await page.getByRole("dialog").waitFor();
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(await page.getByText("Question 5 of 5", { exact: true }).count(), 1);
   await page.getByRole("dialog").getByRole("button", { name: "Submit test", exact: true }).click();
   await page.getByText("Session complete", { exact: true }).waitFor();
   await page.waitForFunction(() => sessionStorage.getItem("amatyc-training-result-v1") !== null);
@@ -71,7 +85,7 @@ try {
   })), { userId: user.id, questions });
   await page.reload();
   await page.getByText("Session complete", { exact: true }).waitFor();
-  await page.getByRole("heading", { name: "Time's up! Your training session has ended." }).waitFor();
+  await page.getByRole("heading", { name: "Time's up! Keep going! Learn from these answers and come back stronger." }).waitFor();
   await page.getByRole("link", { name: "Problems", exact: true }).first().click();
   await page.waitForURL("**/problems");
   await page.waitForFunction(() => sessionStorage.getItem("amatyc-training-result-v1") === null);

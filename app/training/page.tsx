@@ -209,7 +209,12 @@ export default function Training() {
             <PerfectScoreCelebration attemptId={`training-${deadline}`} total={session.length} />
           )}
           <p className="text-sm font-semibold text-emerald-400">Session complete</p>
-          <h2 className="mt-2 text-2xl font-semibold">{timedOut ? "Time's up! Your training session has ended." : "Nice work staying with the clock."}</h2>
+          <h2 className="mt-2 text-2xl font-semibold">
+            {timedOut && "Time's up! "}
+            {isPerfectScore(Object.values(results), session.length)
+              ? "Perfect score! Amazing work — you got every question right!"
+              : "Keep going! Learn from these answers and come back stronger."}
+          </h2>
           <p className="mt-2 muted">Training score: {session.filter((problem) => results[problem.id]?.is_correct).length} / {session.length} correct · {session.length ? Math.round(100 * session.filter((problem) => results[problem.id]?.is_correct).length / session.length) : 0}%</p>
           <p className="mt-1 text-sm muted">{Object.values(answers).filter(Boolean).length} questions answered. This practice score does not affect competitive rating.</p>
           <div className="mt-6 space-y-3">
@@ -274,7 +279,9 @@ export default function Training() {
             </section>
             <AccountGate requireAuth>
               <ProblemArena key={current.id} problem={current} exam answer={answers[current.id] ?? null}
-                locked={submitting}
+                locked={submitting} hideNavigation
+                onPrevious={index > 0 && !submitting ? () => setIndex((i) => i - 1) : undefined}
+                onNext={!submitting ? () => index + 1 < session.length ? setIndex((i) => i + 1) : setConfirmFinish(true) : undefined}
                 onAnswer={(answer) => setAnswers((previous) => ({ ...previous, [current.id]: answer }))} />
             </AccountGate>
             <div className="mx-auto mt-5 flex max-w-4xl items-center justify-between gap-3">
@@ -285,6 +292,7 @@ export default function Training() {
                 {index + 1 === session.length ? "Submit test" : "Next"} <ArrowRight size={16} />
               </button>
             </div>
+            <p className="mt-3 text-center text-xs muted">Keyboard shortcuts: A–E or 1–5 to choose an answer · ← previous · → next (opens submission confirmation on the last question). Shortcuts pause in fields and dialogs.</p>
             {submitError && <div role="alert" className="mx-auto mt-4 max-w-4xl rounded-lg border border-red-400/40 p-3 text-sm text-red-400">{submitError} <button className="ml-2 underline" onClick={() => void gradeTest()}>Retry grading</button></div>}
             {submitting && <p role="status" className="mx-auto mt-4 max-w-4xl text-center text-sm muted">Grading your answers…</p>}
             </div>

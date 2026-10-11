@@ -25,6 +25,7 @@ export default function ProblemArena({
   problem,
   onNext,
   onPrevious,
+  hideNavigation = false,
   exam = false,
   answer,
   onAnswer,
@@ -37,6 +38,7 @@ export default function ProblemArena({
   problem: PublicProblem;
   onNext?: () => void;
   onPrevious?: () => void;
+  hideNavigation?: boolean;
   exam?: boolean;
   answer?: Answer | null;
   onAnswer?: (answer: Answer | null) => void;
@@ -146,7 +148,10 @@ export default function ProblemArena({
         e.metaKey ||
         e.ctrlKey ||
         e.altKey ||
+        e.repeat ||
+        locked ||
         zoom ||
+        document.querySelector('[role="dialog"]') ||
         el.closest(
           'input,textarea,select,[role="dialog"],[contenteditable="true"]',
         )
@@ -304,7 +309,7 @@ export default function ProblemArena({
               Try again
             </button>
           )}
-          {onPrevious && (
+          {!hideNavigation && onPrevious && (
             <button
               onClick={onPrevious}
               className="btn-secondary"
@@ -314,7 +319,7 @@ export default function ProblemArena({
               Previous
             </button>
           )}
-          {onNext && (
+          {!hideNavigation && onNext && (
             <button onClick={advance} className={`${!exam && !result ? "btn" : "btn-secondary"}${exam ? " ml-auto" : ""}`} disabled={busy || (!exam && !session)}>
               {exam ? "Next" : result ? "Next problem" : "Check answer"}
               <ArrowRight size={15} />
