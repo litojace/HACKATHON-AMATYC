@@ -407,7 +407,7 @@
     "correct_answer": "C",
     "figure_required": false,
     "figure_image_path": null,
-    "written_solution": "The angles are in radians. Since pi radians equals 180 degrees, $\\pi/6=30^\\circ$ and $\\pi/3=60^\\circ$.\nFrom the standard 30-60-90 triangle, $\\sin30^\\circ=1/2$ and $\\cos60^\\circ=1/2$.\nAdd the two values: $1/2+1/2=1$.\nIf checking with a calculator, use radian mode when entering pi/6 and pi/3.",
+    "written_solution": "The angles are in radians. Since pi radians equals 180 degrees, $\\pi/6=30^\\circ$ and $\\pi/3=60^\\circ$.\nFrom the standard 30-60-90 triangle, $\\sin30^\\circ=1/2$ and $\\cos60^\\circ=1/2$.\nAdd the two values: $1/2+1/2=1$.\nIf checking with a calculator, use radian mode when entering $\\pi /6$ and $\\pi /3$.",
     "calculator_trick": {
       "model": "Casio FX-115ES PLUS",
       "applicable": true,

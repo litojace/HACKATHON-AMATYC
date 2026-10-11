@@ -1,4 +1,5 @@
 import MathRenderer from "./MathRenderer";
+import { mathSegments } from "@/lib/math-text";
 
 /** Preserve formulas while presenting each prose statement as a separate step. */
 export default function SolutionRenderer({ text }: { text: string }) {
@@ -13,10 +14,12 @@ export default function SolutionRenderer({ text }: { text: string }) {
     );
   }
   const formulas: string[] = [];
-  const prose = text.replace(/\$\$[\s\S]*?\$\$|\$[^$]+\$/g, (formula) => {
-    formulas.push(formula);
+  const prose = mathSegments(text).map((segment) => {
+    if (segment.kind === "text") return segment.value.replace(/\$/g, "\\$");
+    const delimiter = segment.kind === "display" ? "$$" : "$";
+    formulas.push(delimiter+segment.value+delimiter);
     return `\uE000${formulas.length - 1}\uE001`;
-  });
+  }).join("");
   const statements = prose
     .replace(/([.!?])\s+(?=[A-Z\uE000])/g, "$1\n\n")
     .replace(/:\s+(?=First\b|Next\b|Finally\b|\uE000)/g, ":\n\n")

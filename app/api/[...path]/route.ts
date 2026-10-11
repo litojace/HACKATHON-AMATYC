@@ -6,6 +6,7 @@ import {
   sampleProfiles,
 } from "@/lib/server/data";
 import { database, databaseConfigured } from "@/lib/server/database";
+import { correctedWrittenSolution } from "@/lib/server/solution-format";
 import { carouselSchema, defaultCarouselPhotos } from "@/lib/carousel";
 import { adminProblemSchema } from "@/lib/admin-problems";
 import { adminContestSchema } from "@/lib/admin-contests";
@@ -24,7 +25,7 @@ function addLocalWrittenSolution(payload: unknown, problemId: string) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return payload;
   const result = payload as Record<string, unknown>;
   if (typeof result.written_solution === "string" && result.written_solution.trim())
-    return payload;
+    return { ...result, written_solution: correctedWrittenSolution(problemId, result.written_solution) };
   const written_solution = libraryQuestions.find((problem) => problem.id === problemId)?.written_solution;
   return written_solution ? { ...result, written_solution } : payload;
 }
