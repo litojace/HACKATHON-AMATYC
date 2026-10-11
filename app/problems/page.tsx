@@ -5,6 +5,27 @@ import { Bookmark, Search, CheckCircle2, RotateCw } from "lucide-react";
 import { useApp } from "@/components/Providers";
 import { Loading, PageTitle, ServiceError } from "@/components/Shared";
 import { difficultyColor, filterProblems } from "@/lib/domain";
+
+function compareSourcesNewestFirst(a: string, b: string) {
+  const parse = (source: string) => {
+    const match = source.match(/\b(Spring|Fall)\s+(\d{4})\b/i);
+    return match
+      ? { season: match[1].toLowerCase(), year: Number(match[2]) }
+      : null;
+  };
+  const left = parse(a);
+  const right = parse(b);
+  if (left && right) {
+    return (
+      right.year - left.year ||
+      Number(right.season === "fall") - Number(left.season === "fall")
+    );
+  }
+  if (left) return -1;
+  if (right) return 1;
+  return a.localeCompare(b);
+}
+
 export default function Problems() {
   const { problems, activity, bookmark, loading, error } = useApp();
   const [filters, setFilters] = useState<Record<string, string>>({}),
@@ -31,6 +52,9 @@ export default function Problems() {
     activity.practice,
     activity.bookmarks,
   );
+  const sources = [...new Set(problems.map((p) => p.contest_name))].sort(
+    compareSourcesNewestFirst,
+  );
   return (
     <main className="mx-auto max-w-7xl px-5 py-10">
       <PageTitle
@@ -55,7 +79,7 @@ export default function Problems() {
           [
             "source",
             "Source",
-            [...new Set(problems.map((p) => p.contest_name))],
+            sources,
           ],
           ["status", "Status", ["solved", "attempted", "unsolved"]],
           ["sort", "Sort", ["rating", "difficulty", "title", "source"]],
