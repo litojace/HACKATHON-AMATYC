@@ -36,7 +36,7 @@ export function RankText({ children, rating, featured = false }: {
         </span>
       )}
       {featured && (effect === "grandmaster" || effect === "legend") && (
-        <span className={`rank-symbols ${effect === "legend" ? "rank-orbit" : ""}`} aria-hidden="true">
+        <span className="rank-symbols rank-orbit" aria-hidden="true">
           <span>π</span><span>✦</span><span>Σ</span>
         </span>
       )}
