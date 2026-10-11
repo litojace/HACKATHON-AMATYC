@@ -14,7 +14,7 @@
 }
 :root {
   color-scheme: dark;
-  --ink: #0e0d0b;
+  --ink: #0b0b0a;
   --accent: #f15a29;
   --panel: #1a1713;
   --edge: #504638;
@@ -92,15 +92,31 @@ select {
     color: var(--muted);
   }
   .btn {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold transition;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-5 pt-[11px] pb-[13px] text-sm font-semibold transition;
     color: #261509;
     &:hover { background: var(--accent-hover); }
   }
   .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-panel px-5 py-3 text-sm transition hover:border-emerald-500;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-edge bg-panel px-5 pt-[11px] pb-[13px] text-sm transition hover:border-emerald-500;
   }
   .field {
     @apply w-full min-h-11 rounded-lg border border-edge bg-ink px-4 py-3 text-sm;
+  }
+  /* Center single-line text, with a small optical adjustment for Inter's baseline. */
+  input.field:not([type="file"]):not([type="range"]):not([type="color"]),
+  select.field:not([multiple]):not([size]) {
+    @apply h-12 leading-5;
+    padding-top: 0;
+    padding-bottom: 2px;
+  }
+  /* Native select rendering ignores line-height in some browsers. */
+  select.field:not([multiple]):not([size]) {
+    appearance: none;
+    padding-right: 2.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23c3b8a3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
