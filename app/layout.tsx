@@ -36,7 +36,7 @@ export default function RootLayout({
                     AMATYC Arena
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
-                    Build to push your limits
+                    Built To Push Your Limits
                   </p>
                 </div>
               </div>
