@@ -51,10 +51,6 @@ export default function Home() {
               Explore Contests
             </Link>
           </div>
-          <p data-home-entrance className="mt-5 text-xs muted">
-            Browse freely · Learn at your pace · Ratings stay separate from
-            practice
-          </p>
         </div>
         <div data-home-entrance className="relative z-10 min-w-0">
           <HomeCommunityGallery />
