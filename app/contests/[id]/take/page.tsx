@@ -10,10 +10,11 @@ import { AccountGate, Loading } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
 import Dialog from "@/components/ui/Dialog";
 export default function Take() {
+  const {user}=useApp();
   return (
     <main className="mx-auto max-w-7xl px-5 py-8">
       <AccountGate requireAuth>
-        <Exam />
+        <Exam key={user?.id} />
       </AccountGate>
     </main>
   );
@@ -28,13 +29,21 @@ function Exam() {
     [offset, setOffset] = useState(0),
     [confirm, setConfirm] = useState(false),
     [error, setError] = useState(""),
+    [saveError,setSaveError] = useState(false),
     [busy, setBusy] = useState(false);
   const pending = useRef(false),
     current = useRef<ExamAttempt | null>(null);
+  const queue = useRef(new Map<string,{answer:Answer|null;flagged:boolean}>());
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sending = useRef(false);
+  const saveVersion = useRef(0);
+  useEffect(()=>()=>{if(saveTimer.current)clearTimeout(saveTimer.current);},[]);
   const apply = useCallback(
     (a: ExamAttempt) => {
-      current.current = a;
-      setAttempt(a);
+      const merged = {...a,answers:{...a.answers},flags:[...a.flags]};
+      for(const [pid,entry] of queue.current){merged.answers[pid]=entry.answer;merged.flags=merged.flags.filter(id=>id!==pid);if(entry.flagged)merged.flags.push(pid);}
+      current.current = merged;
+      setAttempt(merged);
       setOffset(Date.parse(a.server_now) - Date.now());
       if (a.status === "finalized") {
         saveExam(a);
@@ -92,8 +101,9 @@ function Exam() {
     if (!attemptId) return;
     const poll = setInterval(() => {
       if (pending.current) return;
+      const version=saveVersion.current;
       api<ExamAttempt>("attempts/" + attemptId)
-        .then(apply)
+        .then(a=>{if(version===saveVersion.current&&!pending.current)apply(a);})
         .catch((e) => notify(e.message));
     }, 15000);
     return () => clearInterval(poll);
@@ -105,7 +115,7 @@ function Exam() {
       status === "active" &&
       now > retryAt.current &&
       remainingSeconds(deadline, now + offset) === 0 &&
-      !pending.current
+      !pending.current && !saveError
     ) {
       pending.current = true;
       api<ExamAttempt>("attempts/" + attemptId + "/finish", {})
@@ -118,7 +128,7 @@ function Exam() {
           pending.current = false;
         });
     }
-  }, [now, attemptId, deadline, status, offset, apply, notify]);
+  }, [now, attemptId, deadline, status, offset, apply, notify,saveError]);
   useEffect(() => {
     if (status !== "active") return;
     function leave(e: BeforeUnloadEvent) {
@@ -128,33 +138,33 @@ function Exam() {
     window.addEventListener("beforeunload", leave);
     return () => window.removeEventListener("beforeunload", leave);
   }, [status]);
-  async function save(answer: Answer | null, flagged?: boolean) {
+  async function drain() {
+    const a=current.current;
+    if(!a||sending.current)return;
+    sending.current=true;pending.current=true;setBusy(true);setSaveError(false);
+    try {
+      while(queue.current.size){
+        const [pid,entry]=queue.current.entries().next().value!;
+        queue.current.delete(pid);
+        try{apply(await api<ExamAttempt>("attempts/"+a.id,{problem_id:pid,answer:entry.answer,flagged:entry.flagged},"PATCH"));}
+        catch(e){if(!queue.current.has(pid))queue.current.set(pid,entry);setSaveError(true);notify("Answer was not saved. Retry saving before submitting. "+(e as Error).message);break;}
+      }
+    } finally {sending.current=false;pending.current=false;setBusy(false);}
+  }
+  function save(answer: Answer | null, flagged?: boolean) {
     const a = current.current;
-    if (!a || pending.current) return;
+    if (!a || a.status!=="active") return;
+    saveVersion.current++;
     pending.current = true;
     setBusy(true);
     const pid = a.questions[index].id;
-    try {
-      apply(
-        await api<ExamAttempt>(
-          "attempts/" + a.id,
-          {
-            problem_id: pid,
-            answer,
-            flagged: flagged ?? a.flags.includes(pid),
-          },
-          "PATCH",
-        ),
-      );
-    } catch (e) {
-      notify("Answer was not saved. " + (e as Error).message);
-    } finally {
-      pending.current = false;
-      setBusy(false);
-    }
+    queue.current.set(pid,{answer,flagged:flagged??a.flags.includes(pid)});
+    apply({...a,server_now:new Date(Date.now()+offset).toISOString()});
+    if(saveTimer.current)clearTimeout(saveTimer.current);
+    saveTimer.current=setTimeout(()=>void drain(),a.questions[index].answer_format==='short_answer'?400:0);
   }
   async function finish() {
-    if (!attempt || pending.current) return;
+    if (!attempt || pending.current || queue.current.size) return;
     pending.current = true;
     setBusy(true);
     try {
@@ -190,7 +200,7 @@ function Exam() {
           Question {index + 1} / {attempt.questions.length}
         </h1>
         <p className="text-xs muted">
-          {busy ? "Saving…" : "All changes saved"} · Server-timed exam
+          {saveError ? "Unsaved answers" : busy ? "Saving…" : "All changes saved"} · Server-timed exam
         </p>
       </div>
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_280px]">
@@ -201,10 +211,10 @@ function Exam() {
             exam
             answer={attempt.answers[p.id]}
             onAnswer={(answer) => save(answer)}
-            locked={busy || remaining === 0}
-            onPrevious={index > 0 ? () => setIndex(index - 1) : undefined}
+            locked={remaining === 0}
+            onPrevious={index > 0 && !busy ? () => setIndex(index - 1) : undefined}
             onNext={
-              index + 1 < attempt.questions.length
+              index + 1 < attempt.questions.length && !busy
                 ? () => setIndex(index + 1)
                 : undefined
             }
@@ -219,6 +229,8 @@ function Exam() {
             <Flag size={16} />
             {attempt.flags.includes(p.id) ? "Remove flag" : "Flag for review"}
           </button>
+          {saveError && <button className="btn-secondary mt-4" disabled={busy} onClick={()=>void drain()}>Retry saving answers</button>}
+          {index === attempt.questions.length - 1 && <button className="btn ml-3 mt-4" disabled={busy || saveError || remaining === 0} onClick={() => setConfirm(true)}>Submit contest</button>}
         </div>
         <aside className="panel p-5 lg:sticky lg:top-28">
           <div
@@ -236,7 +248,7 @@ function Exam() {
             {answered} answered · {attempt.questions.length - answered} blank ·{" "}
             {attempt.flags.length} flagged
           </p>
-          <div className="grid grid-cols-5 gap-2">
+          <nav aria-label="Contest questions" className="max-h-80 space-y-2 overflow-y-auto pr-1">
             {attempt.questions.map((q, i) => (
               <button
                 key={q.id}
@@ -244,20 +256,12 @@ function Exam() {
                 aria-label={`Question ${i + 1}${attempt.flags.includes(q.id) ? ", flagged" : ""}`}
                 aria-current={i === index ? "step" : undefined}
                 onClick={() => setIndex(i)}
-                className={`min-h-11 rounded-lg border text-xs font-mono ${i === index ? "border-emerald-500 text-emerald-400" : attempt.flags.includes(q.id) ? "border-amber-400 text-amber-400" : attempt.answers[q.id] ? "border-emerald-500/30 bg-emerald-500/10" : "border-edge muted"}`}
+                className={`flex min-h-11 w-full items-center justify-between rounded-lg border px-3 text-sm ${i === index ? "border-emerald-500 text-emerald-400" : attempt.flags.includes(q.id) ? "border-amber-400 text-amber-400" : attempt.answers[q.id] ? "border-emerald-500/30 bg-emerald-500/10" : "border-edge muted"}`}
               >
-                {i + 1}
-                {attempt.flags.includes(q.id) ? " ⚑" : ""}
+                <span>Question {i + 1}</span><span className="text-xs">{attempt.flags.includes(q.id) ? "⚑ " : ""}{attempt.answers[q.id] ? "Answered" : "Blank"}</span>
               </button>
             ))}
-          </div>
-          <button
-            className="btn mt-6 w-full"
-            disabled={busy}
-            onClick={() => setConfirm(true)}
-          >
-            Submit Exam
-          </button>
+          </nav>
           <p className="mt-4 text-xs muted">
             Green: answered · Amber: flagged. Answers remain editable until
             finalization.

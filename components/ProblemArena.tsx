@@ -286,7 +286,7 @@ export default function ProblemArena({
           </div>
         )}
         <div className="mt-6 flex flex-wrap gap-3">
-          {!result && !locked && (
+          {!exam && !result && !locked && (
             <button
               onClick={() => choose(null)}
               className="btn-secondary"
@@ -325,7 +325,7 @@ export default function ProblemArena({
           )}
           {onNext && (
             <button onClick={onNext} className="btn-secondary" disabled={busy}>
-              Next problem
+              {exam ? "Next" : "Next problem"}
               <ArrowRight size={15} />
             </button>
           )}

@@ -76,8 +76,8 @@ export default function Overview() {
           )}
           {contest.kind === "rated" && (
             <p className="mb-5 text-amber-400">
-              AMATYC Arena Rating — Beta. Automatic rating updates are disabled.
-              Solutions unlock at the configured review time.
+              {contest.rating_enabled ? "Ratings update 15 minutes after this event closes." : "This event does not update ratings."}
+              {" "}Solutions unlock at {contest.review_at ? new Date(contest.review_at).toLocaleString() : "the configured review time"}.
             </p>
           )}
           {authLoading ? <Loading /> : !user ? (

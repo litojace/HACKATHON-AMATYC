@@ -65,6 +65,10 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/008_avatar_upload_limit.sql`
    - `supabase/migrations/009_remove_demonstration_set.sql`
    - `supabase/migrations/010_home_carousel.sql`
+   - `supabase/migrations/011_admin_problems.sql`
+   - `supabase/migrations/012_admin_problem_delete.sql`
+   - `supabase/migrations/013_delete_problems_preserve_history.sql`
+   - `supabase/migrations/014_admin_contests.sql`
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
 4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
@@ -93,7 +97,7 @@ Default AMATYC-style scores are +2 correct, −0.5 wrong, and 0 blank. A 20-ques
 
 **AMATYC Arena Rating — Beta** implements the specified seed/geometric-rank/performance-search/raw-delta/population-shift variant. It is not the official full Codeforces algorithm: top-participant correction and official new-participant handling are not independently verified. Ties receive shared last-place rank in the provisional module. New users start at 800 and receive no special adjustment; tiny/empty fields are tested, with singletons unchanged. The shift is not strictly zero-sum; floor clamping can change total deltas.
 
-Codeforces rank thresholds and colors (including Expert blue) are defined in `lib/rating.ts`. The database enforces `rating_enabled=false`; there is no automatic rating publisher or client rating update endpoint. Historical mocks and practice never change ratings or rated participation counts. `rating_history` is reserved for audited organizer transactions after a separately verified policy is enabled. Scheduled contests specify event windows, review time, ranking/tie/participation policy fields, and one attempt per competitor; eligibility lists and public rated scoring/rating publication require additional organizer tooling. Do not claim asynchronous demos are official synchronized competitions.
+Codeforces rank thresholds and colors (including Expert blue) are defined in `lib/rating.ts`. Migration 014 enables admin-created rated events with one attempt per competitor. The Supabase Cron job processes ratings 15 minutes after closing using the same provisional algorithm, with atomic profile/history updates and duplicate-batch protection. Historical mocks and practice never change ratings or rated participation counts. Clients cannot write ratings or execute rating batches. See [admin contest setup](docs/admin-contests.md) to enable the scheduler.
 
 ## Testing
 
@@ -158,3 +162,5 @@ No GitHub push, Vercel/Render deployment, or cloud publication is performed auto
 Migration 009 permanently removes the redundant Original Demonstration Set, its mock contest, and their associated activity. The seed now imports only the 820 historical questions and 42 historical contests. Demo source files remain as development fixtures.
 
 Migration 011 enables admin problem creation and editing at `/admin/problems`, using the admin membership established by migration 010. See [admin editor setup](docs/admin-problems.md) for permissions, publication and revision rules.
+
+Migration 014 adds scheduled admin contests, private question snapshots, participant monitoring and delayed rating batches. Run `supabase/contest_scheduler.sql` to enable the background job. See [admin contest setup](docs/admin-contests.md).

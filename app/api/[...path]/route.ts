@@ -8,6 +8,7 @@ import {
 import { database, databaseConfigured } from "@/lib/server/database";
 import { carouselSchema, defaultCarouselPhotos } from "@/lib/carousel";
 import { adminProblemSchema } from "@/lib/admin-problems";
+import { adminContestSchema } from "@/lib/admin-contests";
 import {
   practiceSchema,
   saveAnswerSchema,
@@ -128,6 +129,21 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "admin" && id === "contests") {
+      if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage contests.",403);
+      if (method === "GET") return NextResponse.json(await query(db.rpc("admin_contest_records",{cid:action ?? null})),{headers:{"Cache-Control":"private, no-store"}});
+      if (method === "POST") {
+        const {data,error:contestError} = action
+          ? await db.rpc("admin_publish_contest",{cid:action})
+          : await db.rpc("admin_create_contest",{record:adminContestSchema.parse(await req.json())});
+        if (contestError) {
+          if (/^(Choose |Every contest|Selected problem|The start time|Contest not found|Invalid contest|Contest question)/.test(contestError.message)) return error(contestError.message,422);
+          throw new Error(contestError.message);
+        }
+        return NextResponse.json(data,{status:action?200:201,headers:{"Cache-Control":"private, no-store"}});
+      }
+      return error("Method not allowed",405);
+    }
     if (resource === "admin" && id === "problems") {
       if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage problems.", 403);
       if (method === "DELETE" && action) {

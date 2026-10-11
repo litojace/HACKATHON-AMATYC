@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function AdminProblemActions({problemId, profileUserId}: {problemId?: string; profileUserId?: string}) {
+export default function AdminProblemActions({problemId, profileUserId, contests = false}: {problemId?: string; profileUserId?: string;contests?:boolean}) {
   const { user, authLoading } = useApp();
   const [adminId, setAdminId] = useState<string | null>(null);
   useEffect(() => {
@@ -19,7 +19,9 @@ export default function AdminProblemActions({problemId, profileUserId}: {problem
   if (profileUserId) return <nav aria-label="Admin management" className="mt-6 flex flex-wrap gap-3 border-t border-edge pt-6">
     <Link className="btn-secondary" href="/admin/carousel">Manage carousel</Link>
     <Link className="btn-secondary" href="/admin/problems">Manage problems</Link>
+    <Link className="btn-secondary" href="/admin/contests">Manage contests</Link>
   </nav>;
+  if (contests) return <div className="my-4 flex flex-wrap gap-3"><Link className="btn-secondary" href="/admin/contests">Manage contests</Link><Link className="btn" href="/admin/contests/new">Create contest</Link></div>;
   return <div className="my-4 flex flex-wrap gap-3">
     {problemId ? <Link className="btn-secondary" href={"/admin/problems/" + encodeURIComponent(problemId)}>Edit problem</Link> : <Link className="btn-secondary" href="/admin/problems">Manage problems</Link>}
     <Link className="btn" href="/admin/problems/new">Create problem</Link>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 import { api } from "@/lib/client";
-import type { ExamAttempt } from "@/types/problem";
+import type { ExamAttempt,Contest } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
@@ -20,7 +20,8 @@ export default function Results() {
 }
 function Content() {
   const { id } = useParams<{ id: string }>(),
-    { activity, demo } = useApp();
+    { activity, demo,refreshAccount } = useApp();
+  const [contest,setContest]=useState<Contest|null>(null);
   const [result, setResult] = useState<ExamAttempt | null>(null),
     [error, setError] = useState(""),
     [review, setReview] = useState<number | null>(null);
@@ -44,6 +45,22 @@ function Content() {
       })
       .catch((e) => { if (!local) setError(e.message); });
   }, [demo, activity.contests]);
+  const keepRefreshingRatings = !contest || contest.kind==='rated'&&contest.rating_enabled&&!contest.ratings_processed_at;
+  useEffect(()=>{
+    let active=true;
+    async function refresh(){
+      try{const c=await api<Contest>("contests/"+id);if(active){setContest(c);if(c.ratings_processed_at)await refreshAccount();}}catch{/* Keep the loaded result readable during a temporary outage. */}
+    }
+    void refresh();
+    const timer=setInterval(()=>{if(keepRefreshingRatings)void refresh();},30000);
+    return()=>{active=false;clearInterval(timer);};
+  },[id,keepRefreshingRatings,refreshAccount]);
+  useEffect(()=>{
+    if(!result?.id||result.breakdown?.length)return;
+    let active=true;
+    const timer=setInterval(()=>{api<ExamAttempt>("attempts/"+result.id).then(a=>{if(active)setResult(a);}).catch(()=>{});},30000);
+    return()=>{active=false;clearInterval(timer);};
+  },[result?.id,result?.breakdown?.length]);
   if (error)
     return (
       <div className="panel p-8">
@@ -96,6 +113,7 @@ function Content() {
           </div>
         ))}
       </div>
+      {contest?.rating_enabled&&<p className="panel mb-6 p-5 text-sm">{contest.ratings_processed_at?"Ratings have been updated. Your profile now shows the new rating.":"Ratings will update 15 minutes after this contest closes, from "+new Date(contest.review_at!).toLocaleString()+". This page refreshes automatically."}</p>}
       {!breakdown.length ? (
         <p className="panel p-8 muted">
           Solutions and the detailed breakdown are withheld until this event’s

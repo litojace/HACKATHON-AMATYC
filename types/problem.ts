@@ -89,6 +89,7 @@ export interface Contest {
   ends_at: string | null;
   review_at: string | null;
   rating_enabled: boolean;
+  ratings_processed_at?: string | null;
 }
 export interface ExamAttempt {
   id: string;

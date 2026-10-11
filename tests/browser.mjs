@@ -29,6 +29,13 @@ try {
   await page.goto(base + "/problems");
   await page.getByRole("heading", {name: "Find your next breakthrough."}).waitFor();
   assert.equal(await page.getByRole("link", {name:"Create problem",exact:true}).count(),0);
+  for(const path of ["/admin/contests","/admin/contests/new","/admin/contests/test"]){
+    await page.goto(base+path);
+    await page.getByRole("heading",{name:"Sign in to manage contests."}).waitFor();
+  }
+  for(const [path,method] of [["admin/contests","GET"],["admin/contests","POST"],["admin/contests/test","GET"],["admin/contests/test","POST"]]){
+    assert.equal((await page.request.fetch(base+"/api/"+path,{method,...(method==="POST"?{data:{}}:{})})).status(),401);
+  }
   for (const path of ["/admin/problems", "/admin/problems/new", "/admin/problems/"+problem.id]) {
     await page.goto(base+path);
     await page.getByRole("heading", {name:"Sign in to manage problems."}).waitFor();

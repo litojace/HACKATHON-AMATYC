@@ -6,6 +6,7 @@ import { api } from "@/lib/client";
 import type { Contest } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { Loading, PageTitle } from "@/components/Shared";
+import AdminProblemActions from "@/components/AdminProblemActions";
 export default function Contests() {
   const { activity } = useApp();
   const [contests, setContests] = useState<Contest[]>([]),
@@ -24,6 +25,7 @@ export default function Contests() {
         title="Practice with purpose."
         description="Historical exams and original mocks are unrated. Competitive events follow their own schedule and rules."
       />
+      <AdminProblemActions contests />
       {loading ? (
         <Loading />
       ) : error ? (

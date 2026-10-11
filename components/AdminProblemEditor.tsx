@@ -10,11 +10,12 @@ import { useApp } from "./Providers";
 import { AccountGate, Loading, PageTitle } from "./Shared";
 import MathRenderer from "./MathRenderer";
 
-export default function AdminProblemEditor({problemId}: {problemId?: string}) {
+export default function AdminProblemEditor({problemId,embedded=false,onSaved}: {problemId?: string;embedded?:boolean;onSaved?:(problem:AdminProblem)=>void}) {
   const {user} = useApp();
-  return <main className="mx-auto max-w-5xl px-5 py-10"><AccountGate requireAuth title="Sign in to manage problems." description="Only administrators can create and edit problems."><Editor key={user?.id} problemId={problemId} /></AccountGate></main>;
+  const content = <AccountGate requireAuth title="Sign in to manage problems." description="Only administrators can create and edit problems."><Editor key={user?.id} problemId={problemId} onSaved={onSaved} /></AccountGate>;
+  return embedded ? <div className="py-5">{content}</div> : <main className="mx-auto max-w-5xl px-5 py-10">{content}</main>;
 }
-function Editor({problemId}: {problemId?: string}) {
+function Editor({problemId,onSaved}: {problemId?: string;onSaved?:(problem:AdminProblem)=>void}) {
   const router = useRouter();
   const {reload,notify} = useApp();
   const [problem,setProblem] = useState<AdminProblem>(emptyAdminProblem);
@@ -73,7 +74,8 @@ function Editor({problemId}: {problemId?: string}) {
       setTagsText(saved.topic_tags.join(", ")); setAcceptedText((saved.accepted_answers ?? [saved.correct_answer]).join("\n"));
       await reload();
       notify(saved.publication_status === "published" ? "Problem published." : "Draft saved.");
-      router.replace("/admin/problems/" + encodeURIComponent(saved.id));
+      if (onSaved) onSaved(saved);
+      else router.replace("/admin/problems/" + encodeURIComponent(saved.id));
     } catch (e) { setMessage((e as Error).message); }
     finally { setBusy(false); }
   }
