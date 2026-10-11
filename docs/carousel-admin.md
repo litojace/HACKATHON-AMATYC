@@ -22,4 +22,4 @@ delete from public.site_admins where user_id=(select id from auth.users where lo
 
 Without Supabase configured, the homepage continues to show the bundled gallery and the editor requires authentication. If loading the published gallery fails, the bundled gallery remains visible; the editor reports setup or permission errors.
 
-Each photo has a Time on screen (seconds) control, from 1 to 30 seconds. Existing photos default to 2.5 seconds. Save changes to publish timing for all visitors. Transitions slide from right to left over 0.8 seconds; reduced-motion preferences disable animation and autoplay. Timing is stored with each photo, so no additional database migration is needed.
+The carousel has one Time between slides (seconds) control, from 1 to 30 seconds. Existing photos default to 2.5 seconds. Save changes to publish timing for all visitors. Transitions slide from right to left over 0.8 seconds; reduced-motion preferences disable animation and autoplay. One shared duration applies to all photos, so no additional database migration is needed.

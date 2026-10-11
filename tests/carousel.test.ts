@@ -19,3 +19,8 @@ test("carousel timing defaults and supported durations", () => {
   assert.equal(carouselSchema.parse([{...photo, duration_seconds: 5}])[0].duration_seconds, 5);
   for (const duration_seconds of [0, 31, "5", null]) assert.equal(carouselSchema.safeParse([{...photo, duration_seconds}]).success, false);
 });
+
+test("carousel applies one timing to every slide", () => {
+ const photo = defaultCarouselPhotos[0];
+ assert.deepEqual(carouselSchema.parse([{...photo, duration_seconds: 4}, {...photo, duration_seconds: 8}]).map(p => p.duration_seconds), [4, 4]);
+});

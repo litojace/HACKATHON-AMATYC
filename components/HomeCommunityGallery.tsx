@@ -61,15 +61,16 @@ export default function HomeCommunityGallery() {
     return () => { active = false; setAdminUserId(null); };
   }, [user, authLoading]);
   const photo = photos[activePhoto];
+  const slideDuration = photos[0]?.duration_seconds ?? 2.5;
   useEffect(() => {
     if (photos.length < 2 || !readyPhotos.has(activePhoto) || paused || hovered || focused) return;
     const timer = window.setInterval(() => {
       if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const next = (activePhoto + 1) % photos.length;
       if (readyPhotos.has(next)) { setPreviousPhoto(activePhoto); setActivePhoto(next); }
-    }, (photo?.duration_seconds ?? 2.5) * 1000);
+    }, slideDuration * 1000);
     return () => window.clearInterval(timer);
-  }, [activePhoto, photos.length, paused, hovered, focused, readyPhotos, photo?.duration_seconds]);
+  }, [activePhoto, photos.length, paused, hovered, focused, readyPhotos, slideDuration]);
   useEffect(() => {
     const strip = thumbnailStrip.current;
     const selected = strip?.children[activePhoto] as HTMLElement | undefined;

@@ -21,7 +21,7 @@ function Editor() {
   useEffect(() => {
     let active = true;
     api<CarouselPhoto[]>("admin/carousel").then(data => {
-      if (active) { setPhotos(data); setBaseline(JSON.stringify(data)); }
+      if (active) { const normalized = carouselSchema.parse(data); setPhotos(normalized); setBaseline(JSON.stringify(normalized)); }
     }).catch(e => { if (active) setError(e.message); }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, []);
@@ -67,6 +67,16 @@ function Editor() {
   return <>
     <PageTitle eyebrow="ADMINISTRATION" title="Edit homepage carousel" description="Upload or replace photos, edit captions, and arrange their order. Save changes to publish." />
     <fieldset disabled={busy} className="space-y-5">
+      <section className="panel p-5">
+        <label className="block text-sm">Time between slides (seconds)
+          <input type="number" min="1" max="30" step="0.5" className="field mt-2 sm:max-w-48" value={photos[0]?.duration_seconds ?? 2.5} onChange={e => {
+            const duration = e.target.valueAsNumber;
+            setPhotos(previous => previous.map(photo => ({...photo, duration_seconds: duration})));
+            setMessage("");
+          }} />
+        </label>
+        <p className="mt-2 text-xs muted">Applies to the whole carousel. Save changes to publish.</p>
+      </section>
       {photos.map((photo, index) => <section key={index} className="panel p-5">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h2 className="font-semibold">Image {index + 1}</h2><div className="flex gap-2">
           <button type="button" className="btn-secondary" disabled={index === 0} onClick={() => move(index, -1)} aria-label={`Move image ${index + 1} up`}>↑</button>
@@ -80,13 +90,12 @@ function Editor() {
             <label className="block text-sm">Image URL<input className="field mt-2" value={photo.src} onChange={e => update(index, {src: e.target.value})} /></label>
             <label className="block text-sm">Caption<input className="field mt-2" maxLength={80} value={photo.label} onChange={e => update(index, {label: e.target.value})} /></label>
             <label className="block text-sm">Image description<input className="field mt-2" maxLength={240} value={photo.alt} onChange={e => update(index, {alt: e.target.value})} /></label>
-            <label className="block text-sm">Time on screen (seconds)<input type="number" min="1" max="30" step="0.5" className="field mt-2" value={photo.duration_seconds ?? 2.5} onChange={e => update(index, {duration_seconds: e.target.valueAsNumber})} /></label>
             <label className="block text-sm">Display<select className="field mt-2" value={photo.fit} onChange={e => update(index, {fit: e.target.value as CarouselPhoto["fit"]})}><option value="cover">Fill frame</option><option value="contain">Show whole image</option></select></label>
           </div>
         </div>
       </section>)}
       <div className="flex flex-wrap gap-3">
-        <button type="button" className="btn-secondary" disabled={photos.length >= 10} onClick={() => setPhotos(previous => [...previous, {src: "", label: "", alt: "", fit: "cover"}])}>Add image</button>
+        <button type="button" className="btn-secondary" disabled={photos.length >= 10} onClick={() => setPhotos(previous => [...previous, {src: "", label: "", alt: "", fit: "cover", duration_seconds: previous[0]?.duration_seconds ?? 2.5}])}>Add image</button>
         <button type="button" className="btn" disabled={!changed} onClick={save}>Save changes</button>
         <button type="button" className="btn-secondary" disabled={!changed} onClick={() => { setPhotos(JSON.parse(baseline)); setMessage(""); }}>Discard changes</button>
         <Link className="btn-secondary" href="/" target="_blank">View homepage</Link>
