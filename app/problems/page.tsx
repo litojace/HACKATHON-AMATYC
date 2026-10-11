@@ -5,6 +5,7 @@ import { Bookmark, Search, CheckCircle2, RotateCw } from "lucide-react";
 import { useApp } from "@/components/Providers";
 import { Loading, PageTitle, ServiceError } from "@/components/Shared";
 import { difficultyColor, filterProblems } from "@/lib/domain";
+import AdminProblemActions from "@/components/AdminProblemActions";
 
 function compareSourcesNewestFirst(a: string, b: string) {
   const parse = (source: string) => {
@@ -77,6 +78,7 @@ export default function Problems() {
         title="Find your next breakthrough."
         description="Browse by topic, difficulty, and source. Build understanding one problem at a time."
       />
+      <AdminProblemActions />
       <div className="panel mb-6 grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
         <label className="flex items-center gap-2">
           <Search size={16} />

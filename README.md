@@ -156,3 +156,5 @@ Build args `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` embed 
 No GitHub push, Vercel/Render deployment, or cloud publication is performed automatically. Review and commit the files, then deploy using your own accounts. The pre-upgrade app is preserved as `AMATYC-Code-v1.zip` outside the checkout.
 
 Migration 009 permanently removes the redundant Original Demonstration Set, its mock contest, and their associated activity. The seed now imports only the 820 historical questions and 42 historical contests. Demo source files remain as development fixtures.
+
+Migration 011 enables admin problem creation and editing at `/admin/problems`, using the admin membership established by migration 010. See [admin editor setup](docs/admin-problems.md) for permissions, publication and revision rules.

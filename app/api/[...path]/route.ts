@@ -7,6 +7,7 @@ import {
 } from "@/lib/server/data";
 import { database, databaseConfigured } from "@/lib/server/database";
 import { carouselSchema, defaultCarouselPhotos } from "@/lib/carousel";
+import { adminProblemSchema } from "@/lib/admin-problems";
 import {
   practiceSchema,
   saveAnswerSchema,
@@ -127,6 +128,24 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "admin" && id === "problems") {
+      if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage problems.", 403);
+      if (method === "GET") {
+        const data = await query(db.rpc("admin_problem_records", {pid:action ?? null}));
+        return NextResponse.json(data, {headers:{"Cache-Control":"private, no-store"}});
+      }
+      if ((method === "POST" && !action) || (method === "PUT" && action)) {
+        const record = adminProblemSchema.parse(await req.json());
+        if (action && record.id !== action) return error("Problem ID cannot be changed.", 422);
+        const {data,error:saveError} = await db.rpc("admin_save_problem", {problem_record:record,create_new:method === "POST"});
+        if (saveError) {
+          if (/^(This problem has attempts|Problem ID already exists|Problem not found|Publication requires)/.test(saveError.message)) return error(saveError.message,409);
+          throw new Error(saveError.message);
+        }
+        return NextResponse.json(data, {status:method === "POST" ? 201 : 200,headers:{"Cache-Control":"private, no-store"}});
+      }
+      return error("Method not allowed",405);
+    }
     if (resource === "admin" && id === "carousel") {
       const isAdmin = await query(db.rpc("is_site_admin"));
       if (!isAdmin) return error("Only administrators can edit the carousel.", 403);
