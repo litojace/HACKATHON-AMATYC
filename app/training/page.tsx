@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Clock3, RotateCcw } from "lucide-react";
 import type { Answer, PracticeResult, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
+import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 
 const durations = [15, 30, 60];
 const counts = [5, 10, 20];
@@ -130,6 +131,7 @@ export default function Training() {
 
   return (
     <main className="mx-auto max-w-5xl px-5 py-10">
+      <LeaveSessionGuard active={session.length > 0 && !finished} kind="training" />
       <PageTitle
         eyebrow="TIMED PRACTICE"
         title="Train under pressure."

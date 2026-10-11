@@ -4,10 +4,12 @@ export default function Dialog({
   title,
   onClose,
   children,
+  closeLabel = "Close",
 }: {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  closeLabel?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function Dialog({
         <h2 className="mb-5 text-xl font-semibold">{title}</h2>
         {children}
         <button className="btn-secondary mt-5" onClick={onClose}>
-          Close
+          {closeLabel}
         </button>
       </div>
     </div>

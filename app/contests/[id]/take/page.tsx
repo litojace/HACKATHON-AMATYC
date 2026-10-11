@@ -9,6 +9,7 @@ import { useApp } from "@/components/Providers";
 import { AccountGate, Loading } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
 import Dialog from "@/components/ui/Dialog";
+import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 export default function Take() {
   const {user}=useApp();
   return (
@@ -129,15 +130,6 @@ function Exam() {
         });
     }
   }, [now, attemptId, deadline, status, offset, apply, notify,saveError]);
-  useEffect(() => {
-    if (status !== "active") return;
-    function leave(e: BeforeUnloadEvent) {
-      e.preventDefault();
-      e.returnValue = "";
-    }
-    window.addEventListener("beforeunload", leave);
-    return () => window.removeEventListener("beforeunload", leave);
-  }, [status]);
   async function drain() {
     const a=current.current;
     if(!a||sending.current)return;
@@ -195,6 +187,7 @@ function Exam() {
     remaining = remainingSeconds(attempt.deadline, now + offset);
   return (
     <>
+      <LeaveSessionGuard active={status === "active"} kind="contest" />
       <div className="mb-5 flex justify-between">
         <h1 className="text-xl font-semibold">
           Question {index + 1} / {attempt.questions.length}
