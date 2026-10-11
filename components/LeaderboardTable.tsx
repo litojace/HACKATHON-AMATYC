@@ -47,7 +47,7 @@ export default function LeaderboardTable({
                 </td>
                 <td className="p-4">
                   <Link
-                    className={`font-medium hover:underline ${tier.color}`}
+                    className={`font-medium ${tier.color}`}
                     href={"/profile/" + p.username}
                   >
                     {p.username}

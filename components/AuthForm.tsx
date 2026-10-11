@@ -234,7 +234,7 @@ export default function AuthForm({
         )}
         <div className="mt-6 space-y-3 text-xs muted">
           {mode !== "login" && (
-            <p>Already registered? <Link className="underline underline-offset-4 hover:text-emerald-400" href="/login">Log in</Link></p>
+            <p>Already registered? <Link className="text-emerald-400 hover:text-emerald-300" href="/login">Log in</Link></p>
           )}
           {mode === "login" && (
             <>
