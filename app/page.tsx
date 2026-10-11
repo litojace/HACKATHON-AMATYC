@@ -32,21 +32,20 @@ export default function Home() {
         </div>
         <div className="home-hero relative z-10">
           <p data-home-entrance className="mb-5 text-xs tracking-widest text-emerald-400">
-            YOUR NEXT BREAKTHROUGH STARTS HERE.
+            THINK BIG. SOLVE SMART. HAVE FUN.
           </p>
           <h1 data-home-entrance className="text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
-            Welcome to AMATYC Arena.
+            Every Problem Is a New Adventure.
             <br />
-            <span className="text-emerald-400">Let’s grow together.</span>
+            <span className="text-emerald-400">How Far Can You Go?</span>
           </h1>
           <p data-home-entrance className="mt-6 max-w-xl leading-7 muted">
-            Whether you’re just getting started or chasing your next challenge,
-            you belong here. Explore AMATYC-style problems, build confidence at
-            your own pace, and enjoy a little friendly competition along the way.
+            Explore fun math challenges, sharpen your problem-solving skills,
+            and see how you stack up against fellow math enthusiasts.
           </p>
           <div data-home-entrance className="mt-7 flex flex-wrap gap-3">
             <Link href="/problems" className="btn">
-              Start Practicing <ArrowRight size={16} />
+              Let’s Solve! <ArrowRight size={16} />
             </Link>
             <Link href="/contests" className="btn-secondary">
               Explore Contests
