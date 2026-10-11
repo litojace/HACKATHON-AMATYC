@@ -19,6 +19,7 @@ test("all historical explanations contain sequential steps and valid math", () =
       if (segment.kind === "text") {
         assert.ok(!/\d\s*\/\s*\d|\w\^|[²³⁰¹⁴⁵⁶⁷⁸⁹⁻√πθ₀-₉ₙ]/.test(segment.value), `Untypeset math: ${question.id}: ${segment.value}`);
         assert.ok(!/\\[A-Za-z]+/.test(segment.value), `Unrendered math command: ${question.id}: ${segment.value}`);
+        assert.ok(!/\b[A-Za-z]+_/.test(segment.value), `Plain-text subscript: ${question.id}: ${segment.value}`);
         continue;
       }
       const formatted = stackedFractions(segment.value);

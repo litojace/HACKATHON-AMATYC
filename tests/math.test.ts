@@ -70,3 +70,13 @@ test("known Supabase explanations receive format fixes while admin edits are ret
   assert.equal(correctedWrittenSolution("amatyc-2024-fall-q01",original+"\nAn admin's custom note."),original+"\nAn admin's custom note.");
   assert.equal(correctedWrittenSolution("custom-question",original),original);
 });
+
+test("both published versions of the speed explanation receive real subscripts", () => {
+  const previous = "1. Alice and Bo start 1000 ft apart along either direction of the track.\n\n2. Walking toward each other gives $v_A+v_B=1000/2=500$.\n\n3. Walking in the same direction, Bo catches Alice in 10 minutes, so $v_B-v_A=1000/10=100$.\n\n4. Solving gives v_A=200 ft/min (D).";
+  const original = previous.replace("$v_A+v_B=1000/2=500$", "v_A+v_B=1000/2=500").replace("$v_B-v_A=1000/10=100$", "v_B−v_A=1000/10=100");
+  for (const text of [previous,original]) {
+    const fixed = correctedWrittenSolution("amatyc-2021-fall-q01",text);
+    assert.ok(fixed.includes("Solving gives $v_A=200$ feet per minute"));
+    assert.ok(mathSegments(fixed).filter(s=>s.kind === "text").every(s=>!/[A-Za-z]_/.test(s.value)));
+  }
+});
