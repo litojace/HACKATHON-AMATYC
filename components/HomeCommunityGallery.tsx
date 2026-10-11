@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/client";
 import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
-import { defaultCarouselPhotos, carouselSchema, type CarouselPhoto } from "@/lib/carousel";
+import { carouselSchema, type CarouselPhoto } from "@/lib/carousel";
 
 
 
@@ -33,20 +33,24 @@ export default function HomeCommunityGallery() {
   const { user, authLoading } = useApp();
   const [adminUserId, setAdminUserId] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
-  const [previousPhoto, setPreviousPhoto] = useState<number | null>(null);
+  const [readyPhotos, setReadyPhotos] = useState<Set<number>>(new Set());
+  const [galleryError, setGalleryError] = useState(false);
+  const [reload, setReload] = useState(0);
   const [paused, setPaused] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [photos, setPhotos] = useState<CarouselPhoto[]>(defaultCarouselPhotos);
+  const [photos, setPhotos] = useState<CarouselPhoto[]>([]);
   const thumbnailStrip = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let active = true;
+    setGalleryError(false);
     api<CarouselPhoto[]>("carousel").then(data => {
       const parsed = carouselSchema.safeParse(data);
-      if (active && parsed.success) { setPhotos(parsed.data); setActivePhoto(0); }
-    }).catch(() => { /* Keep the bundled gallery if the service is unavailable. */ });
+      if (!parsed.success) throw new Error("Invalid carousel");
+      if (active) { setPhotos(parsed.data); setReadyPhotos(new Set()); setActivePhoto(0); }
+    }).catch(() => { if (active) setGalleryError(true); });
     return () => { active = false; };
-  }, []);
+  }, [reload]);
   useEffect(() => {
     if (!user || authLoading || !supabase) return;
     let active = true;
@@ -57,19 +61,14 @@ export default function HomeCommunityGallery() {
   }, [user, authLoading]);
   const photo = photos[activePhoto];
   useEffect(() => {
-    if (photos.length < 2 || paused || hovered || focused) return;
+    if (photos.length < 2 || !readyPhotos.has(activePhoto) || paused || hovered || focused) return;
     const timer = window.setInterval(() => {
       if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      setPreviousPhoto(activePhoto);
-      setActivePhoto((activePhoto + 1) % photos.length);
+      const next = (activePhoto + 1) % photos.length;
+      if (readyPhotos.has(next)) setActivePhoto(next);
     }, 2500);
     return () => window.clearInterval(timer);
-  }, [activePhoto, photos.length, paused, hovered, focused]);
-  useEffect(() => {
-    if (previousPhoto === null) return;
-    const timer = window.setTimeout(() => setPreviousPhoto(null), 450);
-    return () => window.clearTimeout(timer);
-  }, [previousPhoto, activePhoto]);
+  }, [activePhoto, photos.length, paused, hovered, focused, readyPhotos]);
   useEffect(() => {
     const strip = thumbnailStrip.current;
     const selected = strip?.children[activePhoto] as HTMLElement | undefined;
@@ -83,8 +82,7 @@ export default function HomeCommunityGallery() {
 
   function showPhoto(index: number) {
     const next = (index + photos.length) % photos.length;
-    if (next === activePhoto) return;
-    setPreviousPhoto(activePhoto);
+    if (next === activePhoto || !readyPhotos.has(next)) return;
     setActivePhoto(next);
   }
 
@@ -142,19 +140,25 @@ export default function HomeCommunityGallery() {
         {photos.map((item, index) => <div
           key={`${index}-${item.src}`}
           aria-hidden={index !== activePhoto}
-          className={`absolute inset-0 ${index === activePhoto || index === previousPhoto ? "transition-transform duration-[450ms] ease-in-out motion-reduce:transition-none" : ""}`}
-          style={{ transform: `translateX(${index === activePhoto ? 0 : index === previousPhoto ? -100 : 100}%)`, visibility: index === activePhoto || index === previousPhoto ? "visible" : "hidden" }}
+          className="absolute inset-0 transition-opacity duration-[450ms] ease-in-out motion-reduce:transition-none"
+          style={{ opacity: index === activePhoto && readyPhotos.has(index) ? 1 : 0 }}
         >
-          <Image unoptimized loading="eager" src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
+          <Image unoptimized loading="eager" onLoad={async (event) => {
+            const image = event.currentTarget;
+            try { await image.decode(); } catch { /* onLoad confirms the image is available. */ }
+            setReadyPhotos(current => new Set(current).add(index));
+          }} src={item.src} alt={item.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className={item.fit === "contain" ? "object-contain" : "object-cover"} />
         </div>)}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
+        {!readyPhotos.has(activePhoto) && <div className="absolute inset-0 flex items-center justify-center text-sm muted" role="status">{galleryError ? <div className="text-center"><p>Photos could not be loaded.</p><button type="button" className="btn-secondary mt-3" onClick={() => setReload(value => value + 1)}>Retry photos</button></div> : "Loading community photos…"}</div>}
+        {photo && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-4 pb-3 pt-10 text-white">
           <p className="text-sm font-semibold">{photo.label}</p>
           <p className="text-xs text-white/80" aria-live={paused || focused ? "polite" : "off"}>
             {activePhoto + 1} of {photos.length}
           </p>
-        </div>
+        </div>}
         <button
           type="button"
+          disabled={!photo || !readyPhotos.has((activePhoto - 1 + photos.length) % photos.length)}
           onClick={() => showPhoto(activePhoto - 1)}
           aria-label="Show previous photo"
           className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
@@ -163,6 +167,7 @@ export default function HomeCommunityGallery() {
         </button>
         <button
           type="button"
+          disabled={!photo || !readyPhotos.has((activePhoto + 1) % photos.length)}
           onClick={() => showPhoto(activePhoto + 1)}
           aria-label="Show next photo"
           className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/55 text-xl text-white backdrop-blur hover:bg-black/75"
@@ -181,6 +186,7 @@ export default function HomeCommunityGallery() {
           <button
             key={index}
             type="button"
+            disabled={!readyPhotos.has(index)}
             onClick={() => showPhoto(index)}
             aria-label={`Show photo ${index + 1}: ${item.label}`}
             aria-pressed={activePhoto === index}
