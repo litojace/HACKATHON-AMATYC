@@ -45,7 +45,7 @@ export default function RootLayout({
                   href="https://www.instagram.com/mat_occ/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary !min-h-10 !px-3 !py-2 text-xs"
+                  className="social-button social-instagram"
                 >
                   <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -58,7 +58,7 @@ export default function RootLayout({
                   href="https://discord.gg/8xN546mwQ"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary !min-h-10 !px-3 !py-2 text-xs"
+                  className="social-button social-discord"
                 >
                   <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
                     <path d="M19.7 5.2a18 18 0 0 0-4.4-1.4l-.5 1a16.7 16.7 0 0 0-5.6 0l-.5-1a18 18 0 0 0-4.4 1.4C1.5 9.3.7 13.3 1.1 17.3a18 18 0 0 0 5.4 2.7l1.2-2a11 11 0 0 1-1.9-.9l.5-.4a12.8 12.8 0 0 0 11.4 0l.5.4a11 11 0 0 1-1.9.9l1.2 2a18 18 0 0 0 5.4-2.7c.5-4.7-.8-8.6-3.2-12.1ZM8.8 14.7c-1.1 0-2-.9-2-2.1s.9-2.1 2-2.1 2 .9 2 2.1-.9 2.1-2 2.1Zm6.4 0c-1.1 0-2-.9-2-2.1s.9-2.1 2-2.1 2 .9 2 2.1-.9 2.1-2 2.1Z" />

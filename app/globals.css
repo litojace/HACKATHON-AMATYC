@@ -231,3 +231,25 @@ select {
   .home-feature:hover svg { transform: rotate(-6deg) scale(1.08); }
   .home-stat:hover { transform: translateY(-2px); }
 }
+
+.social-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 0.75rem;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 12%);
+  transition: filter 180ms ease, transform 180ms ease;
+}
+.social-instagram { background: linear-gradient(120deg, #a527a1, #bd235c 55%, #b74714); }
+.social-discord { background: linear-gradient(120deg, #5865f2, #454dcc); }
+.social-button:hover { filter: brightness(1.1); }
+@media (prefers-reduced-motion: no-preference) {
+  .social-button:hover { transform: translateY(-2px); }
+}
