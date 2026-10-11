@@ -26,7 +26,7 @@ export default function Home() {
           <span>÷</span>
           <span>01</span>
         </div>
-        <div className="relative z-10">
+        <div className="home-hero relative z-10">
           <p data-home-entrance className="mb-5 text-xs tracking-widest text-emerald-400">
             PRACTICE SMARTER. COMPETE STRONGER.
           </p>
