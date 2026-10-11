@@ -123,7 +123,7 @@ export default function Home() {
                 <tr key={rank.title} className="border-b border-edge last:border-0">
                   <td className="whitespace-nowrap px-4 py-3 font-mono tabular-nums sm:px-6">{i === 0 ? `Below ${ranks[i + 1].min}` : i === ranks.length - 1 ? `${rank.min}+` : `${rank.min}–${ranks[i + 1].min - 1}`}</td>
                   <td className="px-4 py-3 sm:px-6"><RankedName name="Student" rating={rank.min} featured /></td>
-                  <th scope="row" className="px-4 py-3 font-semibold sm:px-6"><RankText rating={rank.min}>{rank.title}</RankText></th>
+                  <th scope="row" className="px-4 py-3 font-semibold sm:px-6"><RankText rating={rank.min} featured={rank.min >= 2400}>{rank.title}</RankText></th>
                 </tr>
               ))}
             </tbody>

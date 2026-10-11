@@ -125,7 +125,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
       <div className="mb-5 grid gap-4 sm:grid-cols-2">
         <div className="panel p-5">
           <p className="font-mono text-3xl"><RankText rating={profile?.rating ?? INITIAL_RATING}>{profile?.rating ?? INITIAL_RATING}</RankText></p>
-          <p className="mt-2 text-sm muted">Rating · <RankText rating={profile?.rating ?? INITIAL_RATING}>{rank.title}</RankText></p>
+          <p className="mt-2 text-sm muted">Rating · <RankText rating={profile?.rating ?? INITIAL_RATING} featured={rank.min >= 2400}>{rank.title}</RankText></p>
         </div>
         <div className="panel p-5">
           <p className="font-mono text-3xl text-emerald-400">{bestMockScore ?? "—"}</p>

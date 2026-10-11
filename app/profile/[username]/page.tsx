@@ -65,7 +65,7 @@ export default function PublicProfile() {
                 <div className="flex w-full items-center justify-between gap-4 border-t border-edge pt-4 md:ml-auto md:w-auto md:shrink-0 md:gap-6 md:border-t-0 md:pt-0">
                   <div className="shrink-0">
                     <p className="text-3xl font-mono"><RankText rating={p.rating}>{p.rating}</RankText></p>
-                    <p className="mt-1 text-sm"><RankText rating={p.rating}>{getCodeforcesTitle(p.rating).title}</RankText></p>
+                    <p className="mt-1 text-sm"><RankText rating={p.rating} featured={p.rating >= 2400}>{getCodeforcesTitle(p.rating).title}</RankText></p>
                   </div>
                   <div className="min-w-0 space-y-2 border-l border-edge pl-4 text-xs muted md:pl-6 md:text-sm">
                     <p className="flex items-start gap-2">
