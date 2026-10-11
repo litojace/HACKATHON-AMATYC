@@ -336,7 +336,7 @@ export default function ProblemArena({
             </button>
           )}
           {onNext && (
-            <button onClick={onNext} className="btn-secondary" disabled={busy}>
+            <button onClick={onNext} className={`btn-secondary${exam ? " ml-auto" : ""}`} disabled={busy}>
               {exam ? "Next" : "Next problem"}
               <ArrowRight size={15} />
             </button>
