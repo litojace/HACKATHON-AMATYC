@@ -261,7 +261,7 @@ select {
 .rank-expert { --rank-color: #6d28d9; }
 .rank-master { --rank-color: #9a3412; }
 .rank-grandmaster { --rank-color: #b91c1c; }
-.rank-legend { --rank-color: #92400e; }
+.rank-legend { --rank-color: #92400e; display: inline-block; max-width: 100%; }
 :root[data-theme="dark"] .rank-expert { --rank-color: #c4a0ff; }
 :root[data-theme="dark"] .rank-master { --rank-color: #ffc078; }
 :root[data-theme="dark"] .rank-grandmaster { --rank-color: #ff8b9c; }
@@ -274,6 +274,14 @@ select {
 .rank-symbols span:nth-child(1) { left: 8%; top: 0; animation-delay: -1s; }
 .rank-symbols span:nth-child(2) { right: 5%; bottom: 0; animation-delay: -2.5s; }
 .rank-symbols span:nth-child(3) { right: 16%; top: 0; animation-delay: -.5s; }
+.rank-sparkles { position: absolute; inset: 0; pointer-events: none; user-select: none; }
+.rank-sparkles svg { position: absolute; width: .38em; height: .38em; fill: var(--rank-color); opacity: .5; }
+.rank-sparkles svg:nth-child(1) { left: 2%; top: 0; animation-delay: -.7s; }
+.rank-sparkles svg:nth-child(2) { left: 25%; bottom: 0; animation-delay: -2.1s; }
+.rank-sparkles svg:nth-child(3) { right: 23%; top: 0; animation-delay: -1.5s; }
+.rank-sparkles svg:nth-child(4) { right: 2%; bottom: 0; animation-delay: -3.2s; }
+.rank-sparkles svg:nth-child(5) { left: 55%; bottom: 0; width: .25em; height: .25em; animation-delay: -2.8s; }
+.rank-featured .rank-sparkles svg { width: .45em; height: .45em; }
 @media (prefers-reduced-motion: no-preference) {
   .rank-expert .rank-name-text { animation: rank-breathe 4s ease-in-out infinite; }
   .rank-master .rank-name-text,
@@ -298,15 +306,22 @@ select {
   .rank-orbit span:nth-child(2) { animation-delay: -6s; }
   .rank-orbit span:nth-child(3) { animation-delay: -12s; }
   .rank-crown { animation: rank-crown-glow 3s ease-in-out infinite; }
+  .rank-sparkles svg { animation-name: rank-sparkle; animation-duration: 3.8s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
 }
 @keyframes rank-breathe { 50% { text-shadow: 0 0 12px color-mix(in srgb, var(--rank-color) 45%, transparent); } }
 @keyframes rank-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
 @keyframes rank-float { 0%, 100% { transform: translateY(3px); opacity: .3; } 50% { transform: translateY(-3px); opacity: .8; } }
 @keyframes rank-orbit { to { offset-distance: 100%; } }
 @keyframes rank-crown-glow { 50% { filter: drop-shadow(0 0 5px var(--rank-color)); } }
+@keyframes rank-sparkle {
+  0%, 100% { opacity: .12; transform: scale(.45) rotate(-15deg); filter: none; }
+  45% { opacity: .95; transform: scale(1.1) rotate(15deg); filter: drop-shadow(0 0 3px var(--rank-color)); }
+  70% { opacity: .35; transform: scale(.7) rotate(30deg); filter: none; }
+}
 :root[data-rank-motion="off"] .ranked-name * { animation: none !important; }
 :root[data-rank-motion="off"] .rank-name-text { background: none; color: var(--rank-color); text-shadow: none; }
-:root[data-rank-motion="off"] .rank-symbols { display: none; }
+:root[data-rank-motion="off"] .rank-symbols,
+:root[data-rank-motion="off"] .rank-sparkles { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .rank-symbols { display: none; }
+  .rank-symbols, .rank-sparkles { display: none; }
 }

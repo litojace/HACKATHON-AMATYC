@@ -1,6 +1,6 @@
 import { getCodeforcesTitle } from "@/lib/rating";
 
-/** Compact names keep the shimmer; profile names add the decorative symbols. */
+/** Legend names sparkle everywhere; profiles also show the crown and symbols. */
 export default function RankedName({ name, rating, featured = false }: {
   name: string;
   rating: number;
@@ -16,6 +16,15 @@ export default function RankedName({ name, rating, featured = false }: {
         </svg>
       )}
       <span className="rank-name-text">{name.trim() || "Competitor"}</span>
+      {effect === "legend" && (
+        <span className="rank-sparkles" aria-hidden="true">
+          {[0, 1, 2, 3, 4].map((sparkle) => (
+            <svg key={sparkle} viewBox="0 0 16 16" focusable="false">
+              <path d="M8 0 10 6 16 8 10 10 8 16 6 10 0 8 6 6Z" />
+            </svg>
+          ))}
+        </span>
+      )}
       {featured && (effect === "grandmaster" || effect === "legend") && (
         <span className={`rank-symbols ${effect === "legend" ? "rank-orbit" : ""}`} aria-hidden="true">
           <span>π</span><span>✦</span><span>Σ</span>
