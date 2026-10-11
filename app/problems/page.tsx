@@ -67,6 +67,9 @@ export default function Problems() {
   const sources = [...new Set(problems.map((p) => p.contest_name))].sort(
     compareSourcesNewestFirst,
   );
+  const topics = [...new Set(problems.map((p) => p.category))].sort((a, b) =>
+    a.localeCompare(b, "en", { sensitivity: "base" }),
+  );
   return (
     <main className="mx-auto max-w-7xl px-5 py-10">
       <PageTitle
@@ -86,7 +89,7 @@ export default function Problems() {
           />
         </label>
         {[
-          ["topic", "Topic", [...new Set(problems.map((p) => p.category))]],
+          ["topic", "Topic", topics],
           ["difficulty", "Difficulty", ["Easy", "Medium", "Hard"]],
           [
             "source",
