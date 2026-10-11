@@ -16,14 +16,17 @@ export default function Chart({
   label,
   line = false,
   controls,
+  id,
 }: {
   data: Record<string, string | number>[];
   label: string;
   line?: boolean;
   controls?: ReactNode;
+  id?: string;
 }) {
+  const isPercent = label.includes("(%)");
   return (
-    <div className="panel min-w-0 p-5">
+    <div id={id} className="panel min-w-0 scroll-mt-24 p-5">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-semibold">{label}</h2>
         {controls}
@@ -78,16 +81,22 @@ export default function Chart({
               )}
             </ResponsiveContainer>
           </div>
-          <details className="mt-3 text-xs muted">
-            <summary className="cursor-pointer">View chart data</summary>
-            <ul className="mt-2 space-y-1">
-              {data.map((p, i) => (
-                <li key={i}>
-                  {p.name}: {p.value}
+          <ul aria-label={`${label} values`} className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {data.map((point, index) => {
+              const count = typeof point.count === "number" ? point.count : null;
+              return (
+                <li key={`${point.name}-${index}`} className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-edge bg-ink px-3 py-2.5">
+                  <span className="truncate text-sm">{point.name}</span>
+                  <span className="shrink-0 text-right">
+                    <strong className="font-mono text-base font-semibold text-[var(--accent-text)]">
+                      {count === 0 ? "—" : `${point.value}${isPercent ? "%" : ""}`}
+                    </strong>
+                    {count !== null && <span className="ml-2 text-xs muted">{count === 0 ? "No attempts" : `${count} attempts`}</span>}
+                  </span>
                 </li>
-              ))}
-            </ul>
-          </details>
+              );
+            })}
+          </ul>
         </div>
       ) : (
         <p className="py-14 text-center text-sm muted">

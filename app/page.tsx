@@ -6,7 +6,6 @@ import {
   Clock3,
   LineChart,
   Trophy,
-  Lightbulb,
 } from "lucide-react";
 import Statistics from "@/components/Statistics";
 import HomeCommunityGallery from "@/components/HomeCommunityGallery";
@@ -58,7 +57,7 @@ export default function Home() {
         </div>
       </section>
       <Statistics />
-      <section className="grid gap-5 md:grid-cols-3">
+      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {[
           {
             icon: BookOpen,
@@ -75,13 +74,6 @@ export default function Home() {
             href: "/training",
           },
           {
-            icon: Lightbulb,
-            title: "Understand every answer",
-            description:
-              "Unlock mathematical reasoning after your attempt, then try again.",
-            href: "/problems",
-          },
-          {
             icon: Trophy,
             title: "Follow competitive progress",
             description:
@@ -92,8 +84,8 @@ export default function Home() {
             icon: LineChart,
             title: "See where to improve",
             description:
-              "Your real practice activity powers clear charts and transparent recommendations.",
-            href: "/dashboard",
+              "Open your topic accuracy chart to spot strengths and choose what to practice next.",
+            href: "/dashboard#topic-accuracy",
           },
         ].map((f) => (
           <Link
