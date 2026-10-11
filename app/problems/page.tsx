@@ -77,7 +77,11 @@ export default function Problems() {
                     : "All " + (label as string).toLowerCase() + "s"}
             </option>
             {(options as string[]).map((v) => (
-              <option key={v}>{v}</option>
+              <option key={v} value={v}>
+                {key === "status" || key === "sort"
+                  ? v.charAt(0).toUpperCase() + v.slice(1)
+                  : v}
+              </option>
             ))}
           </select>
         ))}
