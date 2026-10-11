@@ -65,6 +65,7 @@ export default function Problems() {
     activity.practice,
     activity.bookmarks,
   );
+  const ratings = [...new Set(problems.flatMap(p => typeof p.difficulty_rating === "number" ? [p.difficulty_rating] : []))].sort((a, b) => a - b);
   const sources = [...new Set(problems.map((p) => p.contest_name))].sort(
     compareSourcesNewestFirst,
   );
@@ -127,24 +128,19 @@ export default function Problems() {
           </select>
         ))}
         <div className="flex gap-2">
-          <input
-            type="number"
-            min="0"
-            className="field"
-            aria-label="Minimum rating"
-            placeholder="Min rating"
-            value={filters.min ?? ""}
-            onChange={(e) => change("min", e.target.value)}
-          />
-          <input
-            type="number"
-            min="0"
-            className="field"
-            aria-label="Maximum rating"
-            placeholder="Max rating"
-            value={filters.max ?? ""}
-            onChange={(e) => change("max", e.target.value)}
-          />
+          {(["min", "max"] as const).map(key => (
+            <select
+              key={key}
+              className="field min-w-0"
+              aria-label={key === "min" ? "Minimum rating" : "Maximum rating"}
+              value={filters[key] ?? ""}
+              onChange={e => change(key, e.target.value)}
+            >
+              <option value="">{key === "min" ? "Min rating" : "Max rating"}</option>
+              {filters[key] && !ratings.includes(Number(filters[key])) && <option value={filters[key]} hidden>{key === "min" ? "Min" : "Max"}: {filters[key]}</option>}
+              {ratings.map(rating => <option key={rating} value={rating}>{rating}</option>)}
+            </select>
+          ))}
         </div>
         <label className="flex items-center gap-3 text-sm">
           <input
