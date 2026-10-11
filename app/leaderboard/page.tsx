@@ -1,5 +1,6 @@
 "use client";
 import AnimatedSelect from "@/components/AnimatedSelect";
+import { Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/client";
 import type { Profile } from "@/types/problem";
@@ -86,10 +87,13 @@ export default function Leaderboard() {
           )}
         </AnimatedSelect>
         {rank >= 0 && (
-          <p className="self-center text-sm muted">
-            Your rank: #
+          <p className="flex min-h-12 items-center gap-3 self-center rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-2 shadow-[0_0_20px_rgba(251,191,36,0.08)]">
+            <Trophy size={22} className="shrink-0 text-amber-400" aria-hidden="true" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-amber-200">Your rank</span>
+            <span className="text-2xl font-bold tabular-nums text-amber-300">#
             {profiles.filter((p) => p.rating > profiles[rank].rating).length +
               1}
+            </span>
           </p>
         )}
       </div>

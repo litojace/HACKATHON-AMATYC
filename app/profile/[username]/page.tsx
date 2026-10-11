@@ -7,7 +7,6 @@ import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
-import Chart from "@/components/Charts";
 import AdminProblemActions from "@/components/AdminProblemActions";
 import { CalendarDays, Trophy } from "lucide-react";
 export default function PublicProfile() {
@@ -68,14 +67,6 @@ export default function PublicProfile() {
             </div>
             <AdminProblemActions profileUserId={p.id} />
           </section>
-          <Chart
-            line
-            label="Rating history · Beta"
-            data={(p.rating_history ?? []).map((r) => ({
-              name: new Date(r.created_at).toLocaleDateString(),
-              value: r.new_rating,
-            }))}
-          />
           <p className="mt-5 text-xs muted">
             Private practice and exam answers are not exposed on public
             profiles.
