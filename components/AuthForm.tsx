@@ -238,9 +238,7 @@ export default function AuthForm({
           )}
           {mode === "login" && (
             <>
-              <Link className="block" href="/signup">
-                New here? Sign up
-              </Link>
+              <p>New here? <Link className="text-emerald-400 hover:text-emerald-300" href="/signup">Sign up</Link></p>
               <Link className="block" href="/forgot-password">
                 Forgot password?
               </Link>
