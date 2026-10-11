@@ -3,14 +3,14 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
-  CalendarDays,
   Clock3,
   LineChart,
   Trophy,
 } from "lucide-react";
 import Statistics from "@/components/Statistics";
 import HomeCommunityGallery from "@/components/HomeCommunityGallery";
-import { INITIAL_RATING, RANK_TIERS } from "@/lib/rating";
+import HomeContestNews from "@/components/HomeContestNews";
+import { RANK_TIERS } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
 
 const ranks = [...RANK_TIERS].reverse();
@@ -106,21 +106,13 @@ export default function Home() {
         ))}
       </section>
       <section className="mt-12 grid items-stretch gap-6 lg:grid-cols-2" aria-labelledby="saturday-contests-title">
-        <div data-home-entrance className="panel flex flex-col items-start border-emerald-400/30 p-6 sm:p-8">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-400">
-            <CalendarDays size={16} aria-hidden="true" /> Every Saturday
-          </p>
-          <h2 id="saturday-contests-title" className="mt-4 text-2xl font-semibold sm:text-3xl">Solve together. Aim for your next title.</h2>
-          <p className="mt-4 leading-7 muted">Join our Saturday contests to tackle math problems, challenge yourself alongside other students, and earn a competitive rating. Every contest is a chance to learn and improve.</p>
-          <p className="mt-4 text-sm leading-6 muted">Start at {INITIAL_RATING}. Your performance in rated contests shapes your rating and title. Practice during the week, then put your skills to the test on Saturday.</p>
-          <div className="mt-auto pt-6"><Link href="/contests" className="btn">Join a Saturday contest <ArrowRight size={16} /></Link></div>
-        </div>
+        <HomeContestNews />
         <div data-home-entrance className="panel overflow-hidden" aria-labelledby="rating-titles-heading">
           <div className="border-b border-edge p-6">
             <h2 id="rating-titles-heading" className="flex items-center gap-2 text-xl font-semibold"><Trophy size={20} className="text-amber-400" aria-hidden="true" /> Ratings &amp; titles</h2>
             <p className="mt-2 text-sm muted">See your next milestone. Sample names show the colors and effects for each rank.</p>
           </div>
-          <div className="overflow-x-auto" role="region" aria-label="Rating, sample name previews, and titles" tabIndex={0}>
+          <div className="overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="region" aria-label="Rating, sample name previews, and titles" tabIndex={0}>
           <table className="w-full min-w-[520px] text-center text-sm [&_td]:align-middle [&_th]:align-middle">
             <caption className="sr-only">Competitive rating ranges, sample name effects, and titles</caption>
             <thead className="border-b border-edge text-xs muted">
