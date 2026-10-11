@@ -159,7 +159,23 @@ export default function Problems() {
         <ServiceError />
       ) : (
         <>
-          <div className="panel overflow-x-auto">
+          <div className="space-y-3 md:hidden" aria-label="Problem cards">
+            {visible.slice((page - 1) * 12, page * 12).map(p => {
+              const attempts = activity.practice.filter(a => a.problem_id === p.id);
+              const status = attempts.some(a => a.is_correct) ? "Solved" : attempts.length ? "Attempted" : "Unsolved";
+              return <article key={p.id} className="panel p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <Link className="min-w-0 break-words font-semibold hover:text-emerald-400" href={"/problems/" + p.id + "?returnTo=" + encodeURIComponent(returnTo)}>{p.title}</Link>
+                  <button type="button" className="shrink-0 p-2" aria-label={"Bookmark " + p.title} aria-pressed={activity.bookmarks.includes(p.id)} onClick={() => bookmark(p.id)}><Bookmark size={18} fill={activity.bookmarks.includes(p.id) ? "currentColor" : "none"} /></button>
+                </div>
+                <p className="mt-2 text-xs muted">{p.category} · {status}</p>
+                <div className="mt-3 flex items-center gap-3 text-xs"><span className={difficultyColor(p.difficulty)}>{p.difficulty}</span><span className="font-mono text-emerald-400">{p.difficulty_rating ?? "Unrated"}</span></div>
+                <p className="mt-2 text-xs muted">{p.contest_name}</p>
+              </article>;
+            })}
+            {!visible.length && <p className="panel p-6 muted">No matching problems. Try changing your filters.</p>}
+          </div>
+          <div className="panel hidden overflow-x-auto md:block">
             <table className="w-full min-w-[850px] text-left text-sm">
               <thead className="border-b border-edge text-xs muted">
                 <tr>

@@ -3,6 +3,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, ServiceError } from "@/components/Shared";
+import ReportProblem from "@/components/ReportProblem";
 import ProblemArena from "@/components/ProblemArena";
 import AdminProblemActions from "@/components/AdminProblemActions";
 export default function ProblemPage() {
@@ -63,6 +64,7 @@ export default function ProblemPage() {
         />
         </AccountGate>
       </div>
+      <ReportProblem problemId={id} />
     </main>
   );
 }

@@ -2,6 +2,16 @@ import MathRenderer from "./MathRenderer";
 
 /** Preserve formulas while presenting each prose statement as a separate step. */
 export default function SolutionRenderer({ text }: { text: string }) {
+  const numberedSteps = text.trim().split(/\n\s*\n/);
+  if (numberedSteps.length > 1 && numberedSteps.every(step => /^\d+\.\s/.test(step))) {
+    return (
+      <ol className="list-decimal space-y-5 pl-6 marker:font-semibold marker:text-emerald-400">
+        {numberedSteps.map((step, i) => (
+          <li key={i} className="pl-2"><MathRenderer text={step.replace(/^\d+\.\s/, "")} /></li>
+        ))}
+      </ol>
+    );
+  }
   const formulas: string[] = [];
   const prose = text.replace(/\$\$[\s\S]*?\$\$|\$[^$]+\$/g, (formula) => {
     formulas.push(formula);

@@ -52,7 +52,7 @@ Both public Supabase settings must be provided before building. Incomplete setti
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 010, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 018, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 1. Run these migrations in order in the SQL editor:
    - `supabase/migrations/001_platform.sql`
@@ -69,9 +69,13 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/012_admin_problem_delete.sql`
    - `supabase/migrations/013_delete_problems_preserve_history.sql`
    - `supabase/migrations/014_admin_contests.sql`
+   - `supabase/migrations/015_admin_user_ratings.sql`
+   - `supabase/migrations/016_admin_online_users.sql`
+   - `supabase/migrations/017_online_announcements.sql`
+   - `supabase/migrations/018_problem_reports.sql`
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
-4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 840 records, imports them in transactional batches, and upserts 42 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
+4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 820 historical records, imports them in transactional batches, and upserts 41 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
 5. Restart/rebuild after changing public settings. Register, confirm email, sign in, submit a problem, run an exam, and check the private dashboard against your real project.
 6. Enable `pg_cron` in the Supabase dashboard and execute `docs/expiry-scheduler.sql` to finalize expired attempts unattended every minute. Deadlines are enforced regardless of the job: late writes are always rejected, and read/finalize requests finalize expired attempts with their actual deadline timestamp. Monitor this scheduled job in production.
 
@@ -159,7 +163,7 @@ Build args `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` embed 
 
 No GitHub push, Vercel/Render deployment, or cloud publication is performed automatically. Review and commit the files, then deploy using your own accounts. The pre-upgrade app is preserved as `AMATYC-Code-v1.zip` outside the checkout.
 
-Migration 009 permanently removes the redundant Original Demonstration Set, its mock contest, and their associated activity. The seed now imports only the 820 historical questions and 42 historical contests. Demo source files remain as development fixtures.
+Migration 009 permanently removes the redundant Original Demonstration Set, its mock contest, and their associated activity. The seed now imports only the 820 historical questions and 41 historical contests. Demo source files remain as development fixtures.
 
 Migration 011 enables admin problem creation and editing at `/admin/problems`, using the admin membership established by migration 010. See [admin editor setup](docs/admin-problems.md) for permissions, publication and revision rules.
 
@@ -168,3 +172,4 @@ Migration 014 adds scheduled admin contests, private question snapshots, partici
 Administrators can use `/admin/users` (Manage user ratings on their own public profile) to adjust any account’s rating, including their own. Apply `015_admin_user_ratings.sql` after the existing migrations. A reason is required; changes are recorded in the private `user_rating_admin_audit` table and do not count as rated contests.
 
 Admins can post a text announcement from their own profile. Signed-in users who are online when it is posted receive a dismissible notice on every page, including contests. Apply migrations 016 and 017; see [announcement setup](docs/announcements.md). Unread notices stay available after a refresh, and dismissing one persists across tabs and devices.
+Migration 018 adds student problem reports and the private admin review queue at `/admin/reports`. See [reporting and explanation updates](docs/problem-reports.md) for deployment steps. The library uses compact cards on mobile; the dashboard includes recent attempts and bookmarks. All 820 historical questions now have step-by-step explanations or official scoring-correction notes.

@@ -58,6 +58,9 @@ function Content() {
     problems.find(
       (p) => !solved.has(p.id) && (!weak || p.category === weak.name),
     ) ?? problems.find((p) => !solved.has(p.id));
+  const recentIds = [...new Set([...practice].sort((a,b) => Date.parse(b.created_at) - Date.parse(a.created_at)).map(a => a.problem_id))];
+  const recentProblems = recentIds.flatMap(id => { const p = problems.find(p => p.id === id); return p ? [p] : []; }).slice(0,4);
+  const bookmarkedProblems = problems.filter(p => activity.bookmarks.includes(p.id)).slice(0,4);
   const solvedProblems = problems.filter((p) => solved.has(p.id));
   const ratingCounts = new Map<number | null, number>();
   for (const problem of problems) {
@@ -89,6 +92,16 @@ function Content() {
             : "Private analytics from your stored practice and contest history."
         }
       />
+      <section className="panel mb-6 p-6" aria-label="Continue practicing">
+        <h2 className="text-lg font-semibold">Continue practicing</h2>
+        <div className="mt-4 grid gap-6 sm:grid-cols-2">
+          {[{title:"Recently attempted",items:recentProblems},{title:"Bookmarked questions",items:bookmarkedProblems}].map(group => <div key={group.title}>
+            <h3 className="mb-3 text-sm font-semibold">{group.title}</h3>
+            {group.items.length ? <ul className="space-y-3">{group.items.map(p => <li key={p.id}><Link className="block rounded-lg border border-edge p-3 text-sm hover:border-emerald-400" href={"/problems/"+p.id}><span className="font-medium">{p.title}</span><span className="mt-1 block text-xs muted">{p.category} · {p.difficulty_rating ?? "Unrated"} · {solved.has(p.id)?"Solved":"Keep practicing"}</span></Link></li>)}</ul> : <p className="text-sm muted">{group.title === "Recently attempted" ? "Your recent questions will appear after you submit an answer." : "Bookmark questions in the library to save them here."}</p>}
+          </div>)}
+        </div>
+        <Link className="btn-secondary mt-5" href="/problems">Browse problems</Link>
+      </section>
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
           [profile?.rating ?? INITIAL_RATING, "Rating · " + rank.title],

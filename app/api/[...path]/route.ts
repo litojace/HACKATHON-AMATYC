@@ -137,6 +137,22 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "reports" && method === "POST" && id) {
+      const body = await req.json();
+      if (!["incorrect_answer","unclear_wording","missing_figure","other"].includes(body.category) || typeof body.details !== "string" || !body.details.trim() || body.details.length > 2000) return error("Choose a category and enter details (up to 2000 characters).");
+      return NextResponse.json({id:await query(db.rpc("report_problem",{pid:id,report_category:body.category,report_details:body.details}))});
+    }
+    if (resource === "admin" && id === "reports") {
+      if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can review reports.",403);
+      if (method === "GET") return NextResponse.json(await query(db.rpc("admin_problem_reports")),{headers:{"Cache-Control":"private, no-store"}});
+      if (method === "PATCH" && action) {
+        const body=await req.json();
+        if (!["open","resolved","dismissed"].includes(body.status) || typeof body.note !== "string" || body.note.length>2000) return error("Invalid review.");
+        await query(db.rpc("admin_review_problem_report",{report_id:action,next_status:body.status,review_note:body.note}));
+        return NextResponse.json({ok:true});
+      }
+      return error("Method not allowed",405);
+    }
     if (resource === "admin" && id === "users") {
       if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage user ratings.", 403);
       if (method === "GET") return NextResponse.json(await query(db.rpc("admin_user_records")), {headers:{"Cache-Control":"private, no-store"}});
