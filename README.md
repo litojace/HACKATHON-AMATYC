@@ -164,3 +164,5 @@ Migration 009 permanently removes the redundant Original Demonstration Set, its 
 Migration 011 enables admin problem creation and editing at `/admin/problems`, using the admin membership established by migration 010. See [admin editor setup](docs/admin-problems.md) for permissions, publication and revision rules.
 
 Migration 014 adds scheduled admin contests, private question snapshots, participant monitoring and delayed rating batches. Run `supabase/contest_scheduler.sql` to enable the background job. See [admin contest setup](docs/admin-contests.md).
+
+Administrators can use `/admin/users` (Manage user ratings on their own public profile) to adjust any account’s rating, including their own. Apply `015_admin_user_ratings.sql` after the existing migrations. A reason is required; changes are recorded in the private `user_rating_admin_audit` table and do not count as rated contests.

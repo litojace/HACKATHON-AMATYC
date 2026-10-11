@@ -129,6 +129,16 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "admin" && id === "users") {
+      if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage user ratings.", 403);
+      if (method === "GET") return NextResponse.json(await query(db.rpc("admin_user_records")), {headers:{"Cache-Control":"private, no-store"}});
+      if (method === "PATCH" && action) {
+        const body = await req.json();
+        if (!Number.isInteger(body.rating) || body.rating < 1 || body.rating > 10000 || typeof body.reason !== "string" || !body.reason.trim() || body.reason.trim().length > 500) return error("Enter a rating from 1 to 10000 and a reason of 1–500 characters.");
+        return NextResponse.json(await query(db.rpc("admin_set_user_rating", {target_id: action, new_rating: body.rating, adjustment_reason: body.reason})), {headers:{"Cache-Control":"private, no-store"}});
+      }
+      return error("Method not allowed",405);
+    }
     if (resource === "admin" && id === "contests") {
       if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage contests.",403);
       if (method === "GET") return NextResponse.json(await query(db.rpc("admin_contest_records",{cid:action ?? null})),{headers:{"Cache-Control":"private, no-store"}});
