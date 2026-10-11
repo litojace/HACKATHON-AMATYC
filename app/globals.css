@@ -51,6 +51,24 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+/* Keep text actions visibly clickable in both themes and at every viewport. */
+a[href],
+button,
+summary,
+input[type="file"]::file-selector-button {
+  text-decoration-line: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+input[type="file"]::file-selector-button {
+  cursor: pointer;
+  margin-right: 0.75rem;
+  border: 1px solid var(--edge);
+  border-radius: 0.5rem;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.65rem 0.9rem;
+}
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;

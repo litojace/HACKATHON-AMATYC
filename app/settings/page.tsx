@@ -120,7 +120,7 @@ function Content() {
             <div className="flex flex-wrap items-center gap-4">
               {preview || avatar ? <img src={preview || avatar} alt="Avatar preview" className="h-20 w-20 rounded-full object-cover" /> : <span className="flex h-20 w-20 items-center justify-center rounded-full bg-ink text-2xl font-semibold" aria-label="Default avatar">{name.trim().charAt(0).toUpperCase() || "?"}</span>}
               <label className="text-sm">
-                Choose image
+                <span className="underline underline-offset-4">Choose image</span>
                 <input type="file" accept="image/png,image/jpeg,image/webp" disabled={busy} className="mt-2 block max-w-full" onChange={(e) => {
                   const selected = e.target.files?.[0];
                   if (!selected) return;
