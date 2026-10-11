@@ -121,7 +121,7 @@ export default function Home() {
             <p className="mt-2 text-sm muted">See your next milestone. Sample names show the colors and effects for each rank.</p>
           </div>
           <div className="overflow-x-auto" role="region" aria-label="Rating, sample name previews, and titles" tabIndex={0}>
-          <table className="w-full min-w-[520px] text-left text-sm">
+          <table className="w-full min-w-[520px] text-center text-sm [&_td]:align-middle [&_th]:align-middle">
             <caption className="sr-only">Competitive rating ranges, sample name effects, and titles</caption>
             <thead className="border-b border-edge text-xs muted">
               <tr><th scope="col" className="px-4 py-3 sm:px-6">Rating</th><th scope="col" className="px-4 py-3 sm:px-6">Name</th><th scope="col" className="px-4 py-3 sm:px-6">Title</th></tr>
