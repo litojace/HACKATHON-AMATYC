@@ -223,7 +223,7 @@ export default function Problems() {
                       </td>
                       <td className="p-4 text-xs muted">{p.category}</td>
                       <td className={`p-4 text-xs font-semibold ${difficultyColor(p.difficulty)}`}>{p.difficulty}</td>
-                      <td className="p-4 font-mono text-emerald-400">
+                      <td className={`p-4 font-mono ${difficultyColor(p.difficulty)}`}>
                         {p.difficulty_rating ?? "—"}
                       </td>
                       <td className="p-4 text-xs muted">

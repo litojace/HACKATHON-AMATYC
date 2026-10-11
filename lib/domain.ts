@@ -62,5 +62,5 @@ export function remainingSeconds(deadline: string, now: number) {
 }
 
 export function difficultyColor(level: string) {
-  return level === "Easy" ? "text-green-400" : level === "Medium" ? "text-yellow-500" : level === "Hard" ? "text-red-400" : "text-zinc-400";
+  return level === "Easy" ? "difficulty-easy" : level === "Medium" ? "difficulty-medium" : level === "Hard" ? "difficulty-hard" : "text-zinc-400";
 }

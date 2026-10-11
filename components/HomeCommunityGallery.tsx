@@ -45,7 +45,7 @@ export default function HomeCommunityGallery() {
   useEffect(() => {
     if (!user || authLoading || !supabase) return;
     let active = true;
-    supabase.rpc("is_site_admin").then(({ data, error }) => {
+    Promise.resolve(supabase.rpc("is_site_admin")).then(({ data, error }) => {
       if (active) setAdminUserId(!error && data === true ? user.id : null);
     }).catch(() => { if (active) setAdminUserId(null); });
     return () => { active = false; setAdminUserId(null); };

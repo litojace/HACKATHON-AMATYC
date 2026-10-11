@@ -36,6 +36,12 @@ body {
   color: var(--text);
   font-family: "Inter Variable", Arial, Helvetica, sans-serif;
 }
+.difficulty-easy { color: #008577; }
+.difficulty-medium { color: #9b7000; }
+.difficulty-hard { color: #cf2146; }
+:root[data-theme="dark"] .difficulty-easy { color: #00b8a3; }
+:root[data-theme="dark"] .difficulty-medium { color: #ffc01e; }
+:root[data-theme="dark"] .difficulty-hard { color: #ff375f; }
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
