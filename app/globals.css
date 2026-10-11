@@ -204,3 +204,10 @@ select {
 @keyframes carousel-slide-out { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 .carousel-slide-in { animation: carousel-slide-in 800ms ease-in-out; }
 .carousel-slide-out { animation: carousel-slide-out 800ms ease-in-out; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-entrance a.btn, .home-entrance a.btn-secondary {
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  }
+  .home-entrance a.btn:hover, .home-entrance a.btn-secondary:hover { transform: translateY(-2px); }
+}

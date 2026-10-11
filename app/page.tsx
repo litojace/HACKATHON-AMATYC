@@ -1,3 +1,4 @@
+import HomeEntrance from "@/components/HomeEntrance";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,7 +12,7 @@ import Statistics from "@/components/Statistics";
 import HomeCommunityGallery from "@/components/HomeCommunityGallery";
 export default function Home() {
   return (
-    <main className="mx-auto max-w-7xl px-5">
+    <HomeEntrance><main className="mx-auto max-w-7xl px-5">
       <section className="relative isolate grid items-center gap-10 py-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12 lg:py-14">
         <div className="math-drift-layer" aria-hidden="true">
           <span>∑</span>
@@ -26,20 +27,20 @@ export default function Home() {
           <span>01</span>
         </div>
         <div className="relative z-10">
-          <p className="mb-5 text-xs tracking-widest text-emerald-400">
+          <p data-home-entrance className="mb-5 text-xs tracking-widest text-emerald-400">
             PRACTICE SMARTER. COMPETE STRONGER.
           </p>
-          <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+          <h1 data-home-entrance className="text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
             Master Mathematics.
             <br />
             <span className="text-emerald-400">Climb the Rankings.</span>
           </h1>
-          <p className="mt-6 max-w-xl leading-7 muted">
+          <p data-home-entrance className="mt-6 max-w-xl leading-7 muted">
             Train with AMATYC-style mathematics problems, sharpen your
             problem-solving skills, and compete with students on a competitive
             leaderboard.
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div data-home-entrance className="mt-7 flex flex-wrap gap-3">
             <Link href="/problems" className="btn">
               Start Practicing <ArrowRight size={16} />
             </Link>
@@ -47,7 +48,7 @@ export default function Home() {
               Explore Contests
             </Link>
           </div>
-          <p className="mt-5 text-xs muted">
+          <p data-home-entrance className="mt-5 text-xs muted">
             Browse freely · Learn at your pace · Ratings stay separate from
             practice
           </p>
@@ -96,6 +97,7 @@ export default function Home() {
           },
         ].map((f) => (
           <Link
+            data-home-entrance
             key={f.title}
             href={f.href}
             className="panel p-6 transition hover:border-emerald-500"
@@ -107,20 +109,20 @@ export default function Home() {
         ))}
       </section>
       <section className="mt-12 border-t border-edge pt-8">
-        <h2 className="text-2xl font-semibold">How it works</h2>
+        <h2 data-home-entrance className="text-2xl font-semibold">How it works</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {[
             "Choose a topic and solve a problem.",
             "Review the reasoning and build your toolkit.",
             "Test your progress in a timed mock exam.",
           ].map((text, i) => (
-            <div key={text} className="flex gap-3">
+            <div data-home-entrance key={text} className="flex gap-3">
               <span className="font-mono text-emerald-400">0{i + 1}</span>
               <p className="text-sm muted">{text}</p>
             </div>
           ))}
         </div>
       </section>
-    </main>
+    </main></HomeEntrance>
   );
 }
