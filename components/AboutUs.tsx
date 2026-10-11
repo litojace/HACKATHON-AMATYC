@@ -29,7 +29,7 @@ export default function AboutUs({ mobile = false }: { mobile?: boolean }) {
         About us
         <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none" />
       </summary>
-      <section aria-label="About AMATYC and AMATYC Arena" className={`motion-menu panel space-y-5 p-5 text-sm leading-6 ${mobile ? "my-2" : "absolute right-0 top-full mt-2 max-h-[calc(100dvh-110px)] w-[min(32rem,calc(100vw-2rem))] overflow-y-auto"}`}>
+      <section aria-label="About AMATYC and AMATYC Arena" className={`motion-menu panel max-h-[calc(100dvh-110px)] overflow-y-auto overscroll-y-contain space-y-5 p-5 text-sm leading-6 ${mobile ? "my-2" : "absolute right-0 top-full mt-2 w-[min(32rem,calc(100vw-2rem))]"}`}>
         <section aria-labelledby={mobile ? "round-one-mobile" : "round-one-desktop"} className="rounded-xl border border-emerald-400/40 bg-emerald-400/10 p-4">
           <p className="text-xs font-semibold uppercase tracking-wider text-emerald-400">OCC Student Math League</p>
           <h2 id={mobile ? "round-one-mobile" : "round-one-desktop"} className="mt-1 text-xl font-bold">Round One · Friday, November 6</h2>
