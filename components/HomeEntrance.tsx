@@ -22,9 +22,10 @@ export default function HomeEntrance({ children }: { children: React.ReactNode }
       ], { duration: 650, delay, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" }));
     }
     const observer = new IntersectionObserver(entries => {
+      let batchIndex = 0;
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          reveal(entry.target as HTMLElement);
+          reveal(entry.target as HTMLElement, Math.min(batchIndex++ * 70, 280));
           observer.unobserve(entry.target);
         }
       }

@@ -223,3 +223,11 @@ select {
   .home-hero > [data-home-entrance]:nth-child(4) { animation-delay: 300ms; }
   .home-hero > [data-home-entrance]:nth-child(5) { animation-delay: 400ms; }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-feature, .home-stat { transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+  .home-feature:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgb(0 0 0 / 8%); }
+  .home-feature svg { transition: transform 220ms ease; }
+  .home-feature:hover svg { transform: rotate(-6deg) scale(1.08); }
+  .home-stat:hover { transform: translateY(-2px); }
+}

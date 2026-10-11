@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/client";
 export default function Statistics() {
   const [data, setData] = useState<{
@@ -16,7 +16,7 @@ export default function Statistics() {
       .catch(() => setError("Statistics unavailable"));
   }, []);
   return (
-    <section className="panel my-9 p-6">
+    <section className="panel my-9 p-6" aria-label="Platform statistics">
       {error ? (
         <p className="muted">{error}</p>
       ) : (
@@ -28,9 +28,9 @@ export default function Statistics() {
               ["Public competitors", data?.competitors],
               ["Practice attempts", data?.attempts],
             ].map(([label, value]) => (
-              <div key={label}>
+              <div data-home-entrance className="home-stat rounded-xl p-2" key={label}>
                 <p className="font-mono text-2xl text-emerald-400">
-                  {value ?? "—"}
+                  <AnimatedCount value={typeof value === "number" ? value : undefined} />
                 </p>
                 <p className="mt-2 text-xs muted">{label}</p>
               </div>
@@ -46,4 +46,35 @@ export default function Statistics() {
       )}
     </section>
   );
+}
+
+function AnimatedCount({ value }: { value?: number }) {
+  const element = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(0);
+  useEffect(() => {
+    if (value === undefined) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let started = false;
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting) || started) return;
+      started = true;
+      observer.disconnect();
+      if (motion.matches) { setDisplay(value); return; }
+      const start = performance.now();
+      function tick(now: number) {
+        const progress = Math.min(1, (now - start) / 850);
+        setDisplay(Math.round(value! * (1 - Math.pow(1 - progress, 3))));
+        if (progress < 1) frame = requestAnimationFrame(tick);
+      }
+      frame = requestAnimationFrame(tick);
+    }, {threshold: 0.1});
+    if (element.current) observer.observe(element.current);
+    function stopMotion() {
+      if (motion.matches) { cancelAnimationFrame(frame); setDisplay(value!); }
+    }
+    motion.addEventListener("change", stopMotion);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); motion.removeEventListener("change", stopMotion); };
+  }, [value]);
+  return <span ref={element} aria-label={value?.toLocaleString() ?? "Loading"}><span aria-hidden="true">{value === undefined ? "—" : display.toLocaleString()}</span></span>;
 }

@@ -53,7 +53,7 @@ export default function Home() {
             practice
           </p>
         </div>
-        <div className="relative z-10 min-w-0">
+        <div data-home-entrance className="relative z-10 min-w-0">
           <HomeCommunityGallery />
         </div>
       </section>
@@ -100,7 +100,7 @@ export default function Home() {
             data-home-entrance
             key={f.title}
             href={f.href}
-            className="panel p-6 transition hover:border-emerald-500"
+            className="home-feature panel p-6 transition hover:border-emerald-500"
           >
             <f.icon size={22} style={{ color: "var(--gold)" }} />
             <h2 className="my-3 font-semibold">{f.title}</h2>
