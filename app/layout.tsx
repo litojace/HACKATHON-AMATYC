@@ -32,13 +32,24 @@ export default function RootLayout({
           <footer className="mx-auto mt-16 max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
+                <div className="flex shrink-0 items-center gap-3">
+                <span className="block h-16 w-16 overflow-hidden sm:h-20 sm:w-20">
+                  <Image
+                    src="/images/occ-logo.png"
+                    alt="Orange Coast College logo"
+                    width={80}
+                    height={80}
+                    className="h-full w-full scale-[1.15] object-contain"
+                  />
+                </span>
                 <Image
                   src="/images/amatyc-logo.png"
                   alt="AMATYC logo"
                   width={72}
                   height={79}
-                  className="h-20 w-auto shrink-0 rounded-lg"
+                  className="h-16 w-auto shrink-0 rounded-lg sm:h-20"
                 />
+                </div>
                 <div className="min-w-0">
                   <p className="text-lg font-semibold text-[var(--text)]">
                     AMATYC Arena

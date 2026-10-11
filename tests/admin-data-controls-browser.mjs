@@ -51,7 +51,12 @@ try {
  await page.getByRole('combobox',{name:'User',exact:true}).click();await page.getByRole('option',{name:'Learner',exact:true}).click();
  await page.getByRole('button',{name:'Delete account',exact:true}).click();
  await dialog.getByLabel('Reason',{exact:true}).fill('Requested account deletion');
- await dialog.getByLabel('Confirmation',{exact:true}).fill('DELETE learner');
+ assert.equal(await dialog.getByLabel('Confirmation phrase',{exact:true}).inputValue(),'DELETE Learner');
+ await page.context().grantPermissions(['clipboard-read','clipboard-write']);
+ await dialog.getByRole('button',{name:'Copy',exact:true}).click();
+ await dialog.getByRole('status').waitFor();
+ assert.equal(await page.evaluate(()=>navigator.clipboard.readText()),'DELETE Learner');
+ await dialog.getByLabel('Confirmation',{exact:true}).fill('DELETE Learner');
  await dialog.getByRole('button',{name:'Confirm permanently'}).click();
  await page.getByText('Account deleted.',{exact:true}).waitFor();
  assert.equal(requests.length,3);assert.equal(requests[2].method,'DELETE');

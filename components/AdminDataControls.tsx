@@ -14,14 +14,16 @@ export default function AdminDataControls({ member, currentUserId, onComplete }:
   const [message, setMessage] = useState("");
   const [failed, setFailed] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
+  const phraseInput = useRef<HTMLInputElement>(null);
+  const [copyStatus, setCopyStatus] = useState("");
   const requestInFlight = useRef(false);
-  const expected = action?.kind === "delete" ? `DELETE ${action.member?.username}` : action?.kind === "progress" ? "RESET PROGRESS" : "CLEAR BOOKMARKS AND REPORTS";
+  const expected = action?.kind === "delete" ? `DELETE ${action.member?.full_name.trim() || action.member?.username}` : action?.kind === "progress" ? "RESET PROGRESS" : "CLEAR BOOKMARKS AND REPORTS";
   const title = action?.kind === "delete" ? `Delete ${action.member?.full_name}'s account?` : action?.kind === "progress" ? "Reset everyone's progress?" : "Clear everyone's bookmarks and reports?";
   useEffect(() => {
     if (action && !dialog.current?.open) dialog.current?.showModal();
     if (!action && dialog.current?.open) dialog.current.close();
   }, [action]);
-  function begin(next: Action) { setConfirmation(""); setReason(""); setMessage(""); setFailed(false); setAction(next); }
+  function begin(next: Action) { setCopyStatus(""); setConfirmation(""); setReason(""); setMessage(""); setFailed(false); setAction(next); }
   async function execute(event: React.FormEvent) {
     event.preventDefault();
     if (!action || requestInFlight.current || confirmation !== expected || !reason.trim()) return;
@@ -53,7 +55,12 @@ export default function AdminDataControls({ member, currentUserId, onComplete }:
         <p className="mt-3 text-sm">{action?.kind === "progress" ? "All users lose their practice/test results and rating history. Ratings return to 800. Accounts, problems, contests, bookmarks, and reports stay." : action?.kind === "community" ? "All users’ bookmarks and problem reports will be deleted. Ratings and test results stay." : "This user’s login and profile will be removed, together with their attempts, bookmarks, reports, and rating history."}</p>
         <fieldset disabled={busy} className="mt-5 space-y-4">
           <label className="block text-sm">Reason<textarea className="field mt-2" required maxLength={500} value={reason} onChange={event => setReason(event.target.value)} /></label>
-          <label className="block text-sm">Type <strong className="break-all text-[var(--text)]">{expected}</strong> to confirm<input className="field mt-2" aria-label="Confirmation" autoComplete="off" spellCheck={false} required value={confirmation} onChange={event => setConfirmation(event.target.value)} /></label>
+          <div>
+            <p className="mb-2 text-sm">Type this phrase to confirm:</p>
+            <div className="flex gap-2"><input ref={phraseInput} className="field min-w-0 flex-1 select-text" aria-label="Confirmation phrase" readOnly value={expected} onFocus={event => event.currentTarget.select()} /><button type="button" className="btn-secondary" onClick={async () => { try { await navigator.clipboard.writeText(expected); setCopyStatus("Copied."); } catch { phraseInput.current?.focus(); phraseInput.current?.select(); setCopyStatus("Phrase selected. Use your device’s copy command."); } }}>Copy</button></div>
+            {copyStatus && <p className="mt-1 text-xs muted" role="status">{copyStatus}</p>}
+          </div>
+          <label className="block text-sm">Confirmation<input className="field mt-2" aria-label="Confirmation" autoComplete="off" spellCheck={false} required value={confirmation} onChange={event => setConfirmation(event.target.value)} /></label>
           <div className="flex justify-end gap-3"><button type="button" className="btn-secondary" onClick={() => setAction(null)}>Cancel</button><button type="submit" className="btn !bg-red-600 !text-white" disabled={confirmation!==expected || !reason.trim()}>{busy ? "Processing…" : "Confirm permanently"}</button></div>
         </fieldset>
         {message && action && <p role="alert" className="mt-4 text-sm text-red-400">{message}</p>}
