@@ -9,6 +9,8 @@ import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
 import { ChevronDown } from "lucide-react";
 import Chart from "@/components/Charts";
+import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
+import { isPerfectScore } from "@/lib/perfect-score";
 export default function Results() {
   return (
     <main className="mx-auto max-w-7xl px-5 py-10">
@@ -90,6 +92,9 @@ function Content() {
         title="Every attempt is a step forward."
         description="Your examination score and competitive rating are separate."
       />
+      {isPerfectScore(breakdown, result.questions.length) && (
+        <PerfectScoreCelebration key={result.id} attemptId={result.id} total={result.questions.length} />
+      )}
       <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-6">
         {[
           [result.score, "Score"],

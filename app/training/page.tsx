@@ -9,6 +9,8 @@ import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 import { balancedQuestions, TRAINING_PRESETS } from "@/lib/training";
+import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
+import { isPerfectScore } from "@/lib/perfect-score";
 
 function solutionFor(result?: PracticeResult) {
   return result?.written_solution?.trim() || null;
@@ -152,7 +154,10 @@ export default function Training() {
           {startError && <p role="alert" className="motion-feedback mt-4 text-sm text-red-400">{startError}</p>}
         </section>
       ) : finished ? (
-        <section className="panel p-5 sm:p-8">
+        <section className="panel p-5 sm:p-8" data-motion="none">
+          {isPerfectScore(Object.values(results), session.length) && (
+            <PerfectScoreCelebration attemptId={`training-${deadline}`} total={session.length} />
+          )}
           <p className="text-sm font-semibold text-emerald-400">Session complete</p>
           <h2 className="mt-2 text-2xl font-semibold">Nice work staying with the clock.</h2>
           <p className="mt-2 muted">Training score: {session.filter((problem) => results[problem.id]?.is_correct).length} / {session.length} correct · {session.length ? Math.round(100 * session.filter((problem) => results[problem.id]?.is_correct).length / session.length) : 0}%</p>
