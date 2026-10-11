@@ -6,7 +6,7 @@ import "@fontsource-variable/inter";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 export const metadata: Metadata = {
-  title: "AMATYC Code — Train your mathematical edge",
+  title: "AMATYC Arena — Train your mathematical edge",
   description:
     "Math competition practice, mathematical solutions, and timed mock exams for college students.",
 };
@@ -33,7 +33,7 @@ export default function RootLayout({
                 />
                 <div>
                   <p className="text-sm font-semibold text-slate-300">
-                    AMATYC Code
+                    AMATYC Arena
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
                     Built for the next problem.

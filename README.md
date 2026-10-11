@@ -1,4 +1,4 @@
-# AMATYC Code
+# AMATYC Arena
 
 **Practice Smarter. Compete Stronger.** A working mathematics competition learning platform built with Next.js 16, React 19, strict TypeScript, Tailwind 4, KaTeX, Recharts, Zod, and Supabase. Independent educational project; no affiliation with AMATYC or Codeforces is claimed.
 
@@ -89,7 +89,7 @@ Settings supports PNG, JPEG, and WebP avatar uploads up to 10 MB to the public `
 
 Default AMATYC-style scores are +2 correct, −0.5 wrong, and 0 blank. A 20-question default exam ranges from −10 to 40. Contest duration, count, and point values are stored independently.
 
-**AMATYC Code Rating — Beta** implements the specified seed/geometric-rank/performance-search/raw-delta/population-shift variant. It is not the official full Codeforces algorithm: top-participant correction and official new-participant handling are not independently verified. Ties receive shared last-place rank in the provisional module. New users start at 800 and receive no special adjustment; tiny/empty fields are tested, with singletons unchanged. The shift is not strictly zero-sum; floor clamping can change total deltas.
+**AMATYC Arena Rating — Beta** implements the specified seed/geometric-rank/performance-search/raw-delta/population-shift variant. It is not the official full Codeforces algorithm: top-participant correction and official new-participant handling are not independently verified. Ties receive shared last-place rank in the provisional module. New users start at 800 and receive no special adjustment; tiny/empty fields are tested, with singletons unchanged. The shift is not strictly zero-sum; floor clamping can change total deltas.
 
 Codeforces rank thresholds and colors (including Expert blue) are defined in `lib/rating.ts`. The database enforces `rating_enabled=false`; there is no automatic rating publisher or client rating update endpoint. Historical mocks and practice never change ratings or rated participation counts. `rating_history` is reserved for audited organizer transactions after a separately verified policy is enabled. Scheduled contests specify event windows, review time, ranking/tie/participation policy fields, and one attempt per competitor; eligibility lists and public rated scoring/rating publication require additional organizer tooling. Do not claim asynchronous demos are official synchronized competitions.
 

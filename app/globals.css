@@ -17,6 +17,7 @@
   --accent-text: #ad3915;
   --accent-hover: #dc491b;
   --gold: #c09a32;
+  --success: #166534;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
@@ -28,6 +29,7 @@
   --accent-text: #ff9b71;
   --accent-hover: #ff7542;
   --gold: #e6be56;
+  --success: #86efac;
 }
 body {
   background: var(--ink);
@@ -121,6 +123,53 @@ select {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+.math-drift-layer {
+  --math-mark: rgb(150 119 53 / 13%);
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+:root[data-theme="dark"] .math-drift-layer {
+  --math-mark: rgb(230 190 86 / 14%);
+}
+.math-drift-layer span {
+  position: absolute;
+  color: var(--math-mark);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 3vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1;
+  animation: math-drift var(--float-duration, 36s) ease-in-out var(--float-delay, 0s) infinite;
+}
+.math-drift-layer span:nth-child(1) { top: 8%; left: 5%; --float-x: 32px; --float-y: -28px; --float-turn: 8deg; --float-duration: 37s; --float-delay: -12s; }
+.math-drift-layer span:nth-child(2) { top: 18%; left: 47%; --float-x: -24px; --float-y: 34px; --float-turn: -7deg; --float-duration: 43s; --float-delay: -9s; }
+.math-drift-layer span:nth-child(3) { top: 63%; left: 4%; --float-x: 40px; --float-y: 23px; --float-turn: 6deg; --float-duration: 39s; --float-delay: -21s; }
+.math-drift-layer span:nth-child(4) { top: 51%; right: 3%; --float-x: -34px; --float-y: -26px; --float-turn: -8deg; --float-duration: 45s; --float-delay: -15s; }
+.math-drift-layer span:nth-child(5) { top: 10%; right: 27%; --float-x: 26px; --float-y: 38px; --float-turn: 7deg; --float-duration: 40s; --float-delay: -4s; }
+.math-drift-layer span:nth-child(6) { bottom: 11%; left: 45%; --float-x: -38px; --float-y: -25px; --float-turn: -6deg; --float-duration: 34s; --float-delay: -6s; }
+.math-drift-layer span:nth-child(7) { top: 77%; right: 34%; --float-x: 30px; --float-y: -36px; --float-turn: 9deg; --float-duration: 46s; --float-delay: -17s; }
+.math-drift-layer span:nth-child(8) { bottom: 7%; left: 13%; font-size: clamp(1rem, 2vw, 2rem); --float-x: -22px; --float-y: -32px; --float-turn: -8deg; --float-duration: 32s; --float-delay: -18s; }
+.math-drift-layer span:nth-child(9) { top: 40%; left: 38%; --float-x: 36px; --float-y: 28px; --float-turn: 6deg; --float-duration: 42s; --float-delay: -27s; }
+.math-drift-layer span:nth-child(10) { top: 35%; right: 13%; font-family: inherit; font-size: clamp(1rem, 2vw, 2rem); --float-x: -28px; --float-y: 32px; --float-turn: -7deg; --float-duration: 38s; --float-delay: -12s; }
+@keyframes math-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0); }
+  24% { transform: translate3d(calc(var(--float-x) * -.35), calc(var(--float-y) * .45), 0) rotate(calc(var(--float-turn) * .4)); }
+  57% { transform: translate3d(var(--float-x), calc(var(--float-y) * -.5), 0) rotate(calc(var(--float-turn) * -.6)); }
+  82% { transform: translate3d(calc(var(--float-x) * .3), var(--float-y), 0) rotate(var(--float-turn)); }
+}
+
+.answer-correct {
+  border-color: var(--success) !important;
+  background-color: color-mix(in srgb, var(--success) 10%, transparent);
+}
+.answer-correct-feedback {
+  border-color: color-mix(in srgb, var(--success) 38%, transparent);
+  color: var(--success);
 }
 
 :root[data-theme="light"] .text-amber-400 {

@@ -56,7 +56,7 @@ export default function Navbar() {
             />
           </svg>
           <span>
-            AMATYC <span className="text-emerald-400">Code</span>
+            AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>
         <div className="hidden items-center gap-6 text-sm lg:flex">

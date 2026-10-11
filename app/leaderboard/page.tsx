@@ -47,7 +47,7 @@ export default function Leaderboard() {
       <PageTitle
         eyebrow="THE COMMUNITY"
         title="Learn together. Reach higher."
-        description="AMATYC Code Rating — Beta. Automatic public rating updates are disabled pending algorithm verification."
+        description="AMATYC Arena Rating — Beta. Automatic public rating updates are disabled pending algorithm verification."
       />
       {demo && (
         <p className="mb-5 text-sm text-emerald-400">

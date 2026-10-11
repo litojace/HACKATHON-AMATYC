@@ -82,7 +82,7 @@ export default function AuthForm({
     <main className="mx-auto max-w-md px-5 py-12">
       <section className="panel p-8">
         <p className="mb-3 text-xs tracking-widest text-emerald-400">
-          AMATYC CODE
+          AMATYC ARENA
         </p>
         <h1 className="text-2xl font-semibold">{titles[mode]}</h1>
         {!supabase ? (

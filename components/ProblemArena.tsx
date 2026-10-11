@@ -246,7 +246,7 @@ export default function ProblemArena({
               aria-pressed={value === o.label}
               disabled={locked || busy || !!result}
               onClick={() => choose(o.label)}
-              className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center" : "gap-4"} rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "border-emerald-500 bg-emerald-500/10" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
+              className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center" : "gap-4"} rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "answer-correct" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-ink font-mono text-sm">
                 {o.label}
@@ -259,7 +259,7 @@ export default function ProblemArena({
         {result && (
           <div
             role="status"
-            className={`my-5 rounded-xl border p-4 text-sm ${result.is_correct ? "border-emerald-500/30 text-emerald-400" : "border-edge"}`}
+            className={`my-5 rounded-xl border p-4 text-sm ${result.is_correct ? "answer-correct-feedback" : "border-edge"}`}
           >
             <p>
               {selected

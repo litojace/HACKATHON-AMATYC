@@ -75,7 +75,7 @@ export default function Overview() {
           )}
           {contest.kind === "rated" && (
             <p className="mb-5 text-amber-400">
-              AMATYC Code Rating — Beta. Automatic rating updates are disabled.
+              AMATYC Arena Rating — Beta. Automatic rating updates are disabled.
               Solutions unlock at the configured review time.
             </p>
           )}

@@ -12,8 +12,20 @@ import HomeCommunityGallery from "@/components/HomeCommunityGallery";
 export default function Home() {
   return (
     <main className="mx-auto max-w-7xl px-5">
-      <section className="grid items-center gap-10 py-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12 lg:py-14">
-        <div>
+      <section className="relative isolate grid items-center gap-10 py-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-12 lg:py-14">
+        <div className="math-drift-layer" aria-hidden="true">
+          <span>∑</span>
+          <span>π</span>
+          <span>√x</span>
+          <span>∞</span>
+          <span>Δ</span>
+          <span>x²</span>
+          <span>∫</span>
+          <span>3.14</span>
+          <span>÷</span>
+          <span>01</span>
+        </div>
+        <div className="relative z-10">
           <p className="mb-5 text-xs tracking-widest text-emerald-400">
             PRACTICE SMARTER. COMPETE STRONGER.
           </p>
@@ -40,7 +52,9 @@ export default function Home() {
             practice
           </p>
         </div>
-        <HomeCommunityGallery />
+        <div className="relative z-10">
+          <HomeCommunityGallery />
+        </div>
       </section>
       <Statistics />
       <section className="grid gap-5 md:grid-cols-3">
