@@ -72,17 +72,14 @@ export function calculateRatings(participants: Participant[]) {
   });
 }
 export const RANK_TIERS = [
-  { min: 3000, title: "Legendary Grandmaster", color: "text-red-400" },
-  { min: 2600, title: "International Grandmaster", color: "text-red-400" },
-  { min: 2400, title: "Grandmaster", color: "text-red-400" },
-  { min: 2300, title: "International Master", color: "text-orange-400" },
-  { min: 2100, title: "Master", color: "text-orange-400" },
-  { min: 1900, title: "Candidate Master", color: "text-violet-400" },
-  { min: 1600, title: "Expert", color: "text-blue-400" },
+  { min: 2200, title: "Legend", color: "text-amber-400", effect: "legend" },
+  { min: 2000, title: "Grandmaster", color: "text-red-400", effect: "grandmaster" },
+  { min: 1800, title: "Master", color: "text-orange-400", effect: "master" },
+  { min: 1600, title: "Expert", color: "text-violet-400", effect: "expert" },
   { min: 1400, title: "Specialist", color: "text-cyan-400" },
   { min: 1200, title: "Pupil", color: "text-green-400" },
   { min: 0, title: "Newbie", color: "text-zinc-400" },
-];
+] as const;
 export function getCodeforcesTitle(rating: number) {
   return (
     RANK_TIERS.find((t) => rating >= t.min) ?? RANK_TIERS[RANK_TIERS.length - 1]

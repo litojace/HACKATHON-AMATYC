@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import RankedName from "@/components/RankedName";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import Chart from "@/components/Charts";
@@ -119,7 +120,7 @@ function Content() {
     <>
       <PageTitle
         eyebrow={demo ? "BROWSER-LOCAL DEMONSTRATION PROGRESS" : "YOUR PERSONAL DASHBOARD"}
-        title={profile ? `Keep growing, ${profile.full_name}.` : "Your progress, one problem at a time."}
+        title={profile ? <>Keep growing, <RankedName name={profile.full_name} rating={profile.rating} />.</> : "Your progress, one problem at a time."}
         description={demo
           ? "A focused view of your saved practice and mock test progress."
           : "Your rating, topic accuracy, study streak, and recent activity."}

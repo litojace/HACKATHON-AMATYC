@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import RankedName from "./RankedName";
 import { getCodeforcesTitle } from "@/lib/rating";
 import type { Profile } from "@/types/problem";
 export default function LeaderboardTable({
@@ -52,7 +53,7 @@ export default function LeaderboardTable({
                     className={`font-medium ${tier.color}`}
                     href={"/profile/" + p.username}
                   >
-                    {p.full_name?.trim() || "Competitor"}
+                    <RankedName name={p.full_name} rating={p.rating} />
                   </Link>
                   {onlineUserIds?.includes(p.id) && <span aria-label={`${p.full_name?.trim() || "Competitor"} is online`} className="ml-2 inline-flex items-center gap-1.5 text-xs text-green-600"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-green-500" />Online</span>}
                 </td>

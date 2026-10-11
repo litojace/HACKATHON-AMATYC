@@ -6,6 +6,8 @@ import { api } from "@/lib/client";
 import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
+import RankedName from "@/components/RankedName";
+import RankEffectsControl from "@/components/RankEffectsControl";
 import Chart from "@/components/Charts";
 import AdminProblemActions from "@/components/AdminProblemActions";
 export default function PublicProfile() {
@@ -42,7 +44,7 @@ export default function PublicProfile() {
                 <span aria-label="Default avatar" className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-ink text-3xl font-semibold sm:h-24 sm:w-24">{(p.full_name?.trim() || "Competitor").charAt(0).toUpperCase()}</span>
               )}
               <div className="min-w-0">
-                <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">{p.full_name?.trim() || "Competitor"}</h1>
+                <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl"><RankedName name={p.full_name} rating={p.rating} featured /></h1>
                 {p.school && <p className="mt-2 break-words muted">{p.school}</p>}
               </div>
             </div>
@@ -62,6 +64,7 @@ export default function PublicProfile() {
               </p>
             </div>
             </div>
+            <div className="mt-5"><RankEffectsControl /></div>
             <AdminProblemActions profileUserId={p.id} />
           </section>
           <Chart

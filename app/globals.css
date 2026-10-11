@@ -255,3 +255,58 @@ select {
 @media (prefers-reduced-motion: no-preference) {
   .social-button:hover { transform: translateY(-2px); }
 }
+
+/* Rank decoration never captures clicks or substitutes for the readable name. */
+.ranked-name { position: relative; font-weight: 650; --rank-color: currentColor; }
+.rank-expert { --rank-color: #6d28d9; }
+.rank-master { --rank-color: #9a3412; }
+.rank-grandmaster { --rank-color: #b91c1c; }
+.rank-legend { --rank-color: #92400e; }
+:root[data-theme="dark"] .rank-expert { --rank-color: #c4a0ff; }
+:root[data-theme="dark"] .rank-master { --rank-color: #ffc078; }
+:root[data-theme="dark"] .rank-grandmaster { --rank-color: #ff8b9c; }
+:root[data-theme="dark"] .rank-legend { --rank-color: #ffdb7a; }
+.ranked-name .rank-name-text { color: var(--rank-color); }
+.rank-featured { display: inline-block; max-width: 100%; padding-block: .65em .2em; }
+.rank-crown { position: absolute; top: -.12em; left: 50%; transform: translateX(-50%); width: .85em; height: .7em; fill: var(--rank-color); pointer-events: none; }
+.rank-symbols { position: absolute; inset: 0; pointer-events: none; user-select: none; color: var(--rank-color); }
+.rank-symbols span { position: absolute; font-size: .4em; opacity: .65; }
+.rank-symbols span:nth-child(1) { left: 8%; top: 0; animation-delay: -1s; }
+.rank-symbols span:nth-child(2) { right: 5%; bottom: 0; animation-delay: -2.5s; }
+.rank-symbols span:nth-child(3) { right: 16%; top: 0; animation-delay: -.5s; }
+@media (prefers-reduced-motion: no-preference) {
+  .rank-expert .rank-name-text { animation: rank-breathe 4s ease-in-out infinite; }
+  .rank-master .rank-name-text,
+  .rank-grandmaster .rank-name-text,
+  .rank-legend .rank-name-text {
+    background: linear-gradient(110deg, var(--rank-color) 20%, var(--text) 45%, var(--rank-color) 70%);
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: rank-shimmer 6s linear infinite;
+  }
+  .rank-grandmaster .rank-name-text { animation-duration: 5s; }
+  .rank-legend .rank-name-text { animation-duration: 4s; }
+  .rank-symbols span { animation: rank-float 4s ease-in-out infinite; }
+  .rank-orbit span {
+    inset: 0 auto auto 0;
+    offset-path: ellipse(46% 42% at 50% 50%);
+    offset-rotate: 0deg;
+    animation: rank-orbit 18s linear infinite;
+  }
+  .rank-orbit span:nth-child(2) { animation-delay: -6s; }
+  .rank-orbit span:nth-child(3) { animation-delay: -12s; }
+  .rank-crown { animation: rank-crown-glow 3s ease-in-out infinite; }
+}
+@keyframes rank-breathe { 50% { text-shadow: 0 0 12px color-mix(in srgb, var(--rank-color) 45%, transparent); } }
+@keyframes rank-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes rank-float { 0%, 100% { transform: translateY(3px); opacity: .3; } 50% { transform: translateY(-3px); opacity: .8; } }
+@keyframes rank-orbit { to { offset-distance: 100%; } }
+@keyframes rank-crown-glow { 50% { filter: drop-shadow(0 0 5px var(--rank-color)); } }
+:root[data-rank-motion="off"] .ranked-name * { animation: none !important; }
+:root[data-rank-motion="off"] .rank-name-text { background: none; color: var(--rank-color); text-shadow: none; }
+:root[data-rank-motion="off"] .rank-symbols { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rank-symbols { display: none; }
+}

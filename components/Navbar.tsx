@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import RankedName from "./RankedName";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, Moon, Sun, X, ChevronDown } from "lucide-react";
@@ -19,6 +20,8 @@ export default function Navbar() {
     }
     setTheme(value);
     document.documentElement.dataset.theme = value;
+    try { document.documentElement.dataset.rankMotion = localStorage.getItem("amatyc-rank-motion") ?? "on"; } catch { /* Use the default when storage is unavailable. */ }
+    window.dispatchEvent(new Event("rank-motion-change"));
   }, [notify]);
   const menuButton = useRef<HTMLButtonElement>(null);
   const accountMenu = useRef<HTMLDetailsElement>(null);
@@ -117,7 +120,7 @@ export default function Navbar() {
                     className="h-7 w-7 rounded-full object-cover"
                   />
                 )}
-                <span className="max-w-40 truncate">{profile?.full_name?.trim() || "Account"}</span>
+                <span className="max-w-40 truncate">{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</span>
                 <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 ease-in-out group-open:rotate-180 motion-reduce:transition-none" />
               </summary>
               <div className="panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
@@ -166,7 +169,7 @@ export default function Navbar() {
         </div>
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">
-            <p className="flex items-center gap-3 break-words px-3 pb-2 font-semibold">{profile?.avatar_url && <img src={profile.avatar_url} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />}{profile?.full_name?.trim() || "Account"}</p>
+            <p className="flex items-center gap-3 break-words px-3 pb-2 font-semibold">{profile?.avatar_url && <img src={profile.avatar_url} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />}{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</p>
             <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href="/settings" onClick={() => setOpen(false)}>Settings</Link>
             {profile && <Link className="flex min-h-11 items-center rounded-lg px-3 hover:bg-ink" href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
             <button className="min-h-11 w-full rounded-lg px-3 text-left hover:bg-ink" onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
