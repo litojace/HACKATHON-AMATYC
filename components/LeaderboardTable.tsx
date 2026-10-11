@@ -61,7 +61,7 @@ export default function LeaderboardTable({
                   {p.school ?? "Not provided"}
                 </td>
                 <td className="p-4 font-mono"><RankText rating={p.rating}>{p.rating}</RankText></td>
-                <td className={`p-4 whitespace-nowrap text-center align-middle ${tier.min >= 2100 ? "text-sm" : "text-xs"}`}><RankText rating={p.rating}>{tier.title}</RankText></td>
+                <td className={`p-4 whitespace-nowrap text-center align-middle ${tier.min >= 2100 ? "text-sm" : "text-xs"}`}><RankText rating={p.rating} featured={tier.effect === "grandmaster"}>{tier.title}</RankText></td>
                 <td className="p-4 font-mono muted">{p.contests_attended}</td>
                 <td className="p-4 font-mono">
                   {(p.last_delta ?? 0) > 0 ? "+" : ""}
