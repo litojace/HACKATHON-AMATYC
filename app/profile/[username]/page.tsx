@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { Profile } from "@/types/problem";
 import { api } from "@/lib/client";
 import { useApp } from "@/components/Providers";
-import { Loading, PageTitle } from "@/components/Shared";
+import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
 import Chart from "@/components/Charts";
 export default function PublicProfile() {
@@ -32,19 +32,20 @@ export default function PublicProfile() {
         <Loading />
       ) : (
         <>
-          <PageTitle
-            eyebrow={demo ? "SAMPLE PUBLIC PROFILE" : "COMPETITOR PROFILE"}
-            title={p.username}
-            description={p.full_name}
-          />
-          <div className="panel mb-6 flex flex-wrap gap-8 p-8">
-            {p.avatar_url && (
-              <img
-                src={p.avatar_url}
-                alt="Profile avatar"
-                className="h-16 w-16 rounded-full object-cover"
-              />
-            )}
+          <section className="panel mb-6 p-6 sm:p-8" aria-label="Competitor profile">
+            <p className="mb-5 text-xs font-medium tracking-widest text-emerald-400">{demo ? "SAMPLE PUBLIC PROFILE" : "COMPETITOR PROFILE"}</p>
+            <div className="flex items-center gap-5">
+              {p.avatar_url ? (
+                <img src={p.avatar_url} alt="Profile avatar" className="h-20 w-20 shrink-0 rounded-full object-cover sm:h-24 sm:w-24" />
+              ) : (
+                <span aria-label="Default avatar" className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-ink text-3xl font-semibold sm:h-24 sm:w-24">{(p.full_name?.trim() || "Competitor").charAt(0).toUpperCase()}</span>
+              )}
+              <div className="min-w-0">
+                <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">{p.full_name?.trim() || "Competitor"}</h1>
+                {p.school && <p className="mt-2 break-words muted">{p.school}</p>}
+              </div>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-edge pt-6">
             <div>
               <p className={`text-3xl font-mono ${getCodeforcesTitle(p.rating).color}`}>{p.rating}</p>
               <p className={getCodeforcesTitle(p.rating).color}>
@@ -52,7 +53,6 @@ export default function PublicProfile() {
               </p>
             </div>
             <div>
-              <p>{p.school ?? "School not provided"}</p>
               <p className="mt-2 text-sm muted">
                 Joined {new Date(p.created_at).toLocaleDateString()}
               </p>
@@ -60,7 +60,8 @@ export default function PublicProfile() {
                 {p.contests_attended} rated events
               </p>
             </div>
-          </div>
+            </div>
+          </section>
           <Chart
             line
             label="Rating history · Beta"
