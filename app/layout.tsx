@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import SiteMotion from "@/components/SiteMotion";
 import LiveAnnouncements from "@/components/LiveAnnouncements";
 import BackToTop from "@/components/BackToTop";
+import TrainingResultReset from "@/components/TrainingResultReset";
 export const metadata: Metadata = {
   title: "AMATYC Arena — Train your mathematical edge",
   description:
@@ -27,6 +28,7 @@ export default function RootLayout({
           <LiveAnnouncements />
           {children}
           <BackToTop />
+          <TrainingResultReset />
           <footer className="mx-auto mt-16 max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">

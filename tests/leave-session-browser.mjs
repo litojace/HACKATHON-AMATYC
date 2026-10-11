@@ -16,12 +16,12 @@ await context.addInitScript(({ key, session }) => localStorage.setItem(key, JSON
   key: "sb-" + new URL(url).hostname.split(".")[0] + "-auth-token",
   session: { access_token: jwt, refresh_token: "mock-refresh", expires_at: Math.floor(Date.now() / 1000) + 3600, expires_in: 3600, token_type: "bearer", user },
 });
-const questions = Array.from({ length: 5 }, (_, i) => ({ id: `question-${i}`, title: `Test question ${i + 1}`, contest_name: "Test contest", question_number: i + 1, category: "Algebra", topic_tags: [], difficulty: "Easy", difficulty_rating: 800, question_latex: "1 + 1 = ?", options: [{ label: "A", text: "2" }, { label: "B", text: "3" }], figure_required: false, figure_image_path: null, verification_status: "verified" }));
+const questions = Array.from({ length: 5 }, (_, i) => ({ id: `question-${i}`, title: `Test question ${i + 1}`, contest_name: "Test contest", question_number: i + 1, category: "Algebra", topic_tags: [], difficulty: "Easy", difficulty_rating: 800, question_latex: "1 + 1 = ?", option_count: 2, options: [{ label: "A", text: "2" }, { label: "B", text: "3" }], figure_required: false, figure_image_path: null, verification_status: "verified" }));
 let finalized = false;
 await context.route(new URL(url).origin + "/**", route => route.fulfill({ json: route.request().url().includes("/auth/") ? user : [] }));
 await context.route("**/api/**", route => {
   const path = new URL(route.request().url()).pathname.slice(5);
-  if (path === "problems") return route.fulfill({ json: questions });
+  if (path === "problems" || path === "problem-directory") return route.fulfill({ json: questions });
   if (path === "me") return route.fulfill({ json: { ...user, username: "learner", full_name: "Test Learner", rating: 800, contests_attended: 0, is_public: true, avatar_url: null, school: null } });
   if (path === "activity") return route.fulfill({ json: { practice: [], contests: [], ratings: [], bookmarks: [] } });
   if (path.startsWith("attempts/")) {
@@ -57,8 +57,26 @@ try {
   await page.getByRole("button", { name: "Submit test", exact: true }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Submit test", exact: true }).click();
   await page.getByText("Session complete", { exact: true }).waitFor();
+  await page.waitForFunction(() => sessionStorage.getItem("amatyc-training-result-v1") !== null);
+  await page.reload();
+  await page.getByText("Session complete", { exact: true }).waitFor();
+  await page.getByRole("button", { name: "Set up another session" }).click();
+  assert.equal(await page.evaluate(() => sessionStorage.getItem("amatyc-training-result-v1")), null);
+  await page.reload();
+  await page.getByRole("button", { name: "Start training" }).waitFor();
+  assert.equal(await page.getByText("Session complete", { exact: true }).count(), 0);
+  // Restore a completed snapshot to verify navigating away clears it too.
+  await page.evaluate(({ userId, questions }) => sessionStorage.setItem("amatyc-training-result-v1", JSON.stringify({
+    userId, session: questions, answers: {}, results: Object.fromEntries(questions.map(q => [q.id, { is_correct: false, correct_answer: "A" }])), deadline: Date.now(), timedOut: true,
+  })), { userId: user.id, questions });
+  await page.reload();
+  await page.getByText("Session complete", { exact: true }).waitFor();
+  await page.getByRole("heading", { name: "Time's up! Your training session has ended." }).waitFor();
   await page.getByRole("link", { name: "Problems", exact: true }).first().click();
   await page.waitForURL("**/problems");
+  await page.waitForFunction(() => sessionStorage.getItem("amatyc-training-result-v1") === null);
+  await page.getByRole("link", { name: "Training", exact: true }).first().click();
+  await page.getByRole("button", { name: "Start training" }).waitFor();
   assert.equal(await page.getByRole("dialog").count(), 0);
 
   await page.goto(base + "/contests/mock/take");

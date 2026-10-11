@@ -7,7 +7,6 @@ import type { ExamAttempt,Contest } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
-import ResultAnswer from "@/components/ResultAnswer";
 import { ChevronDown } from "lucide-react";
 import Chart from "@/components/Charts";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
@@ -162,9 +161,9 @@ function Content() {
                     <td className="p-4">
                       {i + 1}. {q.title}
                     </td>
-                    <td className="p-4"><ResultAnswer problem={q} answer={q.selected_answer} empty="Blank" /></td>
+                    <td className="p-4">{q.selected_answer ?? "Blank"}</td>
                     <td className="p-4">
-                      <ResultAnswer problem={q} answer={q.explanation?.correct_answer} empty="Hidden" />
+                      {q.explanation?.correct_answer ?? "Hidden"}
                     </td>
                     <td className="p-4 font-mono">{q.points}</td>
                     <td className="p-4">
@@ -176,7 +175,7 @@ function Content() {
                         onClick={() => setReview(review === i ? null : i)}
                       >
                         {review === i ? "Hide solution" : "View solution"}
-                        <ChevronDown size={16} className={review === i ? "rotate-180" : ""} />
+                        <ChevronDown size={18} aria-hidden="true" className={`shrink-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none ${review === i ? "rotate-180" : "rotate-0"}`} />
                       </button>
                     </td>
                   </tr>

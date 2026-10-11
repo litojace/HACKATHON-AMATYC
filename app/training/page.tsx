@@ -3,16 +3,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock3, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, Clock3, RotateCcw } from "lucide-react";
 import type { Answer, PracticeResult, Profile, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
 import MathRenderer from "@/components/MathRenderer";
-import ResultAnswer from "@/components/ResultAnswer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 import { ratingMatchedQuestions, trainingCandidates, trainingRating, TRAINING_PRESETS } from "@/lib/training";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
 import { isPerfectScore } from "@/lib/perfect-score";
+import { TRAINING_RESULT_KEY } from "@/components/TrainingResultReset";
 
 function solutionFor(result?: PracticeResult) {
   return result?.written_solution?.trim() || null;
@@ -25,7 +25,7 @@ function formatTime(seconds: number) {
 }
 
 export default function Training() {
-  const { problems, profile, demo, loading, savePractice } = useApp();
+  const { problems, profile, demo, loading, savePractice, user, authLoading } = useApp();
   const rating = trainingRating(profile?.rating);
   const [preset, setPreset] = useState(0);
   const { minutes, questions: questionCount } = TRAINING_PRESETS[preset];
@@ -44,6 +44,40 @@ export default function Training() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const submittingRef = useRef(false);
+  const restoredFor = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (authLoading || !user || restoredFor.current === user.id) return;
+    restoredFor.current = user.id;
+    try {
+      const raw = sessionStorage.getItem(TRAINING_RESULT_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.userId !== user.id || !Array.isArray(saved.session) || !saved.session.length ||
+        !saved.session.every((p: PublicProblem) => p && typeof p.id === "string" && Array.isArray(p.options) && saved.results?.[p.id]) ||
+        !saved.answers || typeof saved.answers !== "object" || typeof saved.timedOut !== "boolean" ||
+        !Number.isFinite(saved.deadline)) {
+        sessionStorage.removeItem(TRAINING_RESULT_KEY);
+        return;
+      }
+      setSession(saved.session);
+      setAnswers(saved.answers);
+      setResults(saved.results);
+      setDeadline(saved.deadline);
+      setTimedOut(saved.timedOut);
+      setFinished(true);
+      submissionStarted.current = true;
+    } catch {
+      // A missing or damaged snapshot falls back to session setup.
+    }
+  }, [authLoading, user]);
+
+  useEffect(() => {
+    if (!finished || !user) return;
+    try {
+      sessionStorage.setItem(TRAINING_RESULT_KEY, JSON.stringify({ userId: user.id, session, answers, results, deadline, timedOut }));
+    } catch { /* Results remain readable when browser storage is unavailable. */ }
+  }, [finished, user, session, answers, results, deadline, timedOut]);
 
   const pool = useMemo(() => trainingCandidates(problems, rating).filter((problem) => problem.option_count > 0), [problems, rating]);
   const remaining = deadline === null ? minutes * 60 : Math.max(0, Math.ceil((deadline - now) / 1000));
@@ -121,6 +155,7 @@ export default function Training() {
   }
 
   function restart() {
+    try { sessionStorage.removeItem(TRAINING_RESULT_KEY); } catch { /* Storage may be disabled. */ }
     setSession([]);
     setDeadline(null);
     setFinished(false);
@@ -179,11 +214,14 @@ export default function Training() {
           <p className="mt-1 text-sm muted">{Object.values(answers).filter(Boolean).length} questions answered. This practice score does not affect competitive rating.</p>
           <div className="mt-6 space-y-3">
             {session.map((problem, i) => (
-              <details key={problem.id} className={`panel p-4 ${results[problem.id]?.is_correct ? "answer-correct" : ""}`}>
+              <details key={problem.id} className={`group/result panel p-4 ${results[problem.id]?.is_correct ? "answer-correct" : ""}`}>
                 <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
                   <span><span className="mr-3 muted">{i + 1}.</span>{problem.title} <span className="ml-2 muted">{problem.difficulty}</span></span>
+                  <span className="ml-auto flex items-center gap-3">
                   <span className={results[problem.id]?.is_correct ? "text-[var(--success)]" : "text-red-400"}>
-                    {results[problem.id]?.is_correct ? "Correct" : "Incorrect"} · Your answer: <ResultAnswer problem={problem} answer={answers[problem.id]} /> · Correct: <ResultAnswer problem={problem} answer={results[problem.id]?.correct_answer} empty="—" />
+                    {results[problem.id]?.is_correct ? "Correct" : "Incorrect"} · Your answer: {answers[problem.id] ?? "No answer"} · Correct: {results[problem.id]?.correct_answer ?? "—"}
+                  </span>
+                  <ChevronDown size={18} aria-hidden="true" className="shrink-0 muted transition-transform duration-200 ease-in-out group-open/result:rotate-180 motion-reduce:transition-none" />
                   </span>
                 </summary>
                 <div className="mt-4 border-t border-edge pt-4 text-sm">
