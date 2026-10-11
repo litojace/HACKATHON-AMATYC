@@ -348,3 +348,20 @@ select {
   .motion-card:hover { translate: 0 -3px; border-color: color-mix(in srgb, var(--accent) 45%, var(--edge)); box-shadow: 0 6px 18px rgb(0 0 0 / 8%); }
   main tbody tr:hover, main tbody tr:focus-within { background-color: color-mix(in srgb, var(--accent) 5%, transparent); }
 }
+@keyframes announcement-enter {
+  from { opacity: 0; transform: translateY(-24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes announcement-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-24px); }
+}
+
+.announcement-enter { animation: announcement-enter 450ms ease-out both; }
+.announcement-exit { animation: announcement-exit 450ms ease-in both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-enter, .announcement-exit { animation: none; }
+  .announcement-exit { opacity: 0; }
+}

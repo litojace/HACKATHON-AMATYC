@@ -166,6 +166,22 @@ try {
   assert.deepEqual(learner.state.dismissals, [{ p_id: announcement.id }]);
   await learner.context.close();
 
+  const timed = await createMock("learner");
+  timed.state.unread = [announcement];
+  await timed.page.clock.install();
+  await timed.page.goto(base + "/profile/learner");
+  const timedPanel = timed.page.getByLabel("Announcements", { exact: true });
+  await timedPanel.waitFor();
+  assert.match(await timedPanel.getAttribute("class"), /announcement-enter/);
+  await timed.page.clock.fastForward(15000);
+  await timed.page.waitForFunction(() => document.querySelector('[aria-label="Announcements"]')?.classList.contains("announcement-exit"));
+  await timed.page.clock.fastForward(450);
+  await timedPanel.waitFor({ state: "detached" });
+  await timed.page.clock.fastForward(5000);
+  assert.equal(await timedPanel.count(), 0, "Polling does not redisplay an automatically hidden announcement.");
+  assert.equal(timed.state.dismissals.length, 0, "Auto-hide does not mark the announcement read on the server.");
+  await timed.context.close();
+
   const guest = await createMock("guest");
   await guest.page.goto(base + "/profile/admin");
   await guest.page.getByRole("heading", { name: "Test Admin", exact: true }).waitFor();

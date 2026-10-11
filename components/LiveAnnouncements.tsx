@@ -16,7 +16,25 @@ function AnnouncementInbox() {
   const { notify } = useApp();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const dismissed = useRef(new Set<string>());
+  const hidden = useRef(new Set<string>());
+  const [closing, setClosing] = useState(false);
   const active = useRef(true);
+  const batch = announcements.map(item => item.id).join(",");
+
+  useEffect(() => {
+    if (!batch) return;
+    setClosing(false);
+    const ids = batch.split(",");
+    const fadeTimer = window.setTimeout(() => setClosing(true), 15000);
+    const hideTimer = window.setTimeout(() => {
+      ids.forEach(id => hidden.current.add(id));
+      setAnnouncements(previous => previous.filter(item => !hidden.current.has(item.id)));
+    }, 15450);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [batch]);
 
   useEffect(() => {
     const client = supabase!;
@@ -28,7 +46,7 @@ function AnnouncementInbox() {
       try {
         const { data, error } = await client.rpc("user_announcements");
         if (listening && !error && Array.isArray(data)) {
-          setAnnouncements((data as Announcement[]).filter(item => !dismissed.current.has(item.id)));
+          setAnnouncements((data as Announcement[]).filter(item => !dismissed.current.has(item.id) && !hidden.current.has(item.id)));
         }
       } catch { /* Retry when the tab becomes visible or on the next poll. */ }
       finally { pending = false; }
@@ -65,7 +83,7 @@ function AnnouncementInbox() {
   return (
     <aside
       aria-label="Announcements"
-      className="motion-dialog fixed left-4 right-4 top-24 z-40 max-h-[60vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-panel shadow-xl sm:left-auto sm:w-96"
+      className={`${closing ? "announcement-exit pointer-events-none" : "announcement-enter"} fixed left-4 right-4 top-24 z-40 max-h-[60vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-panel shadow-xl sm:left-auto sm:w-96`}
     >
       <h2 className="flex items-center gap-2 border-b border-edge px-4 py-3 text-sm font-semibold">
         <Bell size={17} aria-hidden="true" /> Announcements <span className="muted">({announcements.length})</span>
