@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Bell, X } from "lucide-react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import { ANNOUNCEMENTS_UPDATED_EVENT, type Announcement } from "@/lib/announcements";
 import { useApp } from "./Providers";
@@ -88,6 +89,7 @@ function AnnouncementInbox() {
       <h2 className="flex items-center gap-2 border-b border-edge px-4 py-3 text-sm font-semibold">
         <Bell size={17} aria-hidden="true" /> Announcements <span className="muted">({announcements.length})</span>
       </h2>
+      <Link href="/dashboard#announcements" className="block border-b border-edge px-4 py-3 text-xs text-emerald-400 underline underline-offset-4">Read past announcements</Link>
       <div aria-live="polite" aria-relevant="additions" className="divide-y divide-edge">
         {announcements.map(announcement => (
           <article key={announcement.id} className="p-4">

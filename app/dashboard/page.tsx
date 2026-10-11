@@ -4,6 +4,7 @@ import RankedName, { RankText } from "@/components/RankedName";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import Chart from "@/components/Charts";
+import AnnouncementArchive from "@/components/AnnouncementArchive";
 import { getCodeforcesTitle, INITIAL_RATING } from "@/lib/rating";
 import { Flame } from "lucide-react";
 
@@ -126,6 +127,7 @@ function Content() {
           : "Your rating, topic accuracy, study streak, and recent activity."}
       />
 
+      <div className="mb-5"><Link href="#announcements" className="btn-secondary">Read past announcements</Link></div>
       <div className="mb-5 grid gap-4 sm:grid-cols-2">
         <div className="panel p-5">
           <p className="font-mono text-3xl"><RankText rating={profile?.rating ?? INITIAL_RATING}>{profile?.rating ?? INITIAL_RATING}</RankText></p>
@@ -218,6 +220,7 @@ function Content() {
           )}
         </section>
       </div>
+      <AnnouncementArchive />
     </>
   );
 }

@@ -9,3 +9,17 @@ Recipients see unread announcements across the website. Visible tabs check every
 Only authenticated administrators can call `admin_post_announcement(p_message text)`. Its response contains `id`, `message`, `created_at`, and `recipient_count`. Authenticated users can call `user_announcements()` for their own unread messages and `dismiss_announcement(p_id uuid)` for their own receipt. Repeated dismissal or an unknown ID is harmless. There are no client table grants or direct data access policies; all ownership checks use the server-authenticated user ID.
 
 Deleting a recipient's account removes that account's receipts. Deleting a publishing administrator keeps the announcement and delivery to other users, with its former author reference set to null. Announcement text is plain text and must be rendered without interpreting HTML.
+
+### Announcement archive
+
+The Dashboard includes an Announcement archive and a “Read past announcements” shortcut. Live notifications link to the same section. Users can read all announcements sent to them, including dismissed ones, in pages of 20 ordered newest first. The archive preserves the original online-recipient audience; it does not reveal messages sent to other users or retroactively send older announcements to users who were offline.
+
+Apply `supabase/migrations/022_announcement_archive.sql` in Supabase SQL Editor after migrations 001–021. This adds a read-only, authenticated RPC with explicit recipient filtering, SECURITY DEFINER, an empty search_path, and qualified table references. Popups still expire after 30 seconds, but the cleanup function now retains records for the archive. Existing dismissal and posting behavior is unchanged. Messages already deleted by migration 021 cannot be recovered. No data is deleted or modified when applying the migration.
+
+To roll back, remove the archive UI and revoke the new RPC:
+
+```sql
+revoke execute on function public.announcement_history(integer) from authenticated;
+```
+
+Database tests cover dismissed history, ordering, pagination, invalid pages, other-user isolation and anonymous denial. `tests/announcement-archive-browser.mjs` checks Dashboard navigation, paging and error recovery against mocked data.
