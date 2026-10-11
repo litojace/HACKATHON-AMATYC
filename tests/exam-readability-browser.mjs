@@ -11,7 +11,8 @@ try {
  await page.route('**/auth/v1/user',r=>r.fulfill({json:user}));
  await page.route('**/rest/v1/rpc/**',r=>r.fulfill({json:true}));
  page.on('pageerror',e=>console.error(e.message));
- const question=JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../data/historical/questions.json',import.meta.url),'utf8')).find(q=>q.id==='amatyc-2025-spring-q16');
+ const problemId=process.env.TEST_PROBLEM_ID??'amatyc-2025-spring-q16';
+ const question=JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../data/historical/questions.json',import.meta.url),'utf8')).find(q=>q.id===problemId);
  let resumable=false;
  await page.route('**/api/**',async r=>{
   const path=new URL(r.request().url()).pathname;
@@ -27,7 +28,7 @@ try {
  await page.getByRole('button',{name:'Start exam',exact:true}).waitFor();
  resumable=true; await page.reload({waitUntil:'domcontentloaded'});
  await page.getByRole('button',{name:'Resume exam',exact:true}).waitFor();
- await page.goto(base+'/problems/amatyc-2025-spring-q16',{waitUntil:'domcontentloaded'});
+ await page.goto(base+'/problems/'+problemId,{waitUntil:'domcontentloaded'});
  await page.getByRole('button',{name:'Zoom original exam question'}).click().catch(async e=>{console.error((await page.locator('body').innerText()).slice(0,2000));throw e;});
  const dialog=page.getByRole('dialog',{name:'Original exam question'});
  await dialog.waitFor();

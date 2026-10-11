@@ -15,3 +15,11 @@ python3 scripts/images/audit_exam_frames.py
 Review changed framing in the browser before publishing, especially scans with diagrams or choices spread across several lines. The audit does not modify image assets.
 
 Clicking a scan opens a wide image dialog with 100–300% zoom, horizontal/vertical scrolling, Fit image, and keyboard dismissal. The dialog is mounted on the document body so page transitions and transformed containers cannot constrain it.
+
+Scan tilt is corrected at display time using `data/historical/image-tilt.json`. The reported Fall 2007 question 1 needs a 0.8° clockwise correction. A conservative horizontal ink-projection audit identified 38 tilted scans; ambiguous scans remain unchanged. Extra padding accommodates the rotation, and the same correction applies to the enlarged image. Source images are never resampled or rewritten.
+
+To repeat the tilt analysis with Pillow and numpy installed:
+
+```sh
+python3 scripts/images/audit_scan_tilt.py
+```
