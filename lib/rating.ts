@@ -72,13 +72,16 @@ export function calculateRatings(participants: Participant[]) {
   });
 }
 export const RANK_TIERS = [
-  { min: 2200, title: "Legend", color: "text-amber-400", effect: "legend" },
-  { min: 2000, title: "Grandmaster", color: "text-red-400", effect: "grandmaster" },
-  { min: 1800, title: "Master", color: "text-orange-400", effect: "master" },
-  { min: 1600, title: "Expert", color: "text-violet-400", effect: "expert" },
-  { min: 1400, title: "Specialist", color: "text-cyan-400" },
-  { min: 1200, title: "Pupil", color: "text-green-400" },
-  { min: 0, title: "Newbie", color: "text-zinc-400" },
+  { min: 3000, title: "Legendary Grandmaster", color: "text-red-400", effect: "legend" },
+  { min: 2600, title: "International Grandmaster", color: "text-red-400", effect: "grandmaster" },
+  { min: 2400, title: "Grandmaster", color: "text-red-400", effect: "grandmaster" },
+  { min: 2300, title: "International Master", color: "text-orange-400", effect: "master" },
+  { min: 2100, title: "Master", color: "text-orange-400", effect: "master" },
+  { min: 1900, title: "Candidate Master", color: "text-violet-400", effect: "candidate-master" },
+  { min: 1600, title: "Expert", color: "text-blue-400", effect: "expert" },
+  { min: 1400, title: "Specialist", color: "text-[#03a89e]", effect: "specialist" },
+  { min: 1200, title: "Pupil", color: "text-green-400", effect: "pupil" },
+  { min: 0, title: "Newbie", color: "text-zinc-400", effect: "newbie" },
 ] as const;
 export function getCodeforcesTitle(rating: number) {
   return (

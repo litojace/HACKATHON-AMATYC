@@ -255,15 +255,25 @@ select {
 
 /* Rank decoration never captures clicks or substitutes for the readable name. */
 .ranked-name { position: relative; font-weight: 650; --rank-color: currentColor; }
-.rank-expert { --rank-color: #6d28d9; }
+.rank-newbie { --rank-color: #71717a; }
+.rank-pupil { --rank-color: #008000; }
+.rank-specialist { --rank-color: #03a89e; }
+.rank-expert { --rank-color: #0000ff; }
+.rank-candidate-master { --rank-color: #a000a0; }
 .rank-master { --rank-color: #9a3412; }
 .rank-grandmaster { --rank-color: #b91c1c; }
-.rank-legend { --rank-color: #92400e; display: inline-block; max-width: 100%; }
-:root[data-theme="dark"] .rank-expert { --rank-color: #c4a0ff; }
+.rank-legend { --rank-color: #b91c1c; display: inline-block; max-width: 100%; }
+:root[data-theme="dark"] .rank-newbie { --rank-color: #a1a1aa; }
+:root[data-theme="dark"] .rank-pupil { --rank-color: #4ade80; }
+:root[data-theme="dark"] .rank-expert { --rank-color: #60a5fa; }
+:root[data-theme="dark"] .rank-candidate-master { --rank-color: #c4a0ff; }
 :root[data-theme="dark"] .rank-master { --rank-color: #ffc078; }
 :root[data-theme="dark"] .rank-grandmaster { --rank-color: #ff8b9c; }
-:root[data-theme="dark"] .rank-legend { --rank-color: #ffdb7a; }
+:root[data-theme="dark"] .rank-legend { --rank-color: #ff8b9c; }
 .ranked-name .rank-name-text { color: var(--rank-color); }
+.rank-legend .rank-name-text { display: inline-block; }
+.rank-legend .rank-name-text::first-letter { color: #111827; }
+:root[data-theme="dark"] .rank-legend .rank-name-text::first-letter { color: #f8fafc; }
 .rank-featured { display: inline-block; max-width: 100%; padding-block: .65em .2em; }
 .rank-crown { position: absolute; top: -.12em; left: 50%; transform: translateX(-50%); width: .85em; height: .7em; fill: var(--rank-color); pointer-events: none; }
 .rank-symbols { position: absolute; inset: 0; pointer-events: none; user-select: none; color: var(--rank-color); }
@@ -280,7 +290,11 @@ select {
 .rank-sparkles svg:nth-child(5) { left: 55%; bottom: 0; width: .25em; height: .25em; animation-delay: -2.8s; }
 .rank-featured .rank-sparkles svg { width: .45em; height: .45em; }
 @media (prefers-reduced-motion: no-preference) {
-  .rank-expert .rank-name-text { animation: rank-breathe 4s ease-in-out infinite; }
+  .rank-newbie .rank-name-text,
+  .rank-pupil .rank-name-text,
+  .rank-specialist .rank-name-text,
+  .rank-expert .rank-name-text,
+  .rank-candidate-master .rank-name-text { animation: rank-breathe 4s ease-in-out infinite; }
   .rank-master .rank-name-text,
   .rank-grandmaster .rank-name-text,
   .rank-legend .rank-name-text {

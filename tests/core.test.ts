@@ -82,8 +82,9 @@ test("rating is deterministic independent of participant order", () => {
 });
 test("product tier and difficulty boundaries", () => {
   assert.equal(INITIAL_RATING, 800);
-  assert.equal(getCodeforcesTitle(1600).color, "text-violet-400");
-  for (const [rating, title] of [[1599, "Specialist"], [1600, "Expert"], [1799, "Expert"], [1800, "Master"], [1999, "Master"], [2000, "Grandmaster"], [2199, "Grandmaster"], [2200, "Legend"], [3000, "Legend"]] as const) {
+  assert.equal(getCodeforcesTitle(1600).color, "text-blue-400");
+  assert.equal(getCodeforcesTitle(1900).color, "text-violet-400");
+  for (const [rating, title] of [[1599, "Specialist"], [1600, "Expert"], [1899, "Expert"], [1900, "Candidate Master"], [2099, "Candidate Master"], [2100, "Master"], [2299, "Master"], [2300, "International Master"], [2399, "International Master"], [2400, "Grandmaster"], [2599, "Grandmaster"], [2600, "International Grandmaster"], [2999, "International Grandmaster"], [3000, "Legendary Grandmaster"]] as const) {
     assert.equal(getCodeforcesTitle(rating).title, title);
   }
   assert.equal(getCodeforcesTitle(1199).title, "Newbie");

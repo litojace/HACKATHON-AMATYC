@@ -1,7 +1,7 @@
 import { getCodeforcesTitle } from "@/lib/rating";
 import type { ReactNode } from "react";
 
-/** Legend names sparkle everywhere; profiles also show the crown and symbols. */
+/** Legendary Grandmaster names sparkle; profiles also show the crown and symbols. */
 export default function RankedName({ name, rating, featured = false }: {
   name: string;
   rating: number;
