@@ -72,7 +72,7 @@ export function calculateRatings(participants: Participant[]) {
   });
 }
 export const RANK_TIERS = [
-  { min: 3000, title: "Legendary Grandmaster", color: "text-red-400", effect: "legend" },
+  { min: 3000, title: "Legendary Grandmaster", color: "text-amber-400", effect: "legend" },
   { min: 2600, title: "International Grandmaster", color: "text-red-400", effect: "grandmaster" },
   { min: 2400, title: "Grandmaster", color: "text-red-400", effect: "grandmaster" },
   { min: 2300, title: "International Master", color: "text-orange-400", effect: "master" },

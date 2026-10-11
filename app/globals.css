@@ -262,16 +262,34 @@ select {
 .rank-candidate-master { --rank-color: #a000a0; }
 .rank-master { --rank-color: #9a3412; }
 .rank-grandmaster { --rank-color: #b91c1c; }
-.rank-legend { --rank-color: #b91c1c; display: inline-block; max-width: 100%; }
+.rank-legend {
+  --rank-color: #b77908;
+  --rank-gold-gradient: linear-gradient(110deg, #8a5000 8%, #c58c13 27%, #e5b838 42%, #976000 55%, #d49b1a 72%, #8a5000 92%);
+  display: inline-block;
+  max-width: 100%;
+}
 :root[data-theme="dark"] .rank-newbie { --rank-color: #a1a1aa; }
 :root[data-theme="dark"] .rank-pupil { --rank-color: #4ade80; }
 :root[data-theme="dark"] .rank-expert { --rank-color: #60a5fa; }
 :root[data-theme="dark"] .rank-candidate-master { --rank-color: #c4a0ff; }
 :root[data-theme="dark"] .rank-master { --rank-color: #ffc078; }
 :root[data-theme="dark"] .rank-grandmaster { --rank-color: #ff8b9c; }
-:root[data-theme="dark"] .rank-legend { --rank-color: #ff8b9c; }
+:root[data-theme="dark"] .rank-legend {
+  --rank-color: #ffd75e;
+  --rank-gold-gradient: linear-gradient(110deg, #c38a15 8%, #ffdf75 27%, #fff4b0 42%, #ffcc39 55%, #ffe995 72%, #b97807 92%);
+}
 .ranked-name .rank-name-text { color: var(--rank-color); }
 .rank-legend .rank-name-text { display: inline-block; }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .rank-legend .rank-name-text {
+    background-image: var(--rank-gold-gradient);
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--rank-color) 22%, transparent));
+  }
+}
 .rank-featured { display: inline-block; max-width: 100%; padding-block: .65em .2em; }
 .rank-crown { position: absolute; top: -.12em; left: 50%; transform: translateX(-50%); width: .85em; height: .7em; fill: var(--rank-color); pointer-events: none; }
 .rank-symbols { position: absolute; inset: 0; pointer-events: none; user-select: none; color: var(--rank-color); }
@@ -294,8 +312,7 @@ select {
   .rank-expert .rank-name-text,
   .rank-candidate-master .rank-name-text { animation: rank-breathe 4s ease-in-out infinite; }
   .rank-master .rank-name-text,
-  .rank-grandmaster .rank-name-text,
-  .rank-legend .rank-name-text {
+  .rank-grandmaster .rank-name-text {
     background: linear-gradient(110deg, var(--rank-color) 20%, var(--text) 45%, var(--rank-color) 70%);
     background-size: 250% 100%;
     background-clip: text;
@@ -304,7 +321,7 @@ select {
     animation: rank-shimmer 6s linear infinite;
   }
   .rank-grandmaster .rank-name-text { animation-duration: 5s; }
-  .rank-legend .rank-name-text { animation-duration: 4s; }
+  .rank-legend .rank-name-text { animation: rank-shimmer 4s linear infinite; }
   .rank-symbols span { animation: rank-float 4s ease-in-out infinite; }
   .rank-orbit span {
     inset: 0 auto auto 0;
