@@ -130,6 +130,15 @@ async function handle(
     if (!user) return error("Please sign in to continue.", 401);
     if (resource === "admin" && id === "problems") {
       if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage problems.", 403);
+      if (method === "DELETE" && action) {
+        const {data,error:deleteError} = await db.rpc("admin_delete_problem", {pid:action});
+        if (deleteError) {
+          if (deleteError.message === "Problem not found") return error(deleteError.message,404);
+          if (deleteError.message.startsWith("This problem has attempts")) return error(deleteError.message,409);
+          throw new Error(deleteError.message);
+        }
+        return NextResponse.json(data,{headers:{"Cache-Control":"private, no-store"}});
+      }
       if (method === "GET") {
         const data = await query(db.rpc("admin_problem_records", {pid:action ?? null}));
         return NextResponse.json(data, {headers:{"Cache-Control":"private, no-store"}});
@@ -255,4 +264,5 @@ async function handle(
 export const GET = handle,
   POST = handle,
   PUT = handle,
-  PATCH = handle;
+  PATCH = handle,
+  DELETE = handle;
