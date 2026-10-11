@@ -10,15 +10,21 @@ const jwt=[{alg:'HS256',typ:'JWT'},{sub:user.id,aud:'authenticated',role:'authen
 const problems=Array.from({length:20},(_,i)=>({id:'test-problem-'+i,title:'Problem '+(i+1),contest_name:'Test',question_number:i+1,category:'Algebra',topic_tags:[],difficulty:'Easy',difficulty_rating:800,question_latex:'Compute $1+1$.',options:[{label:'A',text:'2'},{label:'B',text:'3'}],figure_required:false,figure_image_path:null,source_image_path:null,answer_format:'multiple_choice',verification_status:'fully_verified',publication_status:'draft'}));
 const contest={id:'test-contest',name:'Mocked admin contest',description:'',year:2026,semester:'Custom',kind:'rated',duration_seconds:900,question_count:5,correct_points:2,incorrect_points:-0.5,blank_points:0,starts_at:new Date(Date.now()-60000).toISOString(),ends_at:new Date(Date.now()+3600000).toISOString(),review_at:new Date(Date.now()+4500000).toISOString(),published:true,rating_enabled:true,ratings_processed_at:null};
 let attempt={id:'mock-attempt',contest_id:contest.id,started_at:new Date().toISOString(),deadline:new Date(Date.now()+900000).toISOString(),finalized_at:null,status:'active',answers:{},flags:[],score:null,questions:problems.slice(0,5),server_now:new Date().toISOString(),breakdown:null};
-let created=null,patches=0,finishes=0,failSave=false;
+let created=null,patches=0,finishes=0,failSave=false,isAdmin=true,heartbeats=0;
 const browser=await chromium.launch({executablePath:process.env.BROWSER_EXECUTABLE,headless:true});
 try{
  const context=await browser.newContext({viewport:{width:1280,height:900}});
  await context.addInitScript(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key:'sb-'+new URL(url).hostname.split('.')[0]+'-auth-token',session:{access_token:jwt,refresh_token:'mock-refresh',expires_at:Math.floor(Date.now()/1000)+3600,expires_in:3600,token_type:'bearer',user}});
- await context.route(new URL(url).origin+'/**',route=>route.fulfill({json:route.request().url().includes('is_site_admin')?true:user}));
+ await context.route(new URL(url).origin+'/**',route=>{
+  const path=route.request().url();
+  if(path.includes('record_presence')){heartbeats++;return route.fulfill({json:null});}
+  if(path.includes('admin_online_users'))return route.fulfill({json:[{id:'online-learner',username:'learner',full_name:'Online Learner'}]});
+  return route.fulfill({json:path.includes('is_site_admin')?isAdmin:user});
+ });
  await context.route('**/api/**',async route=>{
   const path=new URL(route.request().url()).pathname.slice(5),method=route.request().method();
   if(path==='problems')return route.fulfill({json:problems});
+  if(path==='leaderboard')return route.fulfill({json:[{id:'online-learner',username:'learner',full_name:'Online Learner',rating:800,school:null,contests_attended:0,last_delta:0}]});
   if(path==='me')return route.fulfill({json:{...user,username:'admin',full_name:'Test Admin',rating:800,contests_attended:0,is_public:true}});
   if(path==='activity')return route.fulfill({json:{practice:[],contests:[],ratings:[],bookmarks:[]}});
   if(path==='admin/problems'&&method==='POST'){const record=route.request().postDataJSON();problems.push(record);return route.fulfill({json:record,status:201});}
@@ -67,5 +73,7 @@ try{
  await page.getByRole('button',{name:'Previous',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Submit contest',exact:true}).count(),0);
  await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
  await page.setViewportSize({width:390,height:844});await page.goto(base+'/admin/contests/new');await page.getByRole('heading',{name:'Create contest',exact:true}).waitFor();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+ await page.goto(base+'/leaderboard');await page.getByLabel('Online Learner is online',{exact:true}).waitFor();assert.equal(await page.getByLabel('Online users',{exact:true}).count(),0);assert.ok(heartbeats>0);
+ isAdmin=false;await page.reload();await page.getByRole('link',{name:'Online Learner',exact:true}).waitFor();await page.waitForTimeout(500);assert.equal(await page.getByLabel('Online Learner is online',{exact:true}).count(),0);
  assert.deepEqual(errors,[]);console.log('PASS: mocked admin creation, inline editor, presets, live monitor, answer saving/retry, navigation and final submission; no live database writes.');
 }finally{await browser.close();}

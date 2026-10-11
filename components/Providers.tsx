@@ -52,6 +52,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     [notice, setNotice] = useState(""),
     [localLoaded, setLocalLoaded] = useState(false);
   const demo = !supabaseConfigured;
+  useEffect(()=>{
+    if(!user||!supabase)return;
+    const client=supabase;let pending=false;
+    async function heartbeat(){
+      if(document.visibilityState!=='visible'||pending)return;
+      pending=true;
+      try{await client.rpc("record_presence");}catch{/* Presence retries on the next heartbeat. */}finally{pending=false;}
+    }
+    void heartbeat();const timer=setInterval(heartbeat,30000);
+    document.addEventListener('visibilitychange',heartbeat);
+    return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',heartbeat);};
+  },[user]);
   const notify = useCallback((t: string) => setNotice(t), []);
   const reload = useCallback(async () => {
     setLoading(true);

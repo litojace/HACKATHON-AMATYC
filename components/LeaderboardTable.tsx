@@ -6,10 +6,12 @@ export default function LeaderboardTable({
   profiles,
   all,
   userId,
+  onlineUserIds,
 }: {
   profiles: Profile[];
   all: Profile[];
   userId?: string;
+  onlineUserIds?: string[];
 }) {
   return (
     <div className="panel overflow-x-auto">
@@ -52,6 +54,7 @@ export default function LeaderboardTable({
                   >
                     {p.full_name?.trim() || "Competitor"}
                   </Link>
+                  {onlineUserIds?.includes(p.id) && <span aria-label={`${p.full_name?.trim() || "Competitor"} is online`} className="ml-2 inline-flex items-center gap-1.5 text-xs text-green-600"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-green-500" />Online</span>}
                 </td>
                 <td className="p-4 text-xs muted">
                   {p.school ?? "Not provided"}

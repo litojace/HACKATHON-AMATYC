@@ -5,8 +5,10 @@ import type { Profile } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { Loading, PageTitle } from "@/components/Shared";
 import LeaderboardTable from "@/components/LeaderboardTable";
+import useAdminOnlineUsers from "@/components/AdminOnlineUsers";
 export default function Leaderboard() {
   const { demo, user } = useApp();
+  const onlineUserIds = useAdminOnlineUsers();
   const [profiles, setProfiles] = useState<Profile[]>([]),
     [loading, setLoading] = useState(true),
     [error, setError] = useState(""),
@@ -47,7 +49,7 @@ export default function Leaderboard() {
       <PageTitle
         eyebrow="THE COMMUNITY"
         title="Learn together. Reach higher."
-        description="AMATYC Arena Rating — Beta. Automatic public rating updates are disabled pending algorithm verification."
+        description="AMATYC Arena Rating — Beta. Rated contest results update after the event review period."
       />
       {demo && (
         <p className="mb-5 text-sm text-emerald-400">
@@ -101,6 +103,7 @@ export default function Leaderboard() {
           profiles={filtered.slice((page - 1) * 20, page * 20)}
           all={profiles}
           userId={user?.id}
+          onlineUserIds={onlineUserIds ?? undefined}
         />
       )}
       <div className="mt-5 flex justify-end gap-3">
