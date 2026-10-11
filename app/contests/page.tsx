@@ -39,7 +39,7 @@ export default function Contests() {
               (a) => a.contest_id === c.id && a.status === "finalized",
             );
             return (
-              <article key={c.id} className="panel p-6">
+              <article key={c.id} className="motion-card panel p-6">
                 <Trophy size={24} className="text-emerald-400" />
                 <p className="mt-5 text-xs muted">
                   {c.semester} {c.year} ·{" "}

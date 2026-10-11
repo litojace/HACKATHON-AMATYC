@@ -226,7 +226,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       {notice && (
         <div
           role="status"
-          className="fixed bottom-5 left-1/2 z-50 w-[min(90%,480px)] -translate-x-1/2 rounded-xl border border-emerald-500/40 bg-panel p-4 text-sm shadow-xl"
+          key={notice}
+          className="motion-toast fixed bottom-5 left-1/2 z-50 w-[min(90%,480px)] -translate-x-1/2 rounded-xl border border-emerald-500/40 bg-panel p-4 text-sm shadow-xl"
         >
           {notice}
         </div>

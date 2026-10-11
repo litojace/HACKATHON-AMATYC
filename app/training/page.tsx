@@ -8,36 +8,10 @@ import type { Answer, PracticeResult, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
+import { balancedQuestions, TRAINING_PRESETS } from "@/lib/training";
 
-const durations = [15, 30, 60];
-const counts = [5, 10, 20];
-const difficultyOrder = ["Easy", "Medium", "Hard"] as const;
 function solutionFor(result?: PracticeResult) {
   return result?.written_solution?.trim() || null;
-}
-
-function shuffle<T>(items: T[]) {
-  const result = [...items];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-function balancedQuestions(pool: PublicProblem[], count: number) {
-  const buckets = Object.fromEntries(
-    difficultyOrder.map((level) => [level, shuffle(pool.filter((p) => p.difficulty === level))]),
-  ) as Record<(typeof difficultyOrder)[number], PublicProblem[]>;
-  const picked: PublicProblem[] = [];
-  for (let i = 0; i < count; i++) {
-    const preferred = buckets[difficultyOrder[i % difficultyOrder.length]];
-    const next = preferred.find((p) => !picked.some((item) => item.id === p.id))
-      ?? shuffle(pool.filter((p) => !picked.some((item) => item.id === p.id)))[0];
-    if (!next) break;
-    picked.push(next);
-  }
-  return picked;
 }
 
 function formatTime(seconds: number) {
@@ -48,8 +22,10 @@ function formatTime(seconds: number) {
 
 export default function Training() {
   const { problems, loading, savePractice } = useApp();
-  const [minutes, setMinutes] = useState(15);
-  const [questionCount, setQuestionCount] = useState(5);
+  const [preset, setPreset] = useState(0);
+  const { minutes, questions: questionCount } = TRAINING_PRESETS[preset];
+  const [starting, setStarting] = useState(false);
+  const [startError, setStartError] = useState("");
   const [session, setSession] = useState<PublicProblem[]>([]);
   const [answers, setAnswers] = useState<Record<string, Answer | null>>({});
   const [results, setResults] = useState<Record<string, PracticeResult>>({});
@@ -76,18 +52,28 @@ export default function Training() {
     if (deadline !== null && !finished && !submitting && !submitError && now >= deadline) void gradeTest();
   }, [deadline, finished, submitting, submitError, now]);
 
-  function start() {
-    const selected = balancedQuestions(pool, questionCount);
-    if (selected.length < questionCount) return;
-    setSession(selected);
-    setAnswers({});
-    setResults({});
-    setIndex(0);
-    setNow(Date.now());
-    setDeadline(Date.now() + minutes * 60_000);
-    setFinished(false);
-    setConfirmFinish(false);
-    setSubmitError("");
+  async function start() {
+    if (starting) return;
+    setStarting(true);
+    setStartError("");
+    try {
+      const freshPool = await api<PublicProblem[]>("problems");
+      const selected = balancedQuestions(freshPool, questionCount);
+      if (selected.length < questionCount) throw new Error("There are not enough published questions for this session. Choose a smaller session or try again later.");
+      setSession(selected);
+      setAnswers({});
+      setResults({});
+      setIndex(0);
+      setNow(Date.now());
+      setDeadline(Date.now() + minutes * 60_000);
+      setFinished(false);
+      setConfirmFinish(false);
+      setSubmitError("");
+    } catch (error) {
+      setStartError((error as Error).message);
+    } finally {
+      setStarting(false);
+    }
   }
 
   async function gradeTest() {
@@ -135,34 +121,21 @@ export default function Training() {
       <PageTitle
         eyebrow="TIMED PRACTICE"
         title="Train under pressure."
-        description="Choose a time limit and question set. Each session mixes easy, medium, and hard problems as evenly as your library allows."
+        description="Choose a session. Every start draws a fresh, shuffled set of questions with a balanced mix of easy, medium, and hard problems."
       />
 
       {!session.length ? (
         <section className="panel p-5 sm:p-8">
           <div>
-            <h2 className="text-lg font-semibold">1. Choose your time</h2>
+            <h2 className="text-lg font-semibold">Choose your session</h2>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
-              {durations.map((option) => (
-                <button key={option} type="button" aria-pressed={minutes === option}
-                  onClick={() => setMinutes(option)}
-                  className={`rounded-xl border p-4 text-left transition-colors ${minutes === option ? "border-emerald-400 bg-emerald-400/10" : "border-edge hover:bg-panel"}`}>
-                  <span className="block text-xl font-semibold">{option === 60 ? "1 hour" : `${option} minutes`}</span>
-                  <span className="mt-1 block text-sm muted">Timed session</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold">2. Choose your questions</h2>
-            <div className="mt-3 grid gap-3 sm:grid-cols-3">
-              {counts.map((option) => (
-                <button key={option} type="button" aria-pressed={questionCount === option}
-                  disabled={pool.length < option}
-                  onClick={() => setQuestionCount(option)}
-                  className={`rounded-xl border p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${questionCount === option ? "border-emerald-400 bg-emerald-400/10" : "border-edge hover:bg-panel"}`}>
-                  <span className="block text-xl font-semibold">{option} questions</span>
-                  <span className="mt-1 block text-sm muted">Balanced difficulty mix</span>
+              {TRAINING_PRESETS.map((option, i) => (
+                <button key={option.minutes} type="button" aria-pressed={preset === i}
+                  disabled={starting || pool.length < option.questions}
+                  onClick={() => { setPreset(i); setStartError(""); }}
+                  className={`motion-card rounded-xl border p-4 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${preset === i ? "border-emerald-400 bg-emerald-400/10" : "border-edge hover:bg-panel"}`}>
+                  <span className="block text-xl font-semibold">{option.minutes === 60 ? "1 hour" : `${option.minutes} minutes`}</span>
+                  <span className="mt-1 block text-sm muted">{option.questions} questions · Balanced mix</span>
                 </button>
               ))}
             </div>
@@ -171,11 +144,12 @@ export default function Training() {
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5">
             <p className="text-sm muted">{minutes === 60 ? "1 hour" : `${minutes} minutes`} · {questionCount} questions</p>
             <AccountGate requireAuth>
-              <button type="button" className="btn" disabled={pool.length < questionCount} onClick={start}>
-                Start training <ArrowRight size={16} />
+              <button type="button" className="btn" disabled={starting || pool.length < questionCount} onClick={() => void start()}>
+                {starting ? "Preparing session…" : "Start training"} <ArrowRight size={16} />
               </button>
             </AccountGate>
           </div>
+          {startError && <p role="alert" className="motion-feedback mt-4 text-sm text-red-400">{startError}</p>}
         </section>
       ) : finished ? (
         <section className="panel p-5 sm:p-8">
@@ -227,8 +201,8 @@ export default function Training() {
           </div>
           {submitError && <div role="alert" className="mx-auto mt-4 max-w-4xl rounded-lg border border-red-400/40 p-3 text-sm text-red-400">{submitError} <button className="ml-2 underline" onClick={() => void gradeTest()}>Retry grading</button></div>}
           {submitting && <p role="status" className="mx-auto mt-4 max-w-4xl text-center text-sm muted">Grading your answers…</p>}
-          {confirmFinish && <div role="dialog" aria-modal="true" aria-labelledby="finish-title" className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
-            <div className="panel w-full max-w-md p-6">
+          {confirmFinish && <div role="dialog" aria-modal="true" aria-labelledby="finish-title" className="motion-overlay fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
+            <div className="motion-dialog panel w-full max-w-md p-6">
               <h2 id="finish-title" className="text-lg font-semibold">Submit this training test?</h2>
               <p className="mt-2 text-sm muted">All {session.length} questions will be graded, including unanswered questions. You can review the correct answers and solutions afterward.</p>
               <div className="mt-5 flex justify-end gap-3"><button className="btn-secondary" onClick={() => setConfirmFinish(false)}>Keep training</button><button className="btn" onClick={() => void gradeTest()}>Submit test</button></div>

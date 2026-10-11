@@ -1,5 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import {
   ResponsiveContainer,
   LineChart,
@@ -25,6 +26,7 @@ export default function Chart({
   id?: string;
 }) {
   const isPercent = label.includes("(%)");
+  const reducedMotion = useReducedMotion();
   return (
     <div id={id} className="panel min-w-0 scroll-mt-24 p-5">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -54,6 +56,8 @@ export default function Chart({
                     }}
                   />
                   <Line
+                    isAnimationActive={!reducedMotion}
+                    animationDuration={650}
                     type="monotone"
                     dataKey="value"
                     name={label}
@@ -72,6 +76,8 @@ export default function Chart({
                     contentStyle={{ background: "var(--panel)", color: "var(--text)" }}
                   />
                   <Bar
+                    isAnimationActive={!reducedMotion}
+                    animationDuration={650}
                     dataKey="value"
                     name={label}
                     fill="var(--accent)"

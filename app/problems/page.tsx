@@ -163,7 +163,7 @@ export default function Problems() {
             {visible.slice((page - 1) * 12, page * 12).map(p => {
               const attempts = activity.practice.filter(a => a.problem_id === p.id);
               const status = attempts.some(a => a.is_correct) ? "Solved" : attempts.length ? "Attempted" : "Unsolved";
-              return <article key={p.id} className="panel p-4">
+              return <article key={p.id} className="motion-card panel p-4">
                 <div className="flex items-start justify-between gap-3">
                   <Link className="min-w-0 break-words font-semibold hover:text-emerald-400" href={"/problems/" + p.id + "?returnTo=" + encodeURIComponent(returnTo)}>{p.title}</Link>
                   <button type="button" className="shrink-0 p-2" aria-label={"Bookmark " + p.title} aria-pressed={activity.bookmarks.includes(p.id)} onClick={() => bookmark(p.id)}><Bookmark size={18} fill={activity.bookmarks.includes(p.id) ? "currentColor" : "none"} /></button>

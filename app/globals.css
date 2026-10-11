@@ -238,19 +238,13 @@ select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.65rem 1rem;
-  border: 1px solid rgb(255 255 255 / 20%);
-  border-radius: 0.75rem;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 12%);
+  width: 44px;
+  height: 44px;
+  border-radius: 0.5rem;
   transition: filter 180ms ease, transform 180ms ease;
 }
-.social-instagram { background: linear-gradient(120deg, #a527a1, #bd235c 55%, #b74714); }
-.social-discord { background: linear-gradient(120deg, #5865f2, #454dcc); }
+.social-discord { color: #5865f2; }
+:root[data-theme="dark"] .social-discord { color: #8791ff; }
 .social-button:hover { filter: brightness(1.1); }
 @media (prefers-reduced-motion: no-preference) {
   .social-button:hover { transform: translateY(-2px); }
@@ -320,4 +314,34 @@ select {
 }
 @media (prefers-reduced-motion: reduce) {
   .rank-symbols, .rank-sparkles { display: none; }
+}
+
+/* Short entrances and precise feedback; no movement of active study content. */
+@keyframes ui-fade-in { from { opacity: .35; } to { opacity: 1; } }
+@keyframes ui-rise-in { from { opacity: .35; translate: 0 8px; } to { opacity: 1; translate: 0 0; } }
+@keyframes ui-dialog-in { from { opacity: .35; translate: 0 10px; scale: .98; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes ui-toast-in { from { opacity: .35; translate: -50% 8px; } to { opacity: 1; translate: -50% 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .btn, .btn-secondary, .social-button {
+    transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+  }
+  .btn:not(:disabled):active, .btn-secondary:not(:disabled):active, .social-button:active { transform: scale(.98); }
+  .btn svg, .btn-secondary svg { transition: translate 160ms ease; }
+  .btn:hover svg.lucide-arrow-right, .btn-secondary:hover svg.lucide-arrow-right { translate: 2px 0; }
+  .field { transition: border-color 180ms ease, box-shadow 180ms ease; }
+  .field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent); }
+  header nav a, header nav button, header summary { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+  #mobile-navigation:not([hidden]) { animation: ui-rise-in 240ms cubic-bezier(.22, 1, .36, 1); }
+  details[open] > .motion-menu { animation: ui-rise-in 200ms cubic-bezier(.22, 1, .36, 1); }
+  .motion-overlay { animation: ui-fade-in 180ms ease-out; }
+  .motion-dialog { animation: ui-dialog-in 260ms cubic-bezier(.22, 1, .36, 1); }
+  .motion-toast { animation: ui-toast-in 260ms cubic-bezier(.22, 1, .36, 1); }
+  .motion-feedback { animation: ui-fade-in 220ms ease-out; }
+  .motion-card { transition: border-color 180ms ease, box-shadow 180ms ease, translate 180ms ease; }
+  main tbody tr { transition: background-color 160ms ease; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn:not(:disabled):hover, .btn-secondary:not(:disabled):hover { box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
+  .motion-card:hover { translate: 0 -3px; border-color: color-mix(in srgb, var(--accent) 45%, var(--edge)); box-shadow: 0 6px 18px rgb(0 0 0 / 8%); }
+  main tbody tr:hover, main tbody tr:focus-within { background-color: color-mix(in srgb, var(--accent) 5%, transparent); }
 }

@@ -191,7 +191,7 @@ function Content() {
             aria-valuemax={nextMilestone}
             aria-valuenow={Math.min(currentStreak, nextMilestone)}
           >
-            <div className="h-full rounded-full bg-orange-500 transition-[width]" style={{ width: `${milestoneProgress}%` }} />
+            <div data-motion="progress" className="h-full origin-left rounded-full bg-orange-500 transition-[width] duration-500" style={{ width: `${milestoneProgress}%` }} />
           </div>
           <p className="mt-2 text-xs muted">Practice a problem or finish a mock test to count the day.</p>
         </div>

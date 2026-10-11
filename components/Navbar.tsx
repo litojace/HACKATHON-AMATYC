@@ -121,7 +121,7 @@ export default function Navbar() {
                 <span className="max-w-40 truncate">{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</span>
                 <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 ease-in-out group-open:rotate-180 motion-reduce:transition-none" />
               </summary>
-              <div className="panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
+              <div className="motion-menu panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
                 <Link className="block" href="/settings" onClick={closeAccountMenu}>
                   Settings
                 </Link>

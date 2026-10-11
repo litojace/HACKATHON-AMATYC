@@ -65,7 +65,7 @@ function AnnouncementInbox() {
   return (
     <aside
       aria-label="Announcements"
-      className="fixed left-4 right-4 top-24 z-40 max-h-[60vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-panel shadow-xl sm:left-auto sm:w-96"
+      className="motion-dialog fixed left-4 right-4 top-24 z-40 max-h-[60vh] overflow-y-auto rounded-2xl border border-emerald-500/40 bg-panel shadow-xl sm:left-auto sm:w-96"
     >
       <h2 className="flex items-center gap-2 border-b border-edge px-4 py-3 text-sm font-semibold">
         <Bell size={17} aria-hidden="true" /> Announcements <span className="muted">({announcements.length})</span>

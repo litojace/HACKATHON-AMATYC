@@ -237,7 +237,7 @@ export default function AuthForm({
           </form>
         )}
         {message && (
-          <p role={messageIsError ? "alert" : "status"} className={`mt-5 text-sm ${messageIsError ? "text-red-400" : ""}`}>
+          <p key={message} role={messageIsError ? "alert" : "status"} className={`motion-feedback mt-5 text-sm ${messageIsError ? "text-red-400" : ""}`}>
             {message}
           </p>
         )}

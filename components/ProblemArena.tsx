@@ -171,7 +171,7 @@ export default function ProblemArena({
   if (authLoading) return <Loading />;
   if (!user) return <AccountGate requireAuth>{null}</AccountGate>;
   return (
-    <section className="mx-auto max-w-4xl">
+    <section className="mx-auto max-w-4xl" data-motion="none">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
           <span className="rounded-md bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
@@ -262,7 +262,7 @@ export default function ProblemArena({
         {result && (
           <div
             role="status"
-            className={`my-5 rounded-xl border p-4 text-sm ${result.is_correct ? "answer-correct-feedback" : "border-edge"}`}
+            className={`motion-feedback my-5 rounded-xl border p-4 text-sm ${result.is_correct ? "answer-correct-feedback" : "border-edge"}`}
           >
             <p>
               {selected

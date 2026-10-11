@@ -47,7 +47,7 @@ export function PageTitle({
   description?: string;
 }) {
   return (
-    <div className="mb-8">
+    <div className="mb-8" data-motion="heading">
       <p className="text-xs font-medium tracking-widest text-emerald-400">
         {eyebrow}
       </p>
