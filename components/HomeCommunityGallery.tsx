@@ -1,8 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/client";
+import { supabase } from "@/lib/supabaseClient";
+import { useApp } from "./Providers";
 import { defaultCarouselPhotos, carouselSchema, type CarouselPhoto } from "@/lib/carousel";
 
 
@@ -26,6 +30,8 @@ function DiscordIcon() {
 }
 
 export default function HomeCommunityGallery() {
+  const { user, authLoading } = useApp();
+  const [adminUserId, setAdminUserId] = useState<string | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
   const [photos, setPhotos] = useState<CarouselPhoto[]>(defaultCarouselPhotos);
   useEffect(() => {
@@ -36,6 +42,14 @@ export default function HomeCommunityGallery() {
     }).catch(() => { /* Keep the bundled gallery if the service is unavailable. */ });
     return () => { active = false; };
   }, []);
+  useEffect(() => {
+    if (!user || authLoading || !supabase) return;
+    let active = true;
+    supabase.rpc("is_site_admin").then(({ data, error }) => {
+      if (active) setAdminUserId(!error && data === true ? user.id : null);
+    }).catch(() => { if (active) setAdminUserId(null); });
+    return () => { active = false; setAdminUserId(null); };
+  }, [user, authLoading]);
   const photo = photos[activePhoto];
 
   function showPhoto(index: number) {
@@ -81,6 +95,16 @@ export default function HomeCommunityGallery() {
       </div>
 
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink">
+        {!authLoading && user && adminUserId === user.id && (
+          <Link
+            href="/admin/carousel"
+            aria-label="Edit carousel"
+            className="absolute right-3 top-3 z-10 inline-flex min-h-10 items-center gap-2 rounded-lg border border-white/30 bg-black/70 px-3 py-2 text-sm font-medium text-white backdrop-blur hover:bg-black/90"
+          >
+            <Pencil size={16} aria-hidden="true" />
+            Edit
+          </Link>
+        )}
         <Image
           key={photo.src}
           unoptimized

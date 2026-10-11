@@ -45,6 +45,7 @@ try {
   ]}));
   await page.goto(base);
   await page.getByText("Edited caption", {exact: true}).waitFor();
+  assert.equal(await page.getByRole("link", {name: "Edit carousel"}).count(), 0);
   await page.getByRole("button", {name: "Show next photo"}).click();
   await page.getByText("Second slide", {exact: true}).waitFor();
   await page.getByRole("button", {name: "Show next photo"}).click();
