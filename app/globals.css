@@ -47,8 +47,10 @@ body {
 :root[data-theme="dark"] .difficulty-medium { color: #ffc01e; }
 :root[data-theme="dark"] .difficulty-hard { color: #ff375f; }
 .katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
+}
+.katex-display > .katex {
+  white-space: normal;
 }
 .katex {
   max-width: 100%;
