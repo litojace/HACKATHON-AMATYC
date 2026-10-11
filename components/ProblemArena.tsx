@@ -163,10 +163,10 @@ export default function ProblemArena({
       ) {
         e.preventDefault();
         submit();
-      } else if (k === "N" && onNext) {
+      } else if (e.key === "ArrowRight" && onNext && !busy) {
         e.preventDefault();
         onNext();
-      } else if (k === "P" && onPrevious) {
+      } else if (e.key === "ArrowLeft" && onPrevious && !busy) {
         e.preventDefault();
         onPrevious();
       }
@@ -375,7 +375,7 @@ export default function ProblemArena({
               <br />
               Enter: submit practice
               <br />
-              N: next problem · P: previous problem
+              →: next question · ←: previous question
               <br />
               Shortcuts pause in fields and dialogs.
             </p>
