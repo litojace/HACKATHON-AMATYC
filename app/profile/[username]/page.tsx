@@ -7,6 +7,7 @@ import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
 import Chart from "@/components/Charts";
+import AdminProblemActions from "@/components/AdminProblemActions";
 export default function PublicProfile() {
   const { username } = useParams<{ username: string }>(),
     { demo } = useApp();
@@ -61,6 +62,7 @@ export default function PublicProfile() {
               </p>
             </div>
             </div>
+            <AdminProblemActions profileUserId={p.id} />
           </section>
           <Chart
             line
