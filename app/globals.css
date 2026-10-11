@@ -3,6 +3,8 @@
 .carousel-thumbnails {
   scrollbar-width: thin;
   scrollbar-color: var(--accent) var(--edge);
+  overscroll-behavior-x: contain;
+  contain: layout paint;
 }
 /* Reuse the existing accent utilities with the poster's orange palette. */
 @theme inline {

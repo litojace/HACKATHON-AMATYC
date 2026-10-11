@@ -19,8 +19,8 @@ export function difficulty(rating: number | null) {
         ? "Medium"
         : "Hard";
 }
-export function filterProblems(
-  problems: PublicProblem[],
+export function filterProblems<T extends Pick<PublicProblem, "id" | "title" | "question_latex" | "topic_tags" | "category" | "difficulty" | "contest_name" | "difficulty_rating">>(
+  problems: T[],
   filters: Record<string, string>,
   attempts: PracticeResult[] = [],
   bookmarks: string[] = [],

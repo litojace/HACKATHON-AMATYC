@@ -2,9 +2,21 @@ import "server-only";
 import raw from "@/data/demo/questions.json";
 import historical from "@/data/historical/questions.json";
 import exams from "@/data/historical/contests.json";
-import type { AMATYCProblem, PublicProblem, Contest } from "@/types/problem";
+import type { AMATYCProblem, PublicProblem, PublicProblemSummary, Contest } from "@/types/problem";
 export const demoQuestions = raw as AMATYCProblem[];
 export const libraryQuestions = [...historical] as AMATYCProblem[];
+export function problemSummary(p: PublicProblem): PublicProblemSummary {
+  return {
+    id: p.id, contest_name: p.contest_name, question_number: p.question_number,
+    title: p.title, category: p.category, topic_tags: p.topic_tags,
+    difficulty: p.difficulty, difficulty_rating: p.difficulty_rating,
+    question_latex: p.question_latex, verification_status: p.verification_status,
+    ...(p.accepted_count !== undefined ? { accepted_count: p.accepted_count } : {}),
+    ...(p.attempt_count !== undefined ? { attempt_count: p.attempt_count } : {}),
+    ...(p.acceptance_rate !== undefined ? { acceptance_rate: p.acceptance_rate } : {}),
+    option_count: p.options.length,
+  };
+}
 export function publicProblem(p: AMATYCProblem): PublicProblem {
   const {
     id,

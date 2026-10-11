@@ -3,6 +3,7 @@ import {
   libraryQuestions,
   libraryContests,
   publicProblem,
+  problemSummary,
   sampleProfiles,
 } from "@/lib/server/data";
 import { database, databaseConfigured } from "@/lib/server/database";
@@ -64,6 +65,8 @@ async function handle(
       if (resource === "practice" || resource === "attempts") {
         return error("Please sign in to continue. Supabase must be configured to enable practice and contests.", 401);
       }
+      if (resource === "problem-directory" && !id && method === "GET")
+        return NextResponse.json(libraryQuestions.map((p) => problemSummary(publicProblem(p))));
       if (resource === "problems" && method === "GET") {
         const p = id ? libraryQuestions.find((p) => p.id === id) : null;
         if (id && !p) return error("Problem not found", 404);
@@ -107,6 +110,8 @@ async function handle(
       const row = await query<{ photos: unknown }>(db.from("site_carousel").select("photos").eq("id", true).single());
       return NextResponse.json(carouselSchema.parse(row?.photos));
     }
+    if (resource === "problem-directory" && !id && method === "GET")
+      return NextResponse.json(await query(db.rpc("list_public_problem_directory")));
     if (resource === "problems" && method === "GET")
       return NextResponse.json(
         await query(db.rpc("list_public_problems", { problem_id: id ?? null })),

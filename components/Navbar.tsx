@@ -72,16 +72,18 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:py-4">
         <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
-          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="38" height="38" className="shrink-0" aria-hidden="true">
             <rect x="1" y="1" width="30" height="30" rx="8" fill="var(--accent)" />
             <path
               d="M22 9H11l7 7-7 7h11"
               stroke="#fff"
               strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               fill="none"
             />
           </svg>
-          <span>
+          <span className="text-lg">
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>

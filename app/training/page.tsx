@@ -38,7 +38,7 @@ export default function Training() {
   const [submitError, setSubmitError] = useState("");
   const submittingRef = useRef(false);
 
-  const pool = useMemo(() => problems.filter((problem) => problem.options.length > 0), [problems]);
+  const pool = useMemo(() => problems.filter((problem) => problem.option_count > 0), [problems]);
   const remaining = deadline === null ? minutes * 60 : Math.max(0, Math.ceil((deadline - now) / 1000));
   const current = session[index];
 

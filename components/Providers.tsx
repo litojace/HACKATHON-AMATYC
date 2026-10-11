@@ -9,7 +9,7 @@ import {
 import type { User } from "@supabase/supabase-js";
 import type {
   Profile,
-  PublicProblem,
+  PublicProblemSummary,
   Activity,
   PracticeResult,
   ExamAttempt,
@@ -25,7 +25,7 @@ const empty: Activity = {
 interface State {
   user: User | null;
   profile: Profile | null;
-  problems: PublicProblem[];
+  problems: PublicProblemSummary[];
   activity: Activity;
   loading: boolean;
   authLoading: boolean;
@@ -44,7 +44,7 @@ export const useApp = () => useContext(Context);
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null),
     [profile, setProfile] = useState<Profile | null>(null),
-    [problems, setProblems] = useState<PublicProblem[]>([]),
+    [problems, setProblems] = useState<PublicProblemSummary[]>([]),
     [activity, setActivity] = useState<Activity>(empty),
     [loading, setLoading] = useState(true),
     [authLoading, setAuthLoading] = useState(!!supabase),
@@ -70,7 +70,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setError("");
     try {
-      setProblems(await api<PublicProblem[]>("problems"));
+      setProblems(await api<PublicProblemSummary[]>("problem-directory"));
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -80,17 +80,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const refreshAccount = useCallback(async () => {
     if (!supabase) return;
     try {
-      const [p, a, library] = await Promise.allSettled([
+      const [p, a] = await Promise.allSettled([
         api<Profile>("me"),
         api<Activity>("activity"),
-        api<PublicProblem[]>("problems"),
       ]);
       if (p.status === "fulfilled") setProfile(p.value);
       else throw p.reason;
       if (a.status === "fulfilled") setActivity(a.value);
       else notify((a.reason as Error).message);
-      if (library.status === "fulfilled") setProblems(library.value);
-      else notify((library.reason as Error).message);
     } catch (e) {
       notify((e as Error).message);
     }

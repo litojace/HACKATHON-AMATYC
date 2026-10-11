@@ -8,6 +8,7 @@ import { api } from "@/lib/client";
 import { supabase } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
 import { carouselSchema, type CarouselPhoto } from "@/lib/carousel";
+import { canOptimizeCarouselImage } from "@/lib/carousel-images";
 
 // Session-only cache: never restore old bundled images on a fresh page load.
 let cachedPhotos: CarouselPhoto[] = [];
@@ -51,6 +52,22 @@ export default function HomeCommunityGallery() {
   const [focused, setFocused] = useState(false);
   const [photos, setPhotos] = useState<CarouselPhoto[]>(() => cachedPhotos);
   const thumbnailStrip = useRef<HTMLDivElement>(null);
+  // Native scrolling stays outside React; autoplay must not fight scrollbar dragging.
+  const scrollingUntil = useRef(0);
+  const draggingStrip = useRef(false);
+  useEffect(() => {
+    const finish = () => {
+      if (!draggingStrip.current) return;
+      draggingStrip.current = false;
+      scrollingUntil.current = Date.now() + 1500;
+    };
+    window.addEventListener("pointerup", finish);
+    window.addEventListener("pointercancel", finish);
+    return () => {
+      window.removeEventListener("pointerup", finish);
+      window.removeEventListener("pointercancel", finish);
+    };
+  }, []);
   useEffect(() => {
     let active = true;
     setGalleryError(false);
@@ -80,7 +97,7 @@ export default function HomeCommunityGallery() {
   useEffect(() => {
     if (photos.length < 2 || !readyPhotos.has(activePhoto) || paused || hovered || focused) return;
     const timer = window.setInterval(() => {
-      if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (document.hidden || draggingStrip.current || Date.now() < scrollingUntil.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       const next = (activePhoto + 1) % photos.length;
       if (readyPhotos.has(next)) { setPreviousPhoto(activePhoto); setActivePhoto(next); }
     }, slideDuration * 1000);
@@ -89,7 +106,7 @@ export default function HomeCommunityGallery() {
   useEffect(() => {
     const strip = thumbnailStrip.current;
     const selected = strip?.children[activePhoto] as HTMLElement | undefined;
-    if (!strip || !selected) return;
+    if (!strip || !selected || draggingStrip.current || Date.now() < scrollingUntil.current) return;
     const left = selected.offsetLeft;
     const right = left + selected.offsetWidth;
     const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
@@ -165,9 +182,9 @@ export default function HomeCommunityGallery() {
           key={`${index}-${item.src}`}
           aria-hidden={index !== activePhoto}
           className={`absolute inset-0 ${previousPhoto !== null ? index === activePhoto ? "carousel-slide-in" : index === previousPhoto ? "carousel-slide-out" : "" : ""}`}
-          style={{ visibility: readyPhotos.has(index) && (index === activePhoto || index === previousPhoto) ? "visible" : "hidden", transform: `translateX(${index === activePhoto ? 0 : -100}%)`, zIndex: index === activePhoto ? 2 : 1 }}
+          style={{ visibility: readyPhotos.has(index) && (index === activePhoto || index === previousPhoto) ? "visible" : "hidden", transform: `translate3d(${index === activePhoto ? 0 : -100}%,0,0)`, willChange: previousPhoto !== null && (index === activePhoto || index === previousPhoto) ? "transform" : "auto", zIndex: index === activePhoto ? 2 : 1 }}
         >
-          <Image unoptimized loading="eager" onLoad={async (event) => {
+          <Image unoptimized={!canOptimizeCarouselImage(item.src)} loading="eager" onLoad={async (event) => {
             const image = event.currentTarget;
             try { await image.decode(); } catch { /* onLoad confirms the image is available. */ }
             decodedSources.add(item.src);
@@ -206,7 +223,10 @@ export default function HomeCommunityGallery() {
         {paused ? "Play slideshow" : "Pause slideshow"}
       </button>}
 
-      <div ref={thumbnailStrip} className="carousel-thumbnails relative mt-3 flex w-full gap-2 overflow-x-auto pb-3" aria-label="Choose a photo">
+      <div ref={thumbnailStrip} className="carousel-thumbnails relative mt-3 flex w-full gap-2 overflow-x-auto pb-3" aria-label="Choose a photo"
+        onPointerDown={() => { draggingStrip.current = true; }}
+        onScroll={() => { scrollingUntil.current = Date.now() + 1500; }}
+        onWheel={() => { scrollingUntil.current = Date.now() + 1500; }}>
         {photos.map((item, index) => (
           <button
             key={index}
@@ -217,7 +237,7 @@ export default function HomeCommunityGallery() {
             aria-pressed={activePhoto === index}
             className={`relative aspect-[4/3] w-20 shrink-0 overflow-hidden rounded-md border-2 bg-ink ${activePhoto === index ? "border-emerald-400" : "border-transparent opacity-65 hover:opacity-100"}`}
           >
-            <Image unoptimized src={item.src} alt="" fill sizes="100px" className="object-cover" />
+            <Image unoptimized={!canOptimizeCarouselImage(item.src)} src={item.src} alt="" fill sizes="80px" className="object-cover" />
           </button>
         ))}
       </div>

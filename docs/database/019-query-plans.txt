@@ -1,0 +1,170 @@
+Local PostgreSQL 17 synthetic stress benchmark: 820 problems, 4,100 options, 120,000 attempts.
+Owner/admin RPC timings; one warmup, three measured calls. No production connection.
+
+                                         QUERY PLAN                                          
+---------------------------------------------------------------------------------------------
+ Result  (cost=0.00..0.26 rows=1 width=32) (actual time=36409.806..36409.869 rows=1 loops=1)
+   Buffers: shared hit=6737989
+ Planning Time: 0.036 ms
+ Execution Time: 36409.967 ms
+(4 rows)
+
+                                                                           QUERY PLAN                                                                            
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.28..8632.74 rows=1 width=32) (actual time=20.841..20.856 rows=1 loops=1)
+   Join Filter: (p.category_id = t.id)
+   Buffers: shared hit=4107
+   ->  Index Scan using problems_pkey on problems p  (cost=0.28..8.29 rows=1 width=475) (actual time=0.022..0.028 rows=1 loops=1)
+         Index Cond: (id = 'bench-1'::text)
+         Buffers: shared hit=3
+   ->  Seq Scan on topics t  (cost=0.00..1.01 rows=1 width=20) (actual time=0.009..0.009 rows=1 loops=1)
+         Buffers: shared hit=1
+   SubPlan 1
+     ->  Aggregate  (cost=9.32..9.33 rows=1 width=32) (actual time=0.029..0.031 rows=1 loops=1)
+           Buffers: shared hit=4
+           ->  Nested Loop  (cost=0.28..9.31 rows=1 width=10) (actual time=0.020..0.022 rows=1 loops=1)
+                 Join Filter: (pt.topic_id = t2.id)
+                 Buffers: shared hit=4
+                 ->  Index Only Scan using problem_topics_pkey on problem_topics pt  (cost=0.28..8.29 rows=1 width=10) (actual time=0.017..0.018 rows=1 loops=1)
+                       Index Cond: (problem_id = p.id)
+                       Heap Fetches: 1
+                       Buffers: shared hit=3
+                 ->  Seq Scan on topics t2  (cost=0.00..1.01 rows=1 width=20) (actual time=0.001..0.001 rows=1 loops=1)
+                       Buffers: shared hit=1
+   SubPlan 2
+     ->  Aggregate  (cost=20.82..20.83 rows=1 width=32) (actual time=0.060..0.063 rows=1 loops=1)
+           Buffers: shared hit=7
+           ->  Sort  (cost=20.78..20.79 rows=5 width=123) (actual time=0.045..0.047 rows=5 loops=1)
+                 Sort Key: o.label
+                 Sort Method: quicksort  Memory: 25kB
+                 Buffers: shared hit=7
+                 ->  Bitmap Heap Scan on problem_options o  (cost=4.32..20.72 rows=5 width=123) (actual time=0.027..0.035 rows=5 loops=1)
+                       Recheck Cond: (problem_id = p.id)
+                       Heap Blocks: exact=5
+                       Buffers: shared hit=7
+                       ->  Bitmap Index Scan on problem_options_pkey  (cost=0.00..4.32 rows=5 width=0) (actual time=0.015..0.015 rows=5 loops=1)
+                             Index Cond: (problem_id = p.id)
+                             Buffers: shared hit=2
+   SubPlan 3
+     ->  Aggregate  (cost=2864.12..2864.13 rows=1 width=8) (actual time=7.042..7.044 rows=1 loops=1)
+           Buffers: shared hit=1364
+           ->  Seq Scan on practice_attempts a  (cost=0.00..2864.00 rows=49 width=0) (actual time=0.267..7.033 rows=47 loops=1)
+                 Filter: (is_correct AND (problem_id = p.id))
+                 Rows Removed by Filter: 119953
+                 Buffers: shared hit=1364
+   SubPlan 4
+     ->  Aggregate  (cost=2864.36..2864.38 rows=1 width=8) (actual time=6.542..6.543 rows=1 loops=1)
+           Buffers: shared hit=1364
+           ->  Seq Scan on practice_attempts a_1  (cost=0.00..2864.00 rows=146 width=0) (actual time=0.018..6.527 rows=146 loops=1)
+                 Filter: (problem_id = p.id)
+                 Rows Removed by Filter: 119854
+                 Buffers: shared hit=1364
+   SubPlan 5
+     ->  Aggregate  (cost=2864.73..2864.76 rows=1 width=32) (actual time=7.016..7.017 rows=1 loops=1)
+           Buffers: shared hit=1364
+           ->  Seq Scan on practice_attempts a_2  (cost=0.00..2864.00 rows=146 width=1) (actual time=0.040..6.988 rows=146 loops=1)
+                 Filter: (problem_id = p.id)
+                 Rows Removed by Filter: 119854
+                 Buffers: shared hit=1364
+ Planning Time: 0.295 ms
+ Execution Time: 21.358 ms
+(57 rows)
+
+                                      QUERY PLAN                                       
+---------------------------------------------------------------------------------------
+ Result  (cost=0.00..0.26 rows=1 width=32) (actual time=93.133..93.171 rows=1 loops=1)
+   Buffers: shared hit=1846
+ Planning Time: 0.021 ms
+ Execution Time: 93.195 ms
+(4 rows)
+
+                                                                                   QUERY PLAN                                                                                   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=1907.17..1924.81 rows=10 width=45) (actual time=55.749..67.652 rows=820 loops=1)
+   Join Filter: (p.category_id = t.id)
+   Buffers: shared hit=1980
+   InitPlan 1
+     ->  Seq Scan on problems  (cost=0.00..54.20 rows=820 width=9) (actual time=0.005..0.133 rows=820 loops=1)
+           Buffers: shared hit=46
+   ->  Seq Scan on topics t  (cost=0.00..1.01 rows=1 width=20) (actual time=0.008..0.013 rows=1 loops=1)
+         Buffers: shared hit=1
+   ->  Hash Right Join  (cost=1852.97..1869.25 rows=10 width=555) (actual time=55.664..56.805 rows=820 loops=1)
+         Hash Cond: (a.problem_id = p.id)
+         Buffers: shared hit=1979
+         ->  HashAggregate  (cost=1573.36..1580.18 rows=682 width=25) (actual time=38.656..38.791 rows=820 loops=1)
+               Group Key: a.problem_id
+               Batches: 1  Memory Usage: 169kB
+               Buffers: shared hit=1514
+               InitPlan 2
+                 ->  Seq Scan on problems problems_1  (cost=0.00..54.20 rows=820 width=9) (actual time=0.012..0.089 rows=820 loops=1)
+                       Buffers: shared hit=46
+               ->  Bitmap Heap Scan on practice_attempts a  (cost=54.24..1508.25 rows=1455 width=10) (actual time=5.200..14.309 rows=120000 loops=1)
+                     Recheck Cond: (problem_id = ANY ((InitPlan 2).col1))
+                     Heap Blocks: exact=1364
+                     Buffers: shared hit=1514
+                     ->  Bitmap Index Scan on practice_attempts_problem_id  (cost=0.00..53.88 rows=1455 width=0) (actual time=4.843..4.843 rows=120000 loops=1)
+                           Index Cond: (problem_id = ANY ((InitPlan 2).col1))
+                           Buffers: shared hit=150
+         ->  Hash  (cost=279.48..279.48 rows=10 width=539) (actual time=16.968..17.028 rows=820 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 993kB
+               Buffers: shared hit=465
+               ->  Merge Left Join  (cost=242.87..279.48 rows=10 width=539) (actual time=7.000..16.023 rows=820 loops=1)
+                     Merge Cond: (p.id = o.problem_id)
+                     Buffers: shared hit=465
+                     ->  Merge Left Join  (cost=74.90..109.75 rows=10 width=507) (actual time=2.311..3.871 rows=820 loops=1)
+                           Merge Cond: (p.id = pt.problem_id)
+                           Buffers: shared hit=310
+                           ->  Index Scan using problems_pkey on problems p  (cost=0.28..34.77 rows=10 width=475) (actual time=0.728..1.171 rows=820 loops=1)
+                                 Index Cond: (id = ANY ((InitPlan 1).col1))
+                                 Buffers: shared hit=249
+                           ->  GroupAggregate  (cost=74.62..74.82 rows=10 width=41) (actual time=1.579..2.361 rows=820 loops=1)
+                                 Group Key: pt.problem_id
+                                 Buffers: shared hit=61
+                                 InitPlan 3
+                                   ->  Seq Scan on problems problems_2  (cost=0.00..54.20 rows=820 width=9) (actual time=0.002..0.068 rows=820 loops=1)
+                                         Buffers: shared hit=46
+                                 ->  Sort  (cost=20.42..20.45 rows=10 width=19) (actual time=1.568..1.610 rows=820 loops=1)
+                                       Sort Key: pt.problem_id
+                                       Sort Method: quicksort  Memory: 57kB
+                                       Buffers: shared hit=61
+                                       ->  Nested Loop  (cost=12.89..20.25 rows=10 width=19) (actual time=0.818..0.959 rows=820 loops=1)
+                                             Join Filter: (pt.topic_id = t2.id)
+                                             Buffers: shared hit=61
+                                             ->  Seq Scan on topics t2  (cost=0.00..1.01 rows=1 width=20) (actual time=0.003..0.004 rows=1 loops=1)
+                                                   Buffers: shared hit=1
+                                             ->  Bitmap Heap Scan on problem_topics pt  (cost=12.89..19.12 rows=10 width=19) (actual time=0.657..0.711 rows=820 loops=1)
+                                                   Recheck Cond: (problem_id = ANY ((InitPlan 3).col1))
+                                                   Heap Blocks: exact=6
+                                                   Buffers: shared hit=14
+                                                   ->  Bitmap Index Scan on problem_topics_pkey  (cost=0.00..12.89 rows=10 width=0) (actual time=0.647..0.647 rows=820 loops=1)
+                                                         Index Cond: (problem_id = ANY ((InitPlan 3).col1))
+                                                         Buffers: shared hit=8
+                     ->  GroupAggregate  (cost=167.97..169.09 rows=49 width=49) (actual time=4.686..11.839 rows=820 loops=1)
+                           Group Key: o.problem_id
+                           Buffers: shared hit=155
+                           InitPlan 4
+                             ->  Seq Scan on problems problems_3  (cost=0.00..54.20 rows=820 width=9) (actual time=0.005..0.094 rows=820 loops=1)
+                                   Buffers: shared hit=46
+                           ->  Sort  (cost=113.77..113.90 rows=50 width=132) (actual time=4.656..4.821 rows=4100 loops=1)
+                                 Sort Key: o.problem_id, o.label
+                                 Sort Method: quicksort  Memory: 801kB
+                                 Buffers: shared hit=155
+                                 ->  Bitmap Heap Scan on problem_options o  (cost=34.96..112.36 rows=50 width=132) (actual time=0.984..1.335 rows=4100 loops=1)
+                                       Recheck Cond: (problem_id = ANY ((InitPlan 4).col1))
+                                       Heap Blocks: exact=84
+                                       Buffers: shared hit=155
+                                       ->  Bitmap Index Scan on problem_options_pkey  (cost=0.00..34.95 rows=50 width=0) (actual time=0.968..0.968 rows=4100 loops=1)
+                                             Index Cond: (problem_id = ANY ((InitPlan 4).col1))
+                                             Buffers: shared hit=71
+ Planning Time: 0.526 ms
+ Execution Time: 68.459 ms
+(78 rows)
+
+ phase  |  path   | median_ms |  min_ms   |  max_ms   
+--------+---------+-----------+-----------+-----------
+ after  | detail  |     2.413 |     2.301 |     2.689
+ before | detail  |    48.977 |    46.418 |    52.844
+ after  | full    |    90.468 |    89.254 |    97.966
+ before | full    | 42303.294 | 40908.718 | 42308.077
+ after  | summary |    63.232 |    61.400 |    64.618
+(5 rows)

@@ -34,6 +34,10 @@ export interface PublicProblem {
   source_image_path?: string | null;
   difficulty_rationale?: string;
 }
+/** Lightweight directory data. Full question details are fetched on demand. */
+export type PublicProblemSummary = Omit<PublicProblem,
+  "options" | "figure_required" | "figure_image_path" | "source_image_path" |
+  "answer_format" | "difficulty_rationale"> & { option_count: number };
 /** Privileged import model. Never return this object in public API responses. */
 export interface AMATYCProblem extends PublicProblem {
   correct_answer: Answer;

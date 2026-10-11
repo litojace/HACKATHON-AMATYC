@@ -1,6 +1,9 @@
 "use client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/client";
+import type { PublicProblem } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, ServiceError } from "@/components/Shared";
 import ReportProblem from "@/components/ReportProblem";
@@ -10,7 +13,18 @@ export default function ProblemPage() {
   const { id } = useParams<{ id: string }>(),
     router = useRouter(),
     searchParams = useSearchParams(),
-    { problems, loading, error } = useApp();
+    { problems } = useApp();
+  const [detail, setDetail] = useState<{ id: string; problem: PublicProblem | null; error: boolean } | null>(null);
+  useEffect(() => {
+    let active = true;
+    void api<PublicProblem | null>("problems/" + encodeURIComponent(id)).then(
+      (problem) => { if (active) setDetail({ id, problem, error: false }); },
+      () => { if (active) setDetail({ id, problem: null, error: true }); },
+    );
+    return () => { active = false; };
+  }, [id]);
+  const loading = detail?.id !== id;
+  const error = !loading && detail?.error;
   const candidate = searchParams.get("returnTo");
   const returnTo =
     candidate === "/problems" || candidate?.startsWith("/problems?")
@@ -30,7 +44,7 @@ export default function ProblemPage() {
       </main>
     );
   const index = problems.findIndex((p) => p.id === id),
-    problem = problems[index];
+    problem = detail?.id === id ? detail.problem : null;
   if (!problem)
     return (
       <main className="p-10">

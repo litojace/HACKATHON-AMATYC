@@ -81,10 +81,10 @@ export default function Problems() {
       />
       <AdminProblemActions />
       <div className="panel mb-6 grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
-        <label className="flex items-center gap-2">
-          <Search size={16} />
+        <label className="relative block">
+          <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 muted" />
           <input
-            className="field"
+            className="field pl-10"
             aria-label="Search problems"
             placeholder="Title or keywords"
             value={filters.q ?? ""}

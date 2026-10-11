@@ -52,7 +52,9 @@ Both public Supabase settings must be provided before building. Incomplete setti
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 018, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 019, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+
+For migration 019 deployment, measured query plans, and rollback instructions, see [problem directory performance](docs/database/problem-directory-performance.md). Apply this migration before deploying the updated application.
 
 1. Run these migrations in order in the SQL editor:
    - `supabase/migrations/001_platform.sql`
@@ -73,6 +75,8 @@ For a new installation use a fresh Supabase project. Existing v2 installations a
    - `supabase/migrations/016_admin_online_users.sql`
    - `supabase/migrations/017_online_announcements.sql`
    - `supabase/migrations/018_problem_reports.sql`
+   - `supabase/migrations/019_problem_directory_performance.sql`
+
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set the Site URL to your actual application domain and add your local/deployed `/login` and `/reset-password` URLs to the redirect allowlist. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
 4. Export `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in an organizer-only shell, then run `npm run seed`. The seed validates all 820 historical records, imports them in transactional batches, and upserts 41 unrated contests. It also refreshes reviewed difficulty metadata and detailed explanations on existing records when their answer keys match. Scripts do not automatically load `.env.local`. Repeated seed/import commands skip immutable published problems.
