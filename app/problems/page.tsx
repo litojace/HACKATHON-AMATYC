@@ -169,7 +169,7 @@ export default function Problems() {
                   <Link className="min-w-0 break-words font-semibold hover:text-emerald-400" href={"/problems/" + p.id + "?returnTo=" + encodeURIComponent(returnTo)}>{p.title}</Link>
                   <button type="button" className="shrink-0 p-2" aria-label={"Bookmark " + p.title} aria-pressed={activity.bookmarks.includes(p.id)} onClick={() => bookmark(p.id)}><Bookmark size={18} fill={activity.bookmarks.includes(p.id) ? "currentColor" : "none"} /></button>
                 </div>
-                <p className="mt-2 text-xs muted">{p.category} · <span className={status === "Solved" ? "text-emerald-400" : status === "Attempted" ? "text-amber-400" : "muted"}>{status}</span></p>
+                <p className="mt-2 text-xs muted">{p.category} · <span className={status === "Solved" ? "text-[#22c55e]" : status === "Attempted" ? "text-amber-400" : "muted"}>{status}</span></p>
                 <div className="mt-3 flex items-center gap-3 text-xs"><span className={difficultyColor(p.difficulty)}>{p.difficulty}</span><span className="font-mono text-emerald-400">{p.difficulty_rating ?? "Unrated"}</span></div>
                 <p className="mt-2 text-xs muted">{p.contest_name}</p>
               </article>;
@@ -220,7 +220,7 @@ export default function Problems() {
                         {solved ? (
                           <CheckCircle2
                             size={18}
-                            className="text-emerald-400"
+                            className="text-[#22c55e]"
                           />
                         ) : attempted.length ? (
                           <RotateCw size={18} className="text-amber-400" />
