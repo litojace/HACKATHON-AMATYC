@@ -21,6 +21,31 @@ export default function Navbar() {
     document.documentElement.dataset.theme = value;
   }, [notify]);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const accountMenu = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    function closeAccountMenu(event: PointerEvent) {
+      const menu = accountMenu.current;
+      if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) {
+        menu.open = false;
+      }
+    }
+    function closeOnEscape(event: KeyboardEvent) {
+      const menu = accountMenu.current;
+      if (event.key === "Escape" && menu?.open) {
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      }
+    }
+    document.addEventListener("pointerdown", closeAccountMenu);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeAccountMenu);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
+  function closeAccountMenu() {
+    if (accountMenu.current) accountMenu.current.open = false;
+  }
   useEffect(() => {
     if (!open) return;
     function closeOnEscape(event: KeyboardEvent) {
@@ -82,7 +107,7 @@ export default function Navbar() {
           </button>
           <div className="hidden items-center gap-3 lg:flex">
           {user ? (
-            <details className="relative">
+            <details ref={accountMenu} className="group relative">
               <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm">
                 {profile?.avatar_url && (
                   <img
@@ -92,18 +117,18 @@ export default function Navbar() {
                   />
                 )}
                 <span className="max-w-40 truncate">{profile?.full_name?.trim() || "Account"}</span>
-                <ChevronDown size={14} />
+                <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 ease-in-out group-open:rotate-180 motion-reduce:transition-none" />
               </summary>
               <div className="panel absolute right-0 top-9 w-44 space-y-3 p-4 text-sm">
-                <Link className="block" href="/settings">
+                <Link className="block" href="/settings" onClick={closeAccountMenu}>
                   Settings
                 </Link>
                 {profile && (
-                  <Link className="block" href={"/profile/" + profile.username}>
+                  <Link className="block" href={"/profile/" + profile.username} onClick={closeAccountMenu}>
                     Public profile
                   </Link>
                 )}
-                <button onClick={() => supabase?.auth.signOut()}>
+                <button onClick={() => { closeAccountMenu(); void supabase?.auth.signOut(); }}>
                   Sign out
                 </button>
               </div>
