@@ -13,6 +13,6 @@ done
 if [ "$ready" != true ]; then echo 'Postgres did not become ready' >&2; exit 1; fi
 { cat tests/database-fixture.sql supabase/migrations/001_platform.sql supabase/migrations/002_import.sql supabase/migrations/003_practice_review.sql supabase/migrations/004_initial_rating.sql supabase/migrations/005_historical_formats.sql supabase/migrations/006_problem_submission_stats.sql supabase/migrations/007_profile_avatars.sql supabase/migrations/008_avatar_upload_limit.sql supabase/migrations/010_home_carousel.sql tests/database-seed.sql tests/database.sql
   node scripts/test-library-seed.mjs
-  cat tests/historical-database.sql tests/profile-avatars.sql supabase/migrations/009_remove_demonstration_set.sql supabase/migrations/009_remove_demonstration_set.sql tests/demo-removal.sql tests/carousel-database.sql supabase/migrations/011_admin_problems.sql tests/admin-problems-database.sql supabase/migrations/012_admin_problem_delete.sql tests/admin-problem-delete.sql
+  cat tests/historical-database.sql tests/profile-avatars.sql supabase/migrations/009_remove_demonstration_set.sql supabase/migrations/009_remove_demonstration_set.sql tests/demo-removal.sql tests/carousel-database.sql supabase/migrations/011_admin_problems.sql tests/admin-problems-database.sql supabase/migrations/012_admin_problem_delete.sql tests/admin-problem-delete.sql supabase/migrations/013_delete_problems_preserve_history.sql tests/admin-problem-history-delete.sql
 } |
   docker exec -i "$container" psql -U postgres -v ON_ERROR_STOP=1

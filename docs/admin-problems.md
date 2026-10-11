@@ -18,4 +18,6 @@ After a practice session starts or a problem belongs to a contest, its question,
 
 Image URLs are public: do not upload confidential unreleased contest material. Correct answers and audit records remain private. Authorization is checked by both the API and the database RPCs; ordinary users cannot promote themselves or upload problem images.
 
-Apply migration `012_admin_problem_delete.sql` to enable **Delete problem** in the editor. Deletion requires confirmation and permanently removes an unused problem, its options, solution, topic links and bookmarks; a private audit record is retained. Problems with practice sessions, attempts or contest membership cannot be deleted. Save those as private drafts to hide them from the library. Uploaded image files are retained because other problems may share them.
+Apply migration `012_admin_problem_delete.sql` to enable **Delete** beside **Edit** on each row in Manage problems. Deletion requires confirmation and permanently removes an unused problem, its options, solution, topic links and bookmarks; a private audit record is retained. Problems with practice sessions, attempts or contest membership cannot be deleted. Save those as private drafts to hide them from the library. Uploaded image files are retained because other problems may share them.
+
+Migration 013 supersedes the deletion restriction: Delete removes used problems from both the library and Manage problems while preserving their historical grading data and contest membership. Unused problems are permanently deleted.

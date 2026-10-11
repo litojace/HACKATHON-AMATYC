@@ -9,7 +9,6 @@ import { CATEGORIES } from "@/lib/domain";
 import { useApp } from "./Providers";
 import { AccountGate, Loading, PageTitle } from "./Shared";
 import MathRenderer from "./MathRenderer";
-import Dialog from "./ui/Dialog";
 
 export default function AdminProblemEditor({problemId}: {problemId?: string}) {
   const {user} = useApp();
@@ -26,17 +25,6 @@ function Editor({problemId}: {problemId?: string}) {
   const [busy,setBusy] = useState(false);
   const [error,setError] = useState("");
   const [message,setMessage] = useState("");
-  const [confirmDelete,setConfirmDelete] = useState(false);
-  async function remove() {
-    if (!problemId || busy) return;
-    setBusy(true);setMessage("");
-    try {
-      await api("admin/problems/"+encodeURIComponent(problemId),undefined,"DELETE");
-      setConfirmDelete(false);
-      await reload();notify("Problem deleted.");router.replace("/admin/problems");
-    } catch (e) { setConfirmDelete(false);setMessage((e as Error).message); }
-    finally {setBusy(false);}
-  }
   useEffect(() => {
     let active = true;
     async function load() {
@@ -140,10 +128,5 @@ function Editor({problemId}: {problemId?: string}) {
       <div className="flex gap-3"><button className="btn" disabled={!!problemId && !changed}>{busy ? "Saving…" : problem.publication_status === "published" ? "Save and publish" : "Save draft"}</button><button type="button" className="btn-secondary" disabled={!changed} onClick={() => {const original: AdminProblem = JSON.parse(baseline);setProblem(original);setTagsText(original.topic_tags.join(", "));setAcceptedText((original.accepted_answers ?? [original.correct_answer]).join("\n"));setMessage("");}}>Discard changes</button></div>
     </fieldset></form>
     {message && <p role="alert" className="mt-5 whitespace-pre-line text-sm">{message}</p>}
-    {problemId && <button type="button" disabled={busy} className="btn-secondary mt-6 text-red-600" onClick={() => setConfirmDelete(true)}>Delete problem</button>}
-    {confirmDelete && <Dialog title="Delete this problem?" onClose={() => {if (!busy) setConfirmDelete(false);}}>
-      <p className="mb-5">Delete “{JSON.parse(baseline).title}”? This permanently removes the problem and its answers. Problems with attempts or contest membership cannot be deleted.</p>
-      <div className="flex gap-3"><button type="button" disabled={busy} className="btn-secondary" onClick={() => setConfirmDelete(false)}>Cancel</button><button type="button" disabled={busy} className="btn bg-red-600 text-white" onClick={() => void remove()}>{busy ? "Deleting…" : "Confirm delete"}</button></div>
-    </Dialog>}
   </>;
 }
