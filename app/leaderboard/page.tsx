@@ -38,7 +38,7 @@ export default function Leaderboard() {
   }, []);
   const filtered = profiles.filter(
       (p) =>
-        p.username.toLowerCase().includes(search.toLowerCase()) &&
+        `${p.full_name ?? ""} ${p.username}`.toLowerCase().includes(search.toLowerCase()) &&
         (!school || p.school === school),
     ),
     rank = user ? profiles.findIndex((p) => p.id === user.id) : -1;
@@ -59,7 +59,7 @@ export default function Leaderboard() {
         <input
           className="field w-auto"
           aria-label="Search competitors"
-          placeholder="Search username"
+          placeholder="Search name or username"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);

@@ -50,7 +50,7 @@ export default function LeaderboardTable({
                     className={`font-medium ${tier.color}`}
                     href={"/profile/" + p.username}
                   >
-                    {p.username}
+                    {p.full_name?.trim() || p.username}
                   </Link>
                 </td>
                 <td className="p-4 text-xs muted">
