@@ -1,5 +1,4 @@
 "use client";
-import RankEffectsControl from "@/components/RankEffectsControl";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/client";
 import type { Profile } from "@/types/problem";
@@ -85,7 +84,6 @@ export default function Leaderboard() {
             ),
           )}
         </select>
-        <RankEffectsControl />
         {rank >= 0 && (
           <p className="self-center text-sm muted">
             Your rank: #

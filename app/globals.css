@@ -318,10 +318,6 @@ select {
   45% { opacity: .95; transform: scale(1.1) rotate(15deg); filter: drop-shadow(0 0 3px var(--rank-color)); }
   70% { opacity: .35; transform: scale(.7) rotate(30deg); filter: none; }
 }
-:root[data-rank-motion="off"] .ranked-name * { animation: none !important; }
-:root[data-rank-motion="off"] .rank-name-text { background: none; color: var(--rank-color); text-shadow: none; }
-:root[data-rank-motion="off"] .rank-symbols,
-:root[data-rank-motion="off"] .rank-sparkles { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .rank-symbols, .rank-sparkles { display: none; }
 }

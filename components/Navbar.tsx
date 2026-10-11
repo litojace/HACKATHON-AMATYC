@@ -20,8 +20,6 @@ export default function Navbar() {
     }
     setTheme(value);
     document.documentElement.dataset.theme = value;
-    try { document.documentElement.dataset.rankMotion = localStorage.getItem("amatyc-rank-motion") ?? "on"; } catch { /* Use the default when storage is unavailable. */ }
-    window.dispatchEvent(new Event("rank-motion-change"));
   }, [notify]);
   const menuButton = useRef<HTMLButtonElement>(null);
   const accountMenu = useRef<HTMLDetailsElement>(null);

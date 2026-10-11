@@ -7,7 +7,6 @@ import { useApp } from "@/components/Providers";
 import { Loading } from "@/components/Shared";
 import { getCodeforcesTitle } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
-import RankEffectsControl from "@/components/RankEffectsControl";
 import Chart from "@/components/Charts";
 import AdminProblemActions from "@/components/AdminProblemActions";
 export default function PublicProfile() {
@@ -64,7 +63,6 @@ export default function PublicProfile() {
               </p>
             </div>
             </div>
-            <div className="mt-5"><RankEffectsControl /></div>
             <AdminProblemActions profileUserId={p.id} />
           </section>
           <Chart
