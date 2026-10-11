@@ -1,0 +1,61 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+const base=process.env.TEST_BASE_URL??'http://localhost:3012';
+const url=process.env.NEXT_PUBLIC_SUPABASE_URL??'https://example.supabase.co';
+const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE??'/usr/bin/chromium',args:['--no-sandbox']});
+try {
+ const page=await browser.newPage({viewport:{width:490,height:1000}});
+ const user={id:'00000000-0000-4000-8000-000000000001',aud:'authenticated',email:'admin@example.test',app_metadata:{provider:'email'},user_metadata:{},created_at:'2026-01-01T00:00:00Z'};
+ const token='eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.fixture';
+ await page.addInitScript(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key:`sb-${new URL(url).hostname.split('.')[0]}-auth-token`,session:{access_token:token,refresh_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user}});
+ await page.route('**/auth/v1/user',r=>r.fulfill({json:user}));
+ await page.route('**/rest/v1/rpc/**',r=>r.fulfill({json:true}));
+ let members=[{id:user.id,username:'admin',full_name:'Admin',rating:1850,school:null},{id:'00000000-0000-4000-8000-000000000077',username:'learner',full_name:'Learner',rating:1200,school:null}];
+ const requests=[];const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/api/**',async r=>{
+  const path=new URL(r.request().url()).pathname,method=r.request().method();
+  let data=[];
+  if(path==='/api/admin/users')data=members;
+  else if(path==='/api/admin/reset'&&method==='POST') {
+   requests.push({path,method,body:r.request().postDataJSON()});
+   if(requests.at(-1).body.scope==='progress')members=members.map(m=>({...m,rating:800}));
+   data={ok:true};
+  } else if(path.startsWith('/api/admin/users/')&&method==='DELETE'){
+   requests.push({path,method,body:r.request().postDataJSON()});
+   members=members.filter(m=>!path.endsWith(m.id));data={deleted:true};
+  } else if(path==='/api/me')data={...user,...members[0],is_public:true,contests_attended:0};
+  else if(path==='/api/activity')data={practice:[],contests:[],ratings:[],bookmarks:[]};
+  return r.fulfill({json:data});
+ });
+ await page.goto(base+'/admin/users',{waitUntil:'domcontentloaded',timeout:60000});
+ await page.getByRole('heading',{name:'Manage users',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Reset progress',exact:true}).click();
+ const dialog=page.getByRole('dialog');
+ await dialog.getByRole('button',{name:'Cancel',exact:true}).click();assert.equal(requests.length,0);
+ await page.getByRole('button',{name:'Reset progress',exact:true}).click();
+ await dialog.getByLabel('Reason',{exact:true}).fill('Start the new season');
+ await dialog.getByLabel('Confirmation',{exact:true}).fill('reset progress');
+ assert.equal(await dialog.getByRole('button',{name:'Confirm permanently'}).isEnabled(),false);
+ await dialog.getByLabel('Confirmation',{exact:true}).fill('RESET PROGRESS');
+ await dialog.getByRole('button',{name:'Confirm permanently'}).click();
+ await page.getByText(/Progress reset\. Everyone now starts at 800/).waitFor();
+ assert.equal(requests.length,1);assert.equal(requests[0].body.scope,'progress');
+ await page.getByRole('button',{name:'Clear bookmarks and reports',exact:true}).click();
+ await dialog.getByLabel('Reason',{exact:true}).fill('Separate cleanup');
+ await dialog.getByLabel('Confirmation',{exact:true}).fill('CLEAR BOOKMARKS AND REPORTS');
+ await dialog.getByRole('button',{name:'Confirm permanently'}).click();
+ await page.getByText('Bookmarks and reports cleared. Progress and ratings were kept.').waitFor();
+ assert.equal(requests.length,2);assert.equal(requests[1].body.scope,'community');
+ assert.equal(await page.getByRole('button',{name:'Delete account',exact:true}).isEnabled(),false);
+ await page.getByRole('combobox',{name:'User',exact:true}).scrollIntoViewIfNeeded();await page.waitForTimeout(250);
+ await page.getByRole('combobox',{name:'User',exact:true}).click();await page.getByRole('option',{name:'Learner',exact:true}).click();
+ await page.getByRole('button',{name:'Delete account',exact:true}).click();
+ await dialog.getByLabel('Reason',{exact:true}).fill('Requested account deletion');
+ await dialog.getByLabel('Confirmation',{exact:true}).fill('DELETE learner');
+ await dialog.getByRole('button',{name:'Confirm permanently'}).click();
+ await page.getByText('Account deleted.',{exact:true}).waitFor();
+ assert.equal(requests.length,3);assert.equal(requests[2].method,'DELETE');
+ assert.equal(await page.getByRole('button',{name:'Delete account',exact:true}).isEnabled(),false);
+ assert.equal(await dialog.isVisible(),false);assert.deepEqual(errors,[]);
+ console.log('PASS: canceled and invalid confirmations send no mutations; reset/cleanup/delete are separate, reasons and typed phrases are sent, own deletion is disabled, dialog closes and records refresh.');
+}finally{await browser.close();}

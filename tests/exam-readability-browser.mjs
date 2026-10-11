@@ -1,0 +1,45 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+const base=process.env.TEST_BASE_URL??'http://localhost:3012';
+const url=process.env.NEXT_PUBLIC_SUPABASE_URL??'https://example.supabase.co';
+const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_EXECUTABLE??'/usr/bin/chromium',args:['--no-sandbox']});
+try {
+ const page=await browser.newPage({viewport:{width:490,height:1000}});
+ const user={id:'00000000-0000-4000-8000-000000000001',aud:'authenticated',email:'admin@example.test',app_metadata:{provider:'email'},user_metadata:{},created_at:'2026-01-01T00:00:00Z'};
+ const token='eyJhbGciOiJIUzI1NiJ9.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.fixture';
+ await page.addInitScript(({key,session})=>localStorage.setItem(key,JSON.stringify(session)),{key:`sb-${new URL(url).hostname.split('.')[0]}-auth-token`,session:{access_token:token,refresh_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user}});
+ await page.route('**/auth/v1/user',r=>r.fulfill({json:user}));
+ await page.route('**/rest/v1/rpc/**',r=>r.fulfill({json:true}));
+ page.on('pageerror',e=>console.error(e.message));
+ const question=JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../data/historical/questions.json',import.meta.url),'utf8')).find(q=>q.id==='amatyc-2025-spring-q16');
+ let resumable=false;
+ await page.route('**/api/**',async r=>{
+  const path=new URL(r.request().url()).pathname;
+  let data=[];
+  if(path==='/api/me')data={...user,username:'admin',full_name:'Admin',rating:800,is_public:true,contests_attended:0};
+  else if(path==='/api/activity')data={practice:[],contests:[],ratings:[],bookmarks:[]};
+  else if(path.startsWith('/api/problems/'))data=question;
+  else if(path.startsWith('/api/contests/'))data={id:'amatyc-2025-spring',name:'AMATYC Spring 2025',kind:'mock',question_count:20,duration_seconds:3600,correct_points:2,incorrect_points:-0.5,blank_points:0};
+  else if(path.endsWith('/status'))data={resumable};
+  await r.fulfill({json:data});
+ });
+ await page.goto(base+'/contests/amatyc-2025-spring',{waitUntil:'domcontentloaded'});
+ await page.getByRole('button',{name:'Start exam',exact:true}).waitFor();
+ resumable=true; await page.reload({waitUntil:'domcontentloaded'});
+ await page.getByRole('button',{name:'Resume exam',exact:true}).waitFor();
+ await page.goto(base+'/problems/amatyc-2025-spring-q16',{waitUntil:'domcontentloaded'});
+ await page.getByRole('button',{name:'Zoom original exam question'}).click().catch(async e=>{console.error((await page.locator('body').innerText()).slice(0,2000));throw e;});
+ const dialog=page.getByRole('dialog',{name:'Original exam question'});
+ await dialog.waitFor();
+ assert.equal(await dialog.evaluate(el=>el.parentElement.parentElement.tagName),'BODY');
+ await dialog.getByRole('button',{name:'Zoom in',exact:true}).click();
+ await dialog.getByText('150%',{exact:true}).waitFor();
+ const viewport=dialog.getByLabel('Enlarged problem image');
+ assert.ok(await viewport.evaluate(el=>el.scrollWidth>el.clientWidth));
+ await dialog.getByRole('button',{name:'Fit image',exact:true}).click();
+ await dialog.getByText('100%',{exact:true}).waitFor();
+ if(process.env.TEST_SCREENSHOT_DIR)await page.screenshot({path:process.env.TEST_SCREENSHOT_DIR+'/exam-image-zoom.png'});
+ await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);
+ if(process.env.TEST_SCREENSHOT_DIR)await page.screenshot({path:process.env.TEST_SCREENSHOT_DIR+'/exam-image-spacing.png'});
+ console.log('PASS: first start/resume labels, image portal, zoom, fit, scrolling and Escape');
+} finally { await browser.close(); }

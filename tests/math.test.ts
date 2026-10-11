@@ -80,3 +80,16 @@ test("both published versions of the speed explanation receive real subscripts",
     assert.ok(mathSegments(fixed).filter(s=>s.kind === "text").every(s=>!/[A-Za-z]_/.test(s.value)));
   }
 });
+
+test("older solution prose renders fractions and chained inequalities as math", async () => {
+  const { solutionMathText } = await import('../lib/math-text');
+  const input = 'Bound -1≤x≤1, maximum 17/16, equality t=1/4. Date 10/11/2026. https://example.com/17/16. Worth \\$5.';
+  const formatted = solutionMathText(input);
+  const segments = mathSegments(formatted);
+  assert.ok(segments.some(s => s.kind === 'inline' && s.value === String.raw`-1\le x\le 1`));
+  assert.ok(segments.some(s => s.kind === 'inline' && stackedFractions(s.value) === String.raw`\dfrac{17}{16}`));
+  assert.ok(segments.filter(s=>s.kind==='text').map(s=>s.value).join('').includes('10/11/2026'));
+  assert.ok(formatted.includes('https://example.com/17/16'));
+  assert.ok(formatted.includes(String.raw`\$5`));
+  assert.equal(solutionMathText(formatted),formatted);
+});

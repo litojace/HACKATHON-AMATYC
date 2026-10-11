@@ -159,6 +159,18 @@ async function handle(
       }
       return error("Method not allowed",405);
     }
+    if (resource === "admin" && (id === "reset" || id === "users" && method === "DELETE")) {
+      if (!user || !await query(db.rpc("is_site_admin"))) return error("Administrator access required",403);
+      if (id === "reset" && method !== "POST") return error("Method not allowed",405);
+      if (id === "users" && (!action || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(action))) return error("Invalid user ID",422);
+      const body=await req.json();
+      if (!body || typeof body.confirmation !== "string" || body.confirmation.length>200 || typeof body.reason !== "string" || !body.reason.trim() || body.reason.trim().length>500) return error("Enter the confirmation and a reason of 1–500 characters.",422);
+      if(id==="reset" && !["progress","community"].includes(body.scope)) return error("Invalid reset scope",422);
+      const operation=id==="reset" ? db.rpc("admin_reset_data",{reset_scope:body.scope,confirmation:body.confirmation,operation_reason:body.reason}) : db.rpc("admin_delete_user",{target_id:action,confirmation:body.confirmation,operation_reason:body.reason});
+      const {data,error:operationError}=await operation;
+      if(operationError) return error(operationError.message,operationError.code==="42501"?403:operationError.code==="P0002"?404:operationError.code==="55000"?409:operationError.code==="22023"?422:503);
+      return NextResponse.json(data,{headers:{"Cache-Control":"private, no-store"}});
+    }
     if (resource === "admin" && id === "users") {
       if (!await query(db.rpc("is_site_admin"))) return error("Only administrators can manage user ratings.", 403);
       if (method === "GET") return NextResponse.json(await query(db.rpc("admin_user_records")), {headers:{"Cache-Control":"private, no-store"}});
@@ -249,6 +261,14 @@ async function handle(
       );
     }
     if (resource === "attempts") {
+      if (method === "GET" && action === "status") {
+        const attempt = await query(db.from("contest_attempts")
+          .select("id").eq("user_id", user.id).eq("contest_id", id)
+          .eq("status", "active").maybeSingle());
+        return NextResponse.json({ resumable: !!attempt }, {
+          headers: { "Cache-Control": "private, no-store" },
+        });
+      }
       if (method === "POST" && action === "start")
         return NextResponse.json(
           await query(db.rpc("start_contest", { contest_id: id })),

@@ -20,7 +20,7 @@ export default function AdminProblemActions({problemId, profileUserId, contests 
   if (authLoading || !user || adminId !== user.id || (profileUserId && profileUserId !== user.id)) return null;
   if (profileUserId) return <><nav aria-label="Admin management" className="mt-6 flex flex-wrap gap-3 border-t border-edge pt-6">
     <Link className="btn-secondary" href="/admin/reports">Review problem reports</Link>
-    <Link className="btn-secondary" href="/admin/users">Manage user ratings</Link>
+    <Link className="btn-secondary" href="/admin/users">Manage users</Link>
     <Link className="btn-secondary" href="/admin/carousel">Manage carousel</Link>
     <Link className="btn-secondary" href="/admin/problems">Manage problems</Link>
     <Link className="btn-secondary" href="/admin/contests">Manage contests</Link>

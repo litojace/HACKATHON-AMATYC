@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,6 +19,7 @@ import ResultAnswer from "./ResultAnswer";
 import SolutionRenderer from "./SolutionRenderer";
 import { difficultyColor } from "@/lib/domain";
 import Dialog from "./ui/Dialog";
+import PrintedQuestionImage from "./PrintedQuestionImage";
 import { AccountGate, Loading } from "./Shared";
 export default function ProblemArena({
   problem,
@@ -54,6 +55,8 @@ export default function ProblemArena({
       started_at: string;
     } | null>(null),
     [zoom, setZoom] = useState(false);
+  const [imageScale, setImageScale] = useState(1);
+  const closeZoom = useCallback(() => setZoom(false), []);
   const value = exam ? (answer ?? null) : selected,
     solution = exam ? explanation : result;
   const printedOptions = !!problem.source_image_path && problem.options.length > 0 &&
@@ -220,8 +223,9 @@ export default function ProblemArena({
           </div>
         )}
       {problem.source_image_path ? <div className="my-7">
-          <button className="block w-full rounded-xl border border-edge bg-white p-2" onClick={() => setZoom(true)} aria-label="Zoom original exam question">
-            <img src={problem.source_image_path} alt={`Original printed question ${problem.question_number} from ${problem.contest_name}, including notation and answer choices`} className="w-full" />
+          <button className="relative block w-full cursor-zoom-in overflow-hidden rounded-xl border border-edge bg-white p-2" onClick={() => { setImageScale(1); setZoom(true); }} aria-label="Zoom original exam question">
+            <PrintedQuestionImage src={problem.source_image_path} alt={`Original printed question ${problem.question_number} from ${problem.contest_name}, including notation and answer choices`} />
+            <span className="absolute bottom-1 right-1 rounded bg-black/75 p-1 text-white"><ZoomIn size={16} /></span>
           </button>
         </div> : <div className="my-7 rounded-xl bg-white p-5 text-lg leading-9 text-zinc-900 sm:p-6">
           <MathRenderer text={problem.question_latex} />
@@ -229,7 +233,7 @@ export default function ProblemArena({
         {problem.figure_required && problem.figure_image_path && (
           <button
             className="relative mx-auto mb-7 block w-full max-w-md rounded-xl border border-edge p-3"
-            onClick={() => setZoom(true)}
+            onClick={() => { setImageScale(1); setZoom(true); }}
             aria-label="Zoom problem diagram"
           >
             <img
@@ -338,16 +342,25 @@ export default function ProblemArena({
       )}
       {zoom && (
         <Dialog
+          wide
           title={problem.source_image_path ? "Original exam question" : "Diagram zoom"}
-          onClose={() => {
-            setZoom(false);
-          }}
+          onClose={closeZoom}
         >
-          <img
-            className="w-full"
+          <div className="mb-4 flex flex-wrap items-center gap-3">
+            <button className="btn-secondary" disabled={imageScale <= 1} onClick={() => setImageScale((s) => Math.max(1, s - 0.5))} aria-label="Zoom out">−</button>
+            <span aria-live="polite">{Math.round(imageScale * 100)}%</span>
+            <button className="btn-secondary" disabled={imageScale >= 3} onClick={() => setImageScale((s) => Math.min(3, s + 0.5))} aria-label="Zoom in">+</button>
+            <button className="btn-secondary" onClick={() => setImageScale(1)}>Fit image</button>
+            <p className="text-sm muted">Zoom in, then scroll to read the full question.</p>
+          </div>
+          <div className="max-h-[60vh] overflow-auto rounded-lg border border-edge bg-white" tabIndex={0} aria-label="Enlarged problem image">
+          <div style={{ width: `${imageScale * 100}%` }}>
+          <PrintedQuestionImage
             src={problem.source_image_path ?? problem.figure_image_path!}
             alt={`Enlarged diagram for ${problem.title}`}
           />
+          </div>
+          </div>
         </Dialog>
       )}
     </section>

@@ -1,8 +1,9 @@
 import MathRenderer from "./MathRenderer";
-import { mathSegments } from "@/lib/math-text";
+import { mathSegments, solutionMathText } from "@/lib/math-text";
 
 /** Preserve formulas while presenting each prose statement as a separate step. */
 export default function SolutionRenderer({ text }: { text: string }) {
+  text = solutionMathText(text);
   const numberedSteps = text.trim().split(/\n\s*\n/);
   if (numberedSteps.length > 1 && numberedSteps.every(step => /^\d+\.\s/.test(step))) {
     return (

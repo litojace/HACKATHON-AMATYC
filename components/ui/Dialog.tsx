@@ -1,19 +1,24 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 export default function Dialog({
   title,
   onClose,
   children,
   closeLabel = "Close",
+  wide = false,
 }: {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
   closeLabel?: string;
+  wide?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const el = ref.current;
     el?.querySelector<HTMLElement>("button,a,input")?.focus();
     function key(e: KeyboardEvent) {
@@ -40,10 +45,11 @@ export default function Dialog({
     document.addEventListener("keydown", key);
     return () => {
       document.removeEventListener("keydown", key);
+      document.body.style.overflow = previousOverflow;
       previous?.focus();
     };
   }, [onClose]);
-  return (
+  return createPortal(
     <div
       className="motion-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-5"
       onMouseDown={(e) => {
@@ -55,7 +61,7 @@ export default function Dialog({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="motion-dialog panel max-h-[90vh] w-full max-w-2xl overflow-auto p-6"
+        className={`motion-dialog panel max-h-[90vh] w-full ${wide ? "max-w-7xl" : "max-w-2xl"} overflow-auto p-6`}
       >
         <h2 className="mb-5 text-xl font-semibold">{title}</h2>
         {children}
@@ -63,6 +69,6 @@ export default function Dialog({
           {closeLabel}
         </button>
       </div>
-    </div>
+    </div>, document.body
   );
 }

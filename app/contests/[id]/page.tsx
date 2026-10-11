@@ -12,12 +12,27 @@ export default function Overview() {
     { user, authLoading, notify } = useApp();
   const [contest, setContest] = useState<Contest | null>(null),
     [error, setError] = useState(""),
+    [attemptState, setAttemptState] = useState<{ key: string; resumable: boolean; failed?: boolean } | null>(null),
+    [statusRetry, setStatusRetry] = useState(0),
     [busy, setBusy] = useState(false);
+  const attemptKey = `${id}:${user?.id ?? ""}:${statusRetry}`;
+  const attemptReady = attemptState?.key === attemptKey;
+  const resuming = attemptReady && attemptState.resumable;
   useEffect(() => {
     api<Contest>("contests/" + id)
       .then(setContest)
       .catch((e) => setError(e.message));
   }, [id]);
+  useEffect(() => {
+    if (!user || authLoading) return;
+    let cancelled = false;
+    api<{ resumable: boolean }>(`attempts/${id}/status`)
+      .then(({ resumable }) => {
+        if (!cancelled) setAttemptState({ key: attemptKey, resumable });
+      })
+      .catch((e) => { if (!cancelled) { setAttemptState({ key: attemptKey, resumable: false, failed: true }); notify(e.message); } });
+    return () => { cancelled = true; };
+  }, [id, user, authLoading, attemptKey, notify]);
   async function start() {
     if (!user || authLoading) return;
     setBusy(true);
@@ -85,8 +100,8 @@ export default function Overview() {
               Sign in to begin
             </Link>
           ) : (
-            <button disabled={busy} onClick={start} className="btn w-full">
-              {busy ? "Starting…" : "Start / resume exam"}
+            <button disabled={busy || !attemptReady} onClick={attemptState?.failed ? () => setStatusRetry((n) => n + 1) : start} className="btn w-full">
+              {!attemptReady ? "Checking exam…" : attemptState.failed ? "Retry exam check" : busy ? resuming ? "Resuming…" : "Starting…" : resuming ? "Resume exam" : "Start exam"}
             </button>
           )}
         </section>

@@ -1,5 +1,19 @@
 export type MathSegment = { kind: "text" | "inline" | "display"; value: string };
 
+/** Recognize unambiguous mathematical fragments in older solution prose. */
+export function solutionMathText(text: string): string {
+  return mathSegments(text).map((part) => {
+    if (part.kind !== "text") {
+      const delimiter = part.kind === "display" ? "$$" : "$";
+      return delimiter + part.value + delimiter;
+    }
+    return part.value.replace(/\$/g, "\\$")
+      .replace(/(?<![\w/])(-?\d+(?:\.\d+)?\s*[≤≥]\s*[A-Za-z]\s*[≤≥]\s*-?\d+(?:\.\d+)?)(?![\w/])/g,
+        (_, expression: string) => "$" + expression.replace(/≤/g, "\\le ").replace(/≥/g, "\\ge ") + "$")
+      .replace(/(?<![\w/$])(-?\d+(?:\.\d+)?\/\d+(?:\.\d+)?)(?![\w/])/g, "$$$1$$");
+  }).join("");
+}
+
 /** Dollar signs escaped as \$ are currency, never math delimiters. */
 export function mathSegments(text: string): MathSegment[] {
   const segments: MathSegment[] = [];
