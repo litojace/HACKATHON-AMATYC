@@ -8,6 +8,7 @@ import type { Answer, PracticeResult, Profile, PublicProblem } from "@/types/pro
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
 import MathRenderer from "@/components/MathRenderer";
+import ResultAnswer from "@/components/ResultAnswer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 import { ratingMatchedQuestions, trainingCandidates, trainingRating, TRAINING_PRESETS } from "@/lib/training";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
@@ -37,6 +38,8 @@ export default function Training() {
   const [deadline, setDeadline] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [finished, setFinished] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
+  const submissionStarted = useRef(false);
   const [confirmFinish, setConfirmFinish] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -74,6 +77,8 @@ export default function Training() {
       setNow(Date.now());
       setDeadline(Date.now() + minutes * 60_000);
       setFinished(false);
+      setTimedOut(false);
+      submissionStarted.current = false;
       setConfirmFinish(false);
       setSubmitError("");
     } catch (error) {
@@ -85,6 +90,10 @@ export default function Training() {
 
   async function gradeTest() {
     if (submittingRef.current || finished) return;
+    if (!submissionStarted.current) {
+      setTimedOut(deadline !== null && Date.now() >= deadline);
+      submissionStarted.current = true;
+    }
     submittingRef.current = true;
     setSubmitting(true);
     setConfirmFinish(false);
@@ -165,7 +174,7 @@ export default function Training() {
             <PerfectScoreCelebration attemptId={`training-${deadline}`} total={session.length} />
           )}
           <p className="text-sm font-semibold text-emerald-400">Session complete</p>
-          <h2 className="mt-2 text-2xl font-semibold">Nice work staying with the clock.</h2>
+          <h2 className="mt-2 text-2xl font-semibold">{timedOut ? "Time's up! Your training session has ended." : "Nice work staying with the clock."}</h2>
           <p className="mt-2 muted">Training score: {session.filter((problem) => results[problem.id]?.is_correct).length} / {session.length} correct · {session.length ? Math.round(100 * session.filter((problem) => results[problem.id]?.is_correct).length / session.length) : 0}%</p>
           <p className="mt-1 text-sm muted">{Object.values(answers).filter(Boolean).length} questions answered. This practice score does not affect competitive rating.</p>
           <div className="mt-6 space-y-3">
@@ -174,7 +183,7 @@ export default function Training() {
                 <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3">
                   <span><span className="mr-3 muted">{i + 1}.</span>{problem.title} <span className="ml-2 muted">{problem.difficulty}</span></span>
                   <span className={results[problem.id]?.is_correct ? "text-[var(--success)]" : "text-red-400"}>
-                    {results[problem.id]?.is_correct ? "Correct" : "Incorrect"} · Your answer: {answers[problem.id] ?? "No answer"} · Correct: {results[problem.id]?.correct_answer ?? "—"}
+                    {results[problem.id]?.is_correct ? "Correct" : "Incorrect"} · Your answer: <ResultAnswer problem={problem} answer={answers[problem.id]} /> · Correct: <ResultAnswer problem={problem} answer={results[problem.id]?.correct_answer} empty="—" />
                   </span>
                 </summary>
                 <div className="mt-4 border-t border-edge pt-4 text-sm">

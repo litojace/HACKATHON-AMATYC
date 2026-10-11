@@ -15,6 +15,7 @@ import type {
 import { useApp } from "./Providers";
 import { api } from "@/lib/client";
 import MathRenderer from "./MathRenderer";
+import ResultAnswer from "./ResultAnswer";
 import SolutionRenderer from "./SolutionRenderer";
 import { difficultyColor } from "@/lib/domain";
 import Dialog from "./ui/Dialog";
@@ -270,8 +271,8 @@ export default function ProblemArena({
                   ? "Correct!"
                   : "Not quite."
                 : "Blank answer."}{" "}
-              You submitted {selected ?? "no answer"} · Correct answer:{" "}
-              {result.correct_answer}
+              You submitted <ResultAnswer problem={problem} answer={selected} empty="no answer" /> · Correct answer:{" "}
+              <ResultAnswer problem={problem} answer={result.correct_answer} />
               <b className="float-right">
                 {result.score > 0 ? "+" : ""}
                 {result.score.toFixed(1)} pts

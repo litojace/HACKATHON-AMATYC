@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import RankedName from "./RankedName";
+import AboutUs from "./AboutUs";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -67,7 +68,7 @@ export default function Navbar() {
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>
-        <div className="hidden items-center gap-6 text-sm lg:absolute lg:left-1/2 lg:flex lg:-translate-x-1/2">
+        <div className="hidden items-center gap-3 text-sm lg:flex xl:gap-6">
           {[
             ["/problems", "Problems"],
             ["/training", "Training"],
@@ -80,6 +81,7 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          <AboutUs />
         </div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
           <div className="hidden items-center gap-3 lg:flex">
@@ -139,6 +141,7 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+          <AboutUs mobile />
         </div>
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">

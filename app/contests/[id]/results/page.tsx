@@ -7,6 +7,7 @@ import type { ExamAttempt,Contest } from "@/types/problem";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
+import ResultAnswer from "@/components/ResultAnswer";
 import { ChevronDown } from "lucide-react";
 import Chart from "@/components/Charts";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
@@ -89,7 +90,7 @@ function Content() {
     <>
       <PageTitle
         eyebrow={demo ? "DEMONSTRATION RESULTS · UNRATED" : "YOUR EXAM RESULTS"}
-        title="Every attempt is a step forward."
+        title={result.finalized_at && Date.parse(result.finalized_at) >= Date.parse(result.deadline) ? "Time's up! Your contest has ended." : "Every attempt is a step forward."}
         description="Your examination score and competitive rating are separate."
       />
       {isPerfectScore(breakdown, result.questions.length) && (
@@ -161,9 +162,9 @@ function Content() {
                     <td className="p-4">
                       {i + 1}. {q.title}
                     </td>
-                    <td className="p-4">{q.selected_answer ?? "Blank"}</td>
+                    <td className="p-4"><ResultAnswer problem={q} answer={q.selected_answer} empty="Blank" /></td>
                     <td className="p-4">
-                      {q.explanation?.correct_answer ?? "Hidden"}
+                      <ResultAnswer problem={q} answer={q.explanation?.correct_answer} empty="Hidden" />
                     </td>
                     <td className="p-4 font-mono">{q.points}</td>
                     <td className="p-4">
