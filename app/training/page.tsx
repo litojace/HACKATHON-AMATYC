@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useApp } from "@/components/Providers";
 import { AccountGate, Loading, PageTitle } from "@/components/Shared";
 import ProblemArena from "@/components/ProblemArena";
-import { ArrowLeft, ArrowRight, Clock3, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock3, RotateCcw } from "lucide-react";
 import type { Answer, PracticeResult, Profile, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
@@ -122,7 +122,7 @@ export default function Training() {
   if (loading) return <main className="mx-auto max-w-5xl px-5 py-10"><Loading /></main>;
 
   return (
-    <main className="mx-auto max-w-5xl px-5 py-10">
+    <main className={`mx-auto px-5 py-10 ${session.length > 0 && !finished ? "max-w-6xl" : "max-w-5xl"}`}>
       <LeaveSessionGuard active={session.length > 0 && !finished} kind="training" />
       <PageTitle
         eyebrow="TIMED PRACTICE"
@@ -187,30 +187,57 @@ export default function Training() {
         </section>
       ) : current ? (
         <>
-          <section className="panel mb-5 flex flex-wrap items-center justify-between gap-4 p-4 sm:px-6">
-            <div>
-              <p className="text-sm muted">Question {index + 1} of {session.length}</p>
-              <p className="mt-1 text-xs muted">{current.difficulty} difficulty · Rating-matched practice</p>
+          <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_260px]">
+          <div className="min-w-0">
+            <section className="panel mb-5 flex flex-wrap items-center justify-between gap-4 p-4 sm:px-6">
+              <div>
+                <p className="text-sm muted">Question {index + 1} of {session.length}</p>
+                <p className="mt-1 text-xs muted">{current.difficulty} difficulty · Rating-matched practice</p>
+              </div>
+              <div role="timer" aria-live="off" className={`flex items-center gap-2 rounded-lg border px-4 py-2 font-mono text-xl font-semibold tabular-nums ${remaining <= 60 ? "border-red-400/50 text-red-400" : "border-edge"}`}>
+                <Clock3 size={19} aria-hidden="true" />{formatTime(remaining)}
+              </div>
+            </section>
+            <AccountGate requireAuth>
+              <ProblemArena key={current.id} problem={current} exam answer={answers[current.id] ?? null}
+                locked={submitting}
+                onAnswer={(answer) => setAnswers((previous) => ({ ...previous, [current.id]: answer }))} />
+            </AccountGate>
+            <div className="mx-auto mt-5 flex max-w-4xl items-center justify-between gap-3">
+              <button type="button" className="btn-secondary" disabled={index === 0 || submitting} onClick={() => setIndex((i) => i - 1)}><ArrowLeft size={16} /> Previous</button>
+              <span className="text-sm muted">{Object.values(answers).filter(Boolean).length} answered</span>
+              <button type="button" className={index + 1 === session.length ? "btn" : "btn-secondary"} disabled={submitting}
+                onClick={() => index + 1 < session.length ? setIndex((i) => i + 1) : setConfirmFinish(true)}>
+                {index + 1 === session.length ? "Submit test" : "Next"} <ArrowRight size={16} />
+              </button>
             </div>
-            <div role="timer" aria-live="off" className={`flex items-center gap-2 rounded-lg border px-4 py-2 font-mono text-xl font-semibold tabular-nums ${remaining <= 60 ? "border-red-400/50 text-red-400" : "border-edge"}`}>
-              <Clock3 size={19} aria-hidden="true" />{formatTime(remaining)}
+            {submitError && <div role="alert" className="mx-auto mt-4 max-w-4xl rounded-lg border border-red-400/40 p-3 text-sm text-red-400">{submitError} <button className="ml-2 underline" onClick={() => void gradeTest()}>Retry grading</button></div>}
+            {submitting && <p role="status" className="mx-auto mt-4 max-w-4xl text-center text-sm muted">Grading your answers…</p>}
             </div>
-          </section>
-          <AccountGate requireAuth>
-            <ProblemArena key={current.id} problem={current} exam answer={answers[current.id] ?? null}
-              locked={submitting}
-              onAnswer={(answer) => setAnswers((previous) => ({ ...previous, [current.id]: answer }))} />
-          </AccountGate>
-          <div className="mx-auto mt-5 flex max-w-4xl items-center justify-between gap-3">
-            <button type="button" className="btn-secondary" disabled={index === 0 || submitting} onClick={() => setIndex((i) => i - 1)}><ArrowLeft size={16} /> Previous</button>
-            <span className="text-sm muted">{Object.values(answers).filter(Boolean).length} answered</span>
-            <button type="button" className={index + 1 === session.length ? "btn" : "btn-secondary"} disabled={submitting}
-              onClick={() => index + 1 < session.length ? setIndex((i) => i + 1) : setConfirmFinish(true)}>
-              {index + 1 === session.length ? "Submit test" : "Next"} <ArrowRight size={16} />
-            </button>
+          <aside className="panel order-first p-4 lg:sticky lg:top-24 lg:order-last" aria-labelledby="training-questions-title">
+            <h2 id="training-questions-title" className="font-semibold">Questions ({session.length})</h2>
+            <p className="mt-1 text-sm muted">{Object.values(answers).filter(Boolean).length} of {session.length} answered</p>
+            <nav aria-label="Training questions" className="mt-4 max-h-64 overflow-y-auto lg:max-h-[calc(100dvh-14rem)]">
+              <ol className="space-y-2">
+                {session.map((problem, i) => {
+                  const answered = !!answers[problem.id];
+                  return (
+                    <li key={problem.id}>
+                      <button type="button" disabled={submitting}
+                        aria-current={i === index ? "step" : undefined}
+                        aria-label={`Go to question ${i + 1}, ${answered ? "answered" : "unanswered"}`}
+                        onClick={() => setIndex(i)}
+                        className={`flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-3 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${i === index ? "border-emerald-400 bg-emerald-400/10" : answered ? "border-emerald-400/30 hover:bg-emerald-400/10" : "border-edge hover:bg-panel"}`}>
+                        <span className="font-medium">Question {i + 1}</span>
+                        {answered ? <span className="flex items-center gap-1 text-xs text-emerald-400"><CheckCircle2 size={14} aria-hidden="true" /> Answered</span> : <span className="text-xs muted">Unanswered</span>}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          </aside>
           </div>
-          {submitError && <div role="alert" className="mx-auto mt-4 max-w-4xl rounded-lg border border-red-400/40 p-3 text-sm text-red-400">{submitError} <button className="ml-2 underline" onClick={() => void gradeTest()}>Retry grading</button></div>}
-          {submitting && <p role="status" className="mx-auto mt-4 max-w-4xl text-center text-sm muted">Grading your answers…</p>}
           {confirmFinish && <div role="dialog" aria-modal="true" aria-labelledby="finish-title" className="motion-overlay fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
             <div className="motion-dialog panel w-full max-w-md p-6">
               <h2 id="finish-title" className="text-lg font-semibold">Submit this training test?</h2>
