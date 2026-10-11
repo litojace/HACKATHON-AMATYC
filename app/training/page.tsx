@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock3, RotateCcw } from "lucide-r
 import type { Answer, PracticeResult, Profile, PublicProblem } from "@/types/problem";
 import { api } from "@/lib/client";
 import SolutionRenderer from "@/components/SolutionRenderer";
+import MathRenderer from "@/components/MathRenderer";
 import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 import { ratingMatchedQuestions, trainingCandidates, trainingRating, TRAINING_PRESETS } from "@/lib/training";
 import PerfectScoreCelebration from "@/components/PerfectScoreCelebration";
@@ -177,7 +178,33 @@ export default function Training() {
                   </span>
                 </summary>
                 <div className="mt-4 border-t border-edge pt-4 text-sm">
-                  <p className="font-medium">Solution</p>
+                  <p className="font-medium">Question</p>
+                  {problem.source_image_path ? (
+                    <div className="mt-2 rounded-xl border border-edge bg-white p-2">
+                      <img src={problem.source_image_path} loading="lazy"
+                        alt={`Original question ${problem.question_number} from ${problem.contest_name}, including notation and answer choices`}
+                        className="h-auto w-full" />
+                    </div>
+                  ) : (
+                    <div className="mt-2 rounded-xl bg-white p-4 text-zinc-900">
+                      <div className="whitespace-pre-wrap leading-7"><MathRenderer text={problem.question_latex} /></div>
+                      {problem.figure_required && problem.figure_image_path && (
+                        <img src={problem.figure_image_path} loading="lazy" alt={`Diagram for ${problem.title}`}
+                          className="mx-auto mt-4 max-h-64 max-w-full" />
+                      )}
+                    </div>
+                  )}
+                  {problem.options.length > 0 && !(problem.source_image_path && problem.options.every(option => option.text.trim() === `Printed option ${option.label}`)) && (
+                    <dl className="mt-3 grid gap-2 sm:grid-cols-2">
+                      {problem.options.map(option => (
+                        <div key={option.label} className="flex gap-3 rounded-lg border border-edge p-3">
+                          <dt className="shrink-0 font-semibold">{option.label}.</dt>
+                          <dd className="min-w-0 leading-7"><MathRenderer text={option.text} /></dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                  <p className="mt-5 border-t border-edge pt-4 font-medium">Solution</p>
                   <div className="mt-2 leading-7"><SolutionRenderer text={solutionFor(results[problem.id]) ?? "The answer key has been checked, but a written explanation is not available for this question yet."} /></div>
                 </div>
               </details>
