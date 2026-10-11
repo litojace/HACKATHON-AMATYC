@@ -3,24 +3,13 @@ import Link from "next/link";
 import RankedName from "./RankedName";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, Moon, Sun, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 export default function Navbar() {
   const path = usePathname(),
-    { user, profile, demo, notify } = useApp();
-  const [open, setOpen] = useState(false),
-    [theme, setTheme] = useState("light");
-  useEffect(() => {
-    let value = "light";
-    try {
-      value = localStorage.getItem("amatyc-theme") ?? "light";
-    } catch {
-      notify("Theme preference cannot be persisted in this browser.");
-    }
-    setTheme(value);
-    document.documentElement.dataset.theme = value;
-  }, [notify]);
+    { user, profile, demo } = useApp();
+  const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const accountMenu = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -58,19 +47,10 @@ export default function Navbar() {
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [open]);
-  function toggle() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem("amatyc-theme", next);
-    } catch {
-      notify("Theme changed for this session only.");
-    }
-  }
   return (
-    <header className="sticky top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:py-4">
+    <>
+    <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
+      <nav className="relative mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[76px]">
         <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
           <svg viewBox="0 0 32 32" width="38" height="38" className="shrink-0" aria-hidden="true">
             <rect x="1" y="1" width="30" height="30" rx="8" fill="var(--accent)" />
@@ -87,7 +67,7 @@ export default function Navbar() {
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>
-        <div className="hidden items-center gap-6 text-sm lg:flex">
+        <div className="hidden items-center gap-6 text-sm lg:absolute lg:left-1/2 lg:flex lg:-translate-x-1/2">
           {[
             ["/problems", "Problems"],
             ["/training", "Training"],
@@ -102,13 +82,6 @@ export default function Navbar() {
           ))}
         </div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
-          <button
-            aria-label="Toggle color theme"
-            onClick={toggle}
-            className="flex h-11 w-11 items-center justify-center rounded-lg border border-edge hover:bg-panel"
-          >
-            {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-          </button>
           <div className="hidden items-center gap-3 lg:flex">
           {user ? (
             <details ref={accountMenu} className="group relative">
@@ -180,11 +153,14 @@ export default function Navbar() {
         </div>
       </nav>
       {demo && (
-        <div className="border-t border-edge bg-emerald-400/5 px-5 py-1 text-center text-[11px] text-emerald-400">
+        <div className="flex h-6 items-center justify-center border-t border-edge bg-emerald-400/5 px-5 text-center text-[11px] text-emerald-400">
           <span className="lg:hidden">Browse mode · Sign in to practice</span>
           <span className="hidden lg:inline">BROWSE MODE · Historical exams + original samples · Connect Supabase and sign in to practice</span>
         </div>
       )}
     </header>
+    {/* Reserve the toolbar height; menus overlay content instead of moving it. */}
+    <div aria-hidden="true" className={demo ? "h-[93px] shrink-0 lg:h-[101px]" : "h-[69px] shrink-0 lg:h-[77px]"} />
+    </>
   );
 }

@@ -59,7 +59,7 @@ export default function Leaderboard() {
       )}
       <div className="mb-5 flex flex-wrap gap-3">
         <input
-          className="field w-auto"
+          className="field h-12 min-w-0 sm:w-64"
           aria-label="Search competitors"
           placeholder="Search name or username"
           value={search}
@@ -69,7 +69,7 @@ export default function Leaderboard() {
           }}
         />
         <select
-          className="field w-auto"
+          className="field h-12 min-w-0 sm:w-64"
           aria-label="Filter by school"
           value={school}
           onChange={(e) => {

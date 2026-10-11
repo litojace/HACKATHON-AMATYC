@@ -24,6 +24,11 @@ export default function Home() {
           <span>3.14</span>
           <span>÷</span>
           <span>01</span>
+          <span>θ</span>
+          <span>∴</span>
+          <span>φ</span>
+          <span>±</span>
+          <span>♡</span>
         </div>
         <div className="home-hero relative z-10">
           <p data-home-entrance className="mb-5 text-xs tracking-widest text-emerald-400">

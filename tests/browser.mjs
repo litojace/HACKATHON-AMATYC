@@ -106,15 +106,32 @@ try {
   await page.locator("main").getByRole("alert").waitFor();
   assert.match(await page.locator("main").getByRole("alert").innerText(), /cancelled/);
   await page.goto(base);
-  const initialTheme = await page.locator("html").getAttribute("data-theme");
-  await page.getByRole("button", {name: "Toggle color theme"}).click();
-  const switched = initialTheme === "dark" ? "light" : "dark";
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
+  assert.equal(await page.getByRole("button", {name: "Toggle color theme"}).count(), 0);
+  await page.evaluate(() => localStorage.setItem("amatyc-theme", "light"));
   await page.reload();
-  await page.waitForFunction(theme => document.documentElement.dataset.theme === theme, switched);
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
+  await page.setViewportSize({width: 1280, height: 900});
+  await page.waitForTimeout(800);
+  const toolbar = page.locator("body > header > nav").first();
+  const initialToolbar = await toolbar.boundingBox();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  assert.deepEqual(await toolbar.boundingBox(), initialToolbar);
+  await page.locator("header").getByRole("link", {name: "Contests", exact: true}).click();
+  await page.getByRole("heading", {name: "Practice with purpose."}).waitFor();
+  assert.deepEqual(await toolbar.boundingBox(), initialToolbar);
+  for (const overflow of ["hidden", "scroll"]) {
+    await page.evaluate(value => { document.documentElement.style.overflowY = value; }, overflow);
+    assert.deepEqual(await toolbar.boundingBox(), initialToolbar);
+  }
+  await page.evaluate(() => { document.documentElement.style.overflowY = ""; window.scrollTo(0, 0); });
   await page.setViewportSize({width: 390, height: 844});
+  await page.waitForTimeout(600);
+  const mainBeforeMenu = await page.locator("main").boundingBox();
   await page.getByRole("button", {name: "Open navigation"}).click();
+  assert.deepEqual(await page.locator("main").boundingBox(), mainBeforeMenu);
   await page.getByRole("link", {name: "Problems", exact: true}).click();
   await page.getByRole("heading", {name: "Find your next breakthrough."}).waitFor();
   assert.deepEqual(errors, []);
-  console.log("PASS: public browsing, answer confidentiality, guest API rejection, practice/contest login gates, return links, callback errors, theme persistence and mobile navigation.");
+  console.log("PASS: public browsing, answer confidentiality, guest API rejection, practice/contest login gates, return links, callback errors, dark-only theme, stationary header and mobile navigation.");
 } finally { await browser.close(); }

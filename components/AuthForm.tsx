@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, setRememberMe } from "@/lib/supabaseClient";
 import { useApp } from "./Providers";
 import { safeReturnPath } from "@/lib/auth";
 export default function AuthForm({
@@ -17,6 +17,7 @@ export default function AuthForm({
     [message, setMessage] = useState(""),
     [messageIsError, setMessageIsError] = useState(false),
     [showPassword, setShowPassword] = useState(false),
+    [rememberMe, setRemember] = useState(false),
     [showConfirmation, setShowConfirmation] = useState(false),
     [confirmationError, setConfirmationError] = useState(false);
   const confirmationInput = useRef<HTMLInputElement>(null);
@@ -32,6 +33,7 @@ export default function AuthForm({
     setMessage("");
     setMessageIsError(false);
     try {
+      if (mode === "login") setRememberMe(rememberMe);
       const next = safeReturnPath(new URLSearchParams(location.search).get("next"));
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -64,6 +66,7 @@ export default function AuthForm({
     setMessage("");
     setMessageIsError(false);
     try {
+      if (mode === "login") setRememberMe(rememberMe);
       const result =
         mode === "signup"
           ? await supabase.auth.signUp({
@@ -222,6 +225,14 @@ export default function AuthForm({
                 </div>
                 {confirmationError && <p id="password-match-error" role="alert" className="mt-2 text-xs text-red-500">Passwords do not match. Enter the same password in both fields.</p>}
               </div>
+            )}
+            {mode === "login" && (
+              <label className="flex min-h-10 cursor-pointer items-center gap-3 text-sm">
+                <input type="checkbox" name="remember_me" checked={rememberMe}
+                  onChange={e => setRemember(e.target.checked)} disabled={busy}
+                  className="h-4 w-4 accent-emerald-500" />
+                Remember me
+              </label>
             )}
             <button disabled={busy} className="btn w-full">
               {busy

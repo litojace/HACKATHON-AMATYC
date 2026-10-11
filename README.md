@@ -34,7 +34,8 @@ On Linux/macOS, `PORT=3001 npm start` selects another port. On Windows PowerShel
 - `/dashboard`: private authenticated analytics in configured mode; actual browser-local demo activity otherwise. Ratings, solved status, accuracy, activity/difficulty/topic charts, recent attempts, and clearly explained rule-based recommendations.
 - `/leaderboard`: public stored profiles (or explicitly sample profiles in demo), search, schools, pagination, ties, current-user ranking, deltas, profile links.
 - `/profile/[username]`: public profile and rating history; private practice/exam answers are excluded.
-- `/settings`: display name, school, HTTPS avatar URL, profile visibility. Header theme toggle persists dark/light preference.
+- `/login`: optional “Remember me” keeps the Supabase session across browser visits; unchecked logins use tab session storage. Both email and Google login honor this choice, and sign-out clears saved tokens.
+- `/settings`: display name, school, HTTPS avatar URL, profile visibility. The interface uses dark mode throughout.
 - `/login`, `/signup`, `/forgot-password`, `/reset-password`: Supabase email/password auth and recovery; demo explains account setup instead of faking an account.
 - `/api/health`: deployment readiness endpoint.
 
@@ -132,7 +133,7 @@ npm run smoke
 node tests/historical-browser.mjs
 ```
 
-Or use system Chromium: `BROWSER_EXECUTABLE=/usr/bin/chromium npm run smoke`. `TEST_BASE_URL` selects another server/port. Browser smoke tests verify public browsing, guest API rejection, login gates, return links, callback failures, theme persistence and mobile navigation. Historical browser tests check source assets and authentication requirements. Live signup/login/recovery tests need a real configured project and are not claimed as passed without one.
+Or use system Chromium: `BROWSER_EXECUTABLE=/usr/bin/chromium npm run smoke`. `TEST_BASE_URL` selects another server/port. Browser smoke tests verify public browsing, guest API rejection, login gates, return links, callback failures, dark-only theme and mobile navigation. Historical browser tests check source assets and authentication requirements. Live signup/login/recovery tests need a real configured project and are not claimed as passed without one.
 
 ## Dataset imports
 
