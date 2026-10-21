@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="arena-gold" x1="20" y1="5" x2="80" y2="95" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff0a3"/>
+      <stop offset=".5" stop-color="#ffd65b"/>
+      <stop offset="1" stop-color="#e6b640"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#arena-gold)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M50 5 60 33 80 23 65 44 93 50 65 56 80 77 60 67 50 95 40 67 20 77 35 56 7 50 35 44 20 23 40 33Z"/>
+    <path d="M50 5 72 50H28L50 5ZM50 95 28 50H72L50 95Z"/>
+    <path d="m20 23 60 54M80 23 20 77M7 50H93M50 5V95"/>
+  </g>
+</svg>

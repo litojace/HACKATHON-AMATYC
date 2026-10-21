@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import RankedName from "./RankedName";
 import AboutUs from "./AboutUs";
 import { usePathname } from "next/navigation";
@@ -54,17 +55,14 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
       <nav className="relative mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[76px]">
         <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
-          <svg viewBox="0 0 32 32" width="38" height="38" className="shrink-0" aria-hidden="true">
-            <rect x="1" y="1" width="30" height="30" rx="8" fill="var(--accent)" />
-            <path
-              d="M22 9H11l7 7-7 7h11"
-              stroke="#fff"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
+          <Image
+            src="/images/arena-logo.svg"
+            width={38}
+            height={38}
+            className="shrink-0"
+            alt=""
+            aria-hidden="true"
+          />
           <span className="text-lg">
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
