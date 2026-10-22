@@ -47,11 +47,17 @@ export default function MathOrbit() {
       <defs>
         <radialGradient id={`${id}-gold`} cx="30%" cy="25%" r="75%"><stop stopColor="#fffce0"/><stop offset=".25" stopColor="#ffe69a"/><stop offset=".6" stopColor="#dba62b"/><stop offset="1" stopColor="#785018"/></radialGradient>
         <radialGradient id={`${id}-halo`}><stop stopColor="#ffcf58" stopOpacity=".45"/><stop offset=".5" stopColor="#ffcf58" stopOpacity=".12"/><stop offset="1" stopColor="#ffcf58" stopOpacity="0"/></radialGradient>
+        <radialGradient id={`${id}-axis-depth`} gradientUnits="userSpaceOnUse" cx={axisOrigin.x} cy={axisOrigin.y} r="320">
+          <stop stopColor="#edf3ff" stopOpacity=".12" />
+          <stop offset=".4" stopColor="#edf3ff" stopOpacity=".14" />
+          <stop offset=".75" stopColor="#edf3ff" stopOpacity=".35" />
+          <stop offset="1" stopColor="#edf3ff" />
+        </radialGradient>
         <marker id={`${id}-axis-arrow`} viewBox="0 0 24 24" refX="20" refY="12" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto">
           <path d="M2 4 22 12 2 20 7 12Z" fill="#f1f5ff" />
         </marker>
       </defs>
-      <g className="orbit-axes" fill="none" stroke="#edf3ff">
+      <g className="orbit-axes" fill="none" stroke={`url(#${id}-axis-depth)`}>
         {axes.map(({label,dx,dy})=><g key={label}>
           <path className="orbit-axis-negative" d={`M${axisOrigin.x} ${axisOrigin.y} l${-dx * axisLength} ${-dy * axisLength}`} />
           <path className="orbit-axis-positive" d={`M${axisOrigin.x} ${axisOrigin.y} l${dx * axisLength} ${dy * axisLength}`} markerEnd={`url(#${id}-axis-arrow)`} />
