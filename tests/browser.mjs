@@ -90,8 +90,9 @@ try {
   assert.equal(await signIn.getAttribute("href"), "/login?next=" + encodeURIComponent("/problems/" + problem.id));
   await signIn.click();
   await page.getByRole("heading", {name: "Welcome back."}).waitFor();
-  if (await page.getByRole("button", {name: "Continue with Google"}).count()) {
-    assert.equal(await page.getByRole("button", {name: "Continue with Google"}).getAttribute("type"), "button");
+  assert.equal(await page.getByRole("button", {name: "Continue with Google"}).count(), 0);
+  if (await page.getByRole("textbox", {name: "Email", exact: true}).count()) {
+    assert.equal(await page.locator('input[name="password"]').getAttribute("type"), "password");
   } else {
     await page.getByText(/Sign-in is not available yet/).waitFor();
   }

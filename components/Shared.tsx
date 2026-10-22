@@ -24,7 +24,7 @@ export function AccountGate({ children, requireAuth = false, title, description 
       <div className="panel mx-auto my-10 max-w-lg p-8">
         <h1 className="text-2xl">{title ?? (requireAuth ? "Sign in to practice." : "Your personal progress awaits.")}</h1>
         <p className="my-5 muted">
-          {description ?? (requireAuth ? "Log in with Google or email to solve problems and take contests." : "Sign in to access your private account data.")}
+          {description ?? (requireAuth ? "Log in with your email to solve problems and take contests." : "Sign in to access your private account data.")}
         </p>
         <Link href={"/login?next=" + encodeURIComponent(pathname)} onClick={(event) => {
           if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

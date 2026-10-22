@@ -32,28 +32,6 @@ export default function AuthForm({
     forgot: "Reset your password.",
     reset: "Choose a new password.",
   };
-  async function signInWithGoogle() {
-    if (!supabase || busy) return;
-    setBusy(true);
-    setMessage("");
-    setMessageIsError(false);
-    try {
-      if (mode === "login") setRememberMe(rememberMe);
-      const callback = new URL("/auth/callback", authSiteOrigin());
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: callback.toString(),
-          queryParams: { prompt: "select_account" },
-        },
-      });
-      if (error) throw error;
-    } catch (error) {
-      setMessage((error as Error).message);
-      setMessageIsError(true);
-      setBusy(false);
-    }
-  }
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) return;
@@ -125,8 +103,8 @@ export default function AuthForm({
         {!supabase ? (
           <>
             <p className="my-5 leading-7 muted">
-              Sign-in is not available yet. Connect Supabase to enable Google
-              and email accounts. You can browse the problem library; practice
+              Sign-in is not available yet. Connect Supabase to enable email
+              accounts. You can browse the problem library; practice
               and contests require an account.
             </p>
             <Link className="btn" href="/problems">
@@ -139,13 +117,6 @@ export default function AuthForm({
           </p>
         ) : (
           <form className="mt-6 space-y-4" onSubmit={submit}>
-            {(mode === "login" || mode === "signup") && <>
-              <button type="button" onClick={signInWithGoogle} disabled={busy} className="btn-secondary w-full">
-                <span aria-hidden="true" className="font-bold text-blue-500">G</span>
-                Continue with Google
-              </button>
-              <p className="text-center text-xs muted">or continue with email</p>
-            </>}
             {mode === "signup" && (
               <>
                 <label className="block text-xs muted">
