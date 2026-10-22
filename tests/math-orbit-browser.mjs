@@ -19,6 +19,10 @@ try {
   assert.equal(await page.locator('.orbit-rings').evaluate(image=>getComputedStyle(image).animationName),'none');
   const artwork=await page.locator('.hero-art').boundingBox();
   const illustration=await page.locator('.hero-illustration').boundingBox();
+  const tracks=await page.locator('.electron-tracks').boundingBox();
+  const halo=(await page.locator('.orbit-electrons').boundingBox()).width*36/1536;
+  assert(tracks.x-halo>=artwork.x && tracks.x+tracks.width+halo<=artwork.x+artwork.width,'Enlarged orbits and electron glows should fit horizontally');
+  assert(tracks.y-halo>=artwork.y && tracks.y+tracks.height+halo<=artwork.y+artwork.height,'Enlarged orbits and electron glows should fit vertically');
   assert(artwork.x>=illustration.x-.5 && artwork.x+artwork.width<=illustration.x+illustration.width+.5,'Full artwork should fit inside its column');
   if(width<1024){
    assert(artwork.y>=illustration.y-.5 && artwork.y+artwork.height<=illustration.y+illustration.height+.5,'Full artwork should fit vertically too');

@@ -513,8 +513,9 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
  .hero-description { font-size:13px; }
  footer .footer-brand { flex-wrap:wrap; }
 }
-.hero-art { position:relative; }
+.hero-art { position:relative; overflow:clip; }
 .hero-art>img { width:100%; height:auto; mask-image:radial-gradient(ellipse,black 52%,transparent 74%); }
+.orbit-rings,.orbit-electrons { scale:1.12; translate:0 2%; transform-origin:center; }
 .orbit-rings { transform-origin:50% 50%; animation:orbit-rings-float 14s ease-in-out infinite; }
 @keyframes orbit-rings-float {
  0%,100% { transform:perspective(1000px) translateY(3px) rotateX(3deg) rotateY(-7deg) rotateZ(-2deg) scale(.96); }
