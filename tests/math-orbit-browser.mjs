@@ -6,7 +6,7 @@ const output=process.env.TEST_SCREENSHOT_DIR??'/tmp/math-orbit-preview';
 await mkdir(output,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.BROWSER_EXECUTABLE??'/usr/bin/chromium',headless:true});
 try {
- for(const width of [360,390,768,1024,1440]){
+ for(const width of [360,390,430,768,900,1023,1024,1440]){
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto(base,{waitUntil:'networkidle'});
@@ -16,9 +16,27 @@ try {
   assert(!(await page.locator('.electrons-moving').isVisible()));
   assert(await page.locator('.electrons-still').isVisible());
   assert.equal(await page.locator('.electrons-still .electron-core').count(),5);
+  assert.equal(await page.locator('.orbit-rings').evaluate(image=>getComputedStyle(image).animationName),'none');
+  const artwork=await page.locator('.hero-art').boundingBox();
+  const illustration=await page.locator('.hero-illustration').boundingBox();
+  assert(artwork.x>=illustration.x-.5 && artwork.x+artwork.width<=illustration.x+illustration.width+.5,'Full artwork should fit inside its column');
+  if(width<1024){
+   assert(artwork.y>=illustration.y-.5 && artwork.y+artwork.height<=illustration.y+illustration.height+.5,'Full artwork should fit vertically too');
+  }
   await page.emulateMedia({reducedMotion:'no-preference'});
   assert(await page.locator('.electrons-moving').isVisible());
   assert(!(await page.locator('.electrons-still').isVisible()));
+  await page.locator('.orbit-rings').evaluate(async image=>{
+   const animation=image.getAnimations().find(animation=>animation.animationName==='orbit-rings-float');
+   if(!animation) throw new Error('Rings should animate');
+   animation.pause();animation.currentTime=0;
+   const start=getComputedStyle(image).transform;
+   animation.currentTime=7000;
+   if(getComputedStyle(image).transform===start) throw new Error('Rings should tilt and float');
+   animation.currentTime=14000;
+   if(getComputedStyle(image).transform!==start) throw new Error('Ring motion should loop seamlessly');
+   animation.currentTime=3500;
+  });
   const positions=async(time)=>page.locator('.orbit-electrons').evaluate(async(svg,t)=>{
    svg.pauseAnimations();svg.setCurrentTime(t);
    await new Promise(requestAnimationFrame);
@@ -41,7 +59,7 @@ try {
   assert.deepEqual(before,after,'Reduced-motion electrons should stay still');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   assert.deepEqual(errors,[]);
-  console.log(`PASS: ${width}px five moving electrons, seamless loop, static reduced motion, no overflow or browser errors`);
+  console.log(`PASS: ${width}px full artwork, floating rings, orbiting electrons, seamless loops, reduced motion, no overflow or browser errors`);
   await page.close();
  }
  if(process.env.RECORD_ORBIT){
