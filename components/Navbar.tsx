@@ -4,7 +4,7 @@ import Image from "next/image";
 import RankedName from "./RankedName";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge } from "lucide-react";
+import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge, Info, UserRound, LogOut } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 const navigation = [
@@ -15,7 +15,7 @@ const navigation = [
   {href:"/leaderboard", label:"Leaderboard", icon:Users},
   {href:"/dashboard", label:"Dashboard", icon:Gauge},
 ];
-const accountItemClass = "flex min-h-11 w-full items-center px-3 text-left transition-colors duration-200 ease-out hover:text-emerald-400 focus-visible:text-emerald-400 motion-reduce:transition-none";
+const accountItemClass = "flex min-h-11 w-full items-center gap-3 rounded-lg px-3 text-left transition-colors duration-200 ease-out hover:bg-ink hover:text-emerald-400 focus-visible:bg-ink focus-visible:text-emerald-400 motion-reduce:transition-none";
 export default function Navbar() {
   const path = usePathname(),
     { user, profile, demo } = useApp();
@@ -69,7 +69,7 @@ export default function Navbar() {
         {navigation.map(item=><Link key={item.href} href={item.href} className="arena-nav-link" aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={26} aria-hidden="true" />{item.label}</Link>)}
       </nav>
       <div className="mx-5 mt-auto shrink-0 border-t border-edge py-5 text-sm">
-        <Link href="/settings" className="flex min-h-12 items-center gap-3 muted"><Settings size={20} aria-hidden="true" />Settings</Link>
+        <Link href="/about" aria-current={path === "/about" ? "page" : undefined} className={`flex min-h-12 items-center gap-3 hover:text-emerald-400 ${path === "/about" ? "text-emerald-400" : "muted"}`}><Info size={20} aria-hidden="true" className="shrink-0" />About us</Link>
       </div>
     </aside>
     <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
@@ -103,17 +103,17 @@ export default function Navbar() {
                 <span className="max-w-40 truncate">{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</span>
                 <ChevronDown size={14} aria-hidden="true" className="transition-transform duration-200 ease-in-out group-open:rotate-180 motion-reduce:transition-none" />
               </summary>
-              <div className="motion-menu panel absolute right-0 top-9 w-44 space-y-1 p-2 text-sm">
+              <div className="motion-menu panel absolute right-0 top-full mt-2 w-48 max-w-[calc(100vw-2rem)] space-y-1 p-2 text-sm">
                 <Link className={accountItemClass} href="/settings" onClick={closeAccountMenu}>
-                  Settings
+                  <Settings size={18} aria-hidden="true" className="shrink-0" />Settings
                 </Link>
                 {profile && (
                   <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={closeAccountMenu}>
-                    Public profile
+                    <UserRound size={18} aria-hidden="true" className="shrink-0" />Public profile
                   </Link>
                 )}
                 <button className={accountItemClass} onClick={() => { closeAccountMenu(); void supabase?.auth.signOut(); }}>
-                  Sign out
+                  <LogOut size={18} aria-hidden="true" className="shrink-0" />Sign out
                 </button>
               </div>
             </details>
@@ -153,9 +153,9 @@ export default function Navbar() {
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">
             <p className="flex items-center gap-3 break-words px-3 pb-2 font-semibold">{profile?.avatar_url && <img src={profile.avatar_url} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />}{profile ? <RankedName name={profile.full_name} rating={profile.rating} /> : "Account"}</p>
-            <Link className={accountItemClass} href="/settings" onClick={() => setOpen(false)}>Settings</Link>
-            {profile && <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
-            <button className={accountItemClass} onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
+            <Link className={accountItemClass} href="/settings" onClick={() => setOpen(false)}><Settings size={18} aria-hidden="true" className="shrink-0" />Settings</Link>
+            {profile && <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={() => setOpen(false)}><UserRound size={18} aria-hidden="true" className="shrink-0" />Public profile</Link>}
+            <button className={accountItemClass} onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}><LogOut size={18} aria-hidden="true" className="shrink-0" />Sign out</button>
           </div> : <div className="grid grid-cols-2 gap-3">
             <Link href="/login" className="btn-secondary justify-center" onClick={() => setOpen(false)}>Log in</Link>
             <Link href="/signup" className="btn justify-center" onClick={() => setOpen(false)}>Sign up</Link>
