@@ -43,7 +43,7 @@ export default function HomeContestNews({ compact = false }: {compact?: boolean}
     </MobileDisclosure>
   </section>;
   return (
-    <section data-home-entrance className="panel min-w-0 overflow-hidden border-emerald-400/30" aria-label="Contest news" aria-roledescription="carousel" onPointerDownCapture={stopAutoplay} onKeyDownCapture={stopAutoplay} onWheelCapture={stopAutoplay}>
+    <section data-home-entrance className="panel flex min-w-0 flex-1 flex-col overflow-hidden border-emerald-400/30" aria-label="Contest news" aria-roledescription="carousel" onPointerDownCapture={stopAutoplay} onKeyDownCapture={stopAutoplay} onWheelCapture={stopAutoplay}>
       <div className="flex items-center justify-between gap-3 border-b border-edge px-6 py-4">
         <h2 className="text-sm font-semibold">Contest news</h2>
         <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ export default function HomeContestNews({ compact = false }: {compact?: boolean}
           <button type="button" aria-label="Next contest news" className="btn-secondary !min-h-10 !p-2" onClick={() => show(slide + 1)}><ChevronRight size={18} /></button>
         </div>
       </div>
-      <div ref={strip} className="grid auto-cols-[100%] grid-flow-col snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      <div ref={strip} className="grid flex-1 auto-cols-[100%] grid-flow-col snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         onScroll={event => setSlide(Math.round(event.currentTarget.scrollLeft / event.currentTarget.clientWidth))}
         onPointerDown={event => {
           if (event.pointerType !== "mouse" || event.button !== 0 || (event.target as Element).closest("a,button")) return;

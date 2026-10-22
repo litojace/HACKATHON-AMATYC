@@ -295,11 +295,6 @@ select {
 }
 .rank-featured { display: inline-block; max-width: 100%; padding-block: .65em .2em; }
 .rank-crown { position: absolute; top: -.12em; left: 50%; transform: translateX(-50%); width: .85em; height: .7em; fill: var(--rank-color); pointer-events: none; }
-.rank-symbols { position: absolute; inset: 0; pointer-events: none; user-select: none; color: var(--rank-color); }
-.rank-symbols span { position: absolute; font-size: .4em; opacity: .65; }
-.rank-symbols span:nth-child(1) { left: 8%; top: 0; animation-delay: -1s; }
-.rank-symbols span:nth-child(2) { right: 5%; bottom: 0; animation-delay: -2.5s; }
-.rank-symbols span:nth-child(3) { right: 16%; top: 0; animation-delay: -.5s; }
 .rank-sparkles { position: absolute; inset: 0; pointer-events: none; user-select: none; }
 .rank-sparkles svg { position: absolute; width: .38em; height: .38em; fill: var(--rank-color); opacity: .5; }
 .rank-sparkles svg:nth-child(1) { left: 2%; top: 0; animation-delay: -.7s; }
@@ -325,22 +320,11 @@ select {
   }
   .rank-grandmaster .rank-name-text { animation-duration: 5s; }
   .rank-legend .rank-name-text { animation: rank-shimmer 4s linear infinite; }
-  .rank-symbols span { animation: rank-float 4s ease-in-out infinite; }
-  .rank-orbit span {
-    inset: 0 auto auto 0;
-    offset-path: ellipse(46% 42% at 50% 50%);
-    offset-rotate: 0deg;
-    animation: rank-orbit 18s linear infinite;
-  }
-  .rank-orbit span:nth-child(2) { animation-delay: -6s; }
-  .rank-orbit span:nth-child(3) { animation-delay: -12s; }
   .rank-crown { animation: rank-crown-glow 3s ease-in-out infinite; }
   .rank-sparkles svg { animation-name: rank-sparkle; animation-duration: 3.8s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
 }
 @keyframes rank-breathe { 50% { text-shadow: 0 0 12px color-mix(in srgb, var(--rank-color) 45%, transparent); } }
 @keyframes rank-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
-@keyframes rank-float { 0%, 100% { transform: translateY(3px); opacity: .3; } 50% { transform: translateY(-3px); opacity: .8; } }
-@keyframes rank-orbit { to { offset-distance: 100%; } }
 @keyframes rank-crown-glow { 50% { filter: drop-shadow(0 0 5px var(--rank-color)); } }
 @keyframes rank-sparkle {
   0%, 100% { opacity: .12; transform: scale(.45) rotate(-15deg); filter: none; }
@@ -348,7 +332,7 @@ select {
   70% { opacity: .35; transform: scale(.7) rotate(30deg); filter: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rank-symbols, .rank-sparkles { display: none; }
+  .rank-sparkles { display: none; }
 }
 
 /* Short entrances and precise feedback; no movement of active study content. */

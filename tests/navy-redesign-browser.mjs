@@ -72,7 +72,35 @@ try {
   }else{
    assert(await guide.getByRole('table').isVisible(),'Desktop should retain the full rank table');
    assert(await page.getByLabel('Choose a photo',{exact:true}).isVisible());
+   const news=page.locator('.home-desktop-news>section');
+   const assertPanels=async()=>{
+    const gallery=await page.locator('.home-community-gallery').boundingBox();
+    const contest=await news.boundingBox();
+    assert(Math.abs(gallery.y-contest.y)<1 && Math.abs(gallery.height-contest.height)<1,'Community and contest panels must share top and bottom edges');
+    assert(Math.abs(gallery.width-contest.width)<1,'Community and contest panels must have equal widths');
+   };
+   await assertPanels();
+   await news.getByRole('button',{name:'Next contest news',exact:true}).click();
+   await page.waitForFunction(()=>document.querySelector('.home-desktop-news [aria-label="Show Every Saturday"]')?.getAttribute('aria-pressed')==='true');
+   await assertPanels();
+   assert(await news.getByRole('link',{name:'Join a Saturday contest'}).isVisible());
+   if(width===1440)await page.locator('.home-community-news').screenshot({path:`${output}/matching-community-panels.png`});
+   await news.getByRole('button',{name:'Previous contest news',exact:true}).click();
+   await page.waitForFunction(()=>document.querySelector('.home-desktop-news [aria-label="Show OCC Round One"]')?.getAttribute('aria-pressed')==='true');
+   await assertPanels();
   }
+
+  assert.equal(await page.locator('.rank-symbols,.rank-orbit').count(),0,'Higher ranks should have sparkles without flying symbols');
+  for(const rating of [2400,2600,3000]){
+   const samples=guide.locator(`.rank-level-${rating}`);
+   assert.equal(await samples.count(),2,'Rank guide should show both a sample name and title');
+   for(const sample of await samples.all())assert.equal(await sample.locator('.rank-sparkles svg').count(),5);
+  }
+  assert.equal(await guide.locator('.rank-level-3000 .rank-crown').count(),1,'Keep the crown on the legendary sample name');
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  assert.equal(await guide.locator('.rank-level-2400 .rank-sparkles svg').first().evaluate(element=>getComputedStyle(element).animationName),'rank-sparkle');
+  await page.emulateMedia({reducedMotion:'reduce'});
+  assert.equal(await guide.locator('.rank-sparkles').first().evaluate(element=>getComputedStyle(element).display),'none');
 
   if(width<1024){
    const button=page.getByRole('button',{name:'Open navigation',exact:true});

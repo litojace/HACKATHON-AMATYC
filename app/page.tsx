@@ -116,7 +116,7 @@ export default function Home() {
         <Link href="#rating-titles-heading" className="rating-highlight"><Star size={34} strokeWidth={1.6} aria-hidden="true" /><div><h2>Ratings &amp; titles</h2><p>See your next milestone</p></div><div className="rank-medals" aria-hidden="true">{(["bronze","silver","gold"] as const).map(metal=><RankMedal key={metal} metal={metal} />)}</div></Link>
       </section>
       <p className="project-note">Independent educational project</p>
-      <section className="home-community-news mt-10 grid items-start gap-6 lg:grid-cols-2" aria-label="Community and contest news"><HomeCommunityGallery /><div className="home-desktop-news"><HomeContestNews /></div></section>
+      <section className="home-community-news mt-10 grid items-stretch gap-6 lg:grid-cols-2" aria-label="Community and contest news"><HomeCommunityGallery /><div className="home-desktop-news flex min-w-0"><HomeContestNews /></div></section>
       <section className="home-rank-section mt-10" aria-labelledby="rating-titles-heading">
         <MobileDisclosure label="View all ranks" anchorId="rating-titles-heading" className="home-rank-disclosure">
         <div data-home-entrance className="panel overflow-hidden" aria-labelledby="rating-titles-heading">
