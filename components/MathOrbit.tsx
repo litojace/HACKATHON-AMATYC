@@ -22,6 +22,13 @@ const electrons = [
   {track:1, duration:18, phase:0.7, radius:12},
   {track:2, duration:22, phase:0.4, radius:14},
 ];
+const axisOrigin = { x:768, y:510 };
+const axisLength = 390;
+const axes = [
+  { label:"x", dx:-Math.cos(Math.PI / 12), dy:Math.sin(Math.PI / 12) },
+  { label:"y", dx:1, dy:0 },
+  { label:"z", dx:0, dy:-1 },
+];
 
 export default function MathOrbit() {
   const id = useId().replace(/:/g, "");
@@ -40,7 +47,17 @@ export default function MathOrbit() {
       <defs>
         <radialGradient id={`${id}-gold`} cx="30%" cy="25%" r="75%"><stop stopColor="#fffce0"/><stop offset=".25" stopColor="#ffe69a"/><stop offset=".6" stopColor="#dba62b"/><stop offset="1" stopColor="#785018"/></radialGradient>
         <radialGradient id={`${id}-halo`}><stop stopColor="#ffcf58" stopOpacity=".45"/><stop offset=".5" stopColor="#ffcf58" stopOpacity=".12"/><stop offset="1" stopColor="#ffcf58" stopOpacity="0"/></radialGradient>
+        <marker id={`${id}-axis-arrow`} viewBox="0 0 24 24" refX="20" refY="12" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto">
+          <path d="M2 4 22 12 2 20 7 12Z" fill="#f1f5ff" />
+        </marker>
       </defs>
+      <g className="orbit-axes" fill="none" stroke="#edf3ff">
+        {axes.map(({label,dx,dy})=><g key={label}>
+          <path className="orbit-axis-negative" d={`M${axisOrigin.x} ${axisOrigin.y} l${-dx * axisLength} ${-dy * axisLength}`} />
+          <path className="orbit-axis-positive" d={`M${axisOrigin.x} ${axisOrigin.y} l${dx * axisLength} ${dy * axisLength}`} markerEnd={`url(#${id}-axis-arrow)`} />
+          <text className="orbit-axis-label" x={axisOrigin.x + dx * (axisLength + 32)} y={axisOrigin.y + dy * (axisLength + 32)} textAnchor="middle" dominantBaseline="central">{label}</text>
+        </g>)}
+      </g>
       <g className="electron-tracks" fill="none" stroke="#edc767" strokeWidth="1.2">
         {tracks.map((path,i)=><path key={i} d={path} opacity={i===0 ? .55 : .22} strokeDasharray={i===2 ? "5 12" : undefined} />)}
       </g>

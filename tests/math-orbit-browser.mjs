@@ -18,6 +18,19 @@ try {
   assert.equal(await page.locator('.electrons-still .electron-core').count(),5);
   assert.equal(await page.locator('.orbit-rings').evaluate(image=>getComputedStyle(image).animationName),'none');
   const artwork=await page.locator('.hero-art').boundingBox();
+  const labels=page.locator('.orbit-axis-label');
+  assert.deepEqual(await labels.allTextContents(),['x','y','z']);
+  const axisLengths=await page.locator('.orbit-axes path').evaluateAll(paths=>paths.map(path=>path.getTotalLength()));
+  assert.equal(axisLengths.length,6);
+  assert(Math.max(...axisLengths)-Math.min(...axisLengths)<.01,'All positive and negative axis arms must be equally long');
+  for(const label of await labels.all()){
+   const box=await label.boundingBox();
+   assert(box.x>=artwork.x && box.y>=artwork.y && box.x+box.width<=artwork.x+artwork.width && box.y+box.height<=artwork.y+artwork.height,'Axis labels should remain fully visible');
+   for(const card of await page.locator('.orbit-formula').all()){
+    const cardBox=await card.boundingBox();
+    if(cardBox)assert(box.x+box.width<=cardBox.x || box.x>=cardBox.x+cardBox.width || box.y+box.height<=cardBox.y || box.y>=cardBox.y+cardBox.height,'Formula cards must not cover axis labels');
+   }
+  }
   const illustration=await page.locator('.hero-illustration').boundingBox();
   const tracks=await page.locator('.electron-tracks').boundingBox();
   const halo=(await page.locator('.orbit-electrons').boundingBox()).width*36/1536;
