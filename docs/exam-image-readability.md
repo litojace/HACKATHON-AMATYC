@@ -23,3 +23,11 @@ To repeat the tilt analysis with Pillow and numpy installed:
 ```sh
 python3 scripts/images/audit_scan_tilt.py
 ```
+
+Spring 2008 question 12 also had a source crop that ended before its choices.
+It was recovered from page 2 of `competition2008spring.pdf`, using source rectangle
+`(10, 50, 600, 100.7)` and six points of white padding below the extracted content,
+rendered at 2.2 times resolution (1298 × 125 pixels). The bottom bound excludes
+question 13's diagram, which starts at y=101.24. The restored printed choices are
+A: 80, B: 81, C: 82, D: 83, and E: 84. Its framing metadata was updated separately;
+no problem grading data or database migration is required.
