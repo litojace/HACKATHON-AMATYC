@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import "@fontsource-variable/inter";
@@ -61,6 +62,10 @@ export default function RootLayout({
                   </p>
                 </div>
               </div>
+              <div className="flex flex-wrap items-center gap-5">
+              <nav aria-label="Site information">
+                <Link href="/about" className="inline-flex min-h-11 items-center text-sm muted hover:text-emerald-400">About us</Link>
+              </nav>
               <nav aria-label="Social media" className="flex flex-wrap gap-3">
                 <a
                   href="https://www.instagram.com/mat_occ/"
@@ -90,6 +95,7 @@ export default function RootLayout({
                   </svg>
                 </a>
               </nav>
+              </div>
             </div>
 
           </footer>

@@ -2,10 +2,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import RankedName from "./RankedName";
-import AboutUs from "./AboutUs";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge, Info } from "lucide-react";
+import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 const navigation = [
@@ -71,7 +70,6 @@ export default function Navbar() {
       </nav>
       <div className="mx-5 mt-auto shrink-0 border-t border-edge py-5 text-sm">
         <Link href="/settings" className="flex min-h-12 items-center gap-3 muted"><Settings size={20} aria-hidden="true" />Settings</Link>
-        <div className="flex items-center gap-1"><Info size={20} className="shrink-0 muted" aria-hidden="true" /><AboutUs mobile /></div>
       </div>
     </aside>
     <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
@@ -89,7 +87,7 @@ export default function Navbar() {
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>
-        <div className="hidden items-center gap-3 text-sm muted lg:flex"><House size={20} aria-hidden="true" />{navigation.find(item => item.href === "/" ? path === "/" : path.startsWith(item.href))?.label ?? "AMATYC Arena"}</div>
+        <div className="hidden items-center gap-3 text-sm muted lg:flex"><House size={20} aria-hidden="true" />{navigation.find(item => item.href === "/" ? path === "/" : path.startsWith(item.href))?.label ?? (path === "/about" ? "About us" : "AMATYC Arena")}</div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
           <div className="flex items-center gap-3">
           {user ? (
@@ -151,7 +149,6 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-          <AboutUs mobile />
         </div>
         <div className="mt-4 border-t border-edge pt-4">
           {user ? <div className="space-y-1 text-sm">

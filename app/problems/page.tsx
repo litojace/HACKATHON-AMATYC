@@ -8,6 +8,17 @@ import { Loading, PageTitle, ServiceError } from "@/components/Shared";
 import { difficultyColor, filterProblems } from "@/lib/domain";
 import AdminProblemActions from "@/components/AdminProblemActions";
 
+const problemColumns = [
+  ["Status", "7%"],
+  ["Problem", "23%"],
+  ["Topic", "20%"],
+  ["Difficulty", "9%"],
+  ["Rating", "7%"],
+  ["Acceptance", "10%"],
+  ["Source", "17%"],
+  ["Save", "7%"],
+] as const;
+
 function compareSourcesNewestFirst(a: string, b: string) {
   const parse = (source: string) => {
     const match = source.match(/\b(Spring|Fall)\s+(\d{4})\b/i);
@@ -177,21 +188,16 @@ export default function Problems() {
             {!visible.length && <p className="panel p-6 muted">No matching problems. Try changing your filters.</p>}
           </div>
           <div className="panel hidden overflow-x-auto md:block">
-            <table className="w-full min-w-[850px] text-left text-sm">
+            <table className="w-full min-w-[1000px] table-fixed text-left text-sm">
+              <caption className="sr-only">Problem library</caption>
+              <colgroup>
+                {problemColumns.map(([heading, width]) => <col key={heading} style={{ width }} />)}
+              </colgroup>
               <thead className="border-b border-edge text-xs muted">
                 <tr>
-                  {[
-                    "Status",
-                    "Problem",
-                    "Topic",
-                    "Difficulty",
-                    "Rating",
-                    "Acceptance",
-                    "Source",
-                    "Save",
-                  ].map((h) => (
-                    <th key={h} className="p-4">
-                      {h}
+                  {problemColumns.map(([heading]) => (
+                    <th key={heading} scope="col" className="p-4">
+                      {heading}
                     </th>
                   ))}
                 </tr>
@@ -228,7 +234,7 @@ export default function Problems() {
                           <span className="muted">—</span>
                         )}
                       </td>
-                      <td className="p-4">
+                      <td className="break-words p-4">
                         <Link
                           className="font-medium hover:text-emerald-400"
                           href={"/problems/" + p.id + "?returnTo=" + encodeURIComponent(returnTo)}
@@ -236,7 +242,7 @@ export default function Problems() {
                           {p.title}
                         </Link>
                       </td>
-                      <td className="p-4 text-xs muted">{p.category}</td>
+                      <td className="break-words p-4 text-xs muted">{p.category}</td>
                       <td className={`p-4 text-xs font-semibold ${difficultyColor(p.difficulty)}`}>{p.difficulty}</td>
                       <td className={`p-4 font-mono ${difficultyColor(p.difficulty)}`}>
                         {p.difficulty_rating ?? "—"}
@@ -246,7 +252,7 @@ export default function Problems() {
                           ? p.acceptance_rate + "%"
                           : "—"}
                       </td>
-                      <td className="p-4 text-xs muted">{p.contest_name}</td>
+                      <td className="break-words p-4 text-xs muted">{p.contest_name}</td>
                       <td className="p-4">
                         <button
                           aria-label={"Bookmark " + p.title}
