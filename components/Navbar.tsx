@@ -21,6 +21,7 @@ export default function Navbar() {
   const path = usePathname(),
     { user, profile, demo } = useApp();
   const [open, setOpen] = useState(false);
+  const desktopHeaderHeight = demo ? "lg:h-[101px]" : "lg:h-[77px]";
   const menuButton = useRef<HTMLButtonElement>(null);
   const accountMenu = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -61,7 +62,7 @@ export default function Navbar() {
   return (
     <>
     <aside className="arena-sidebar fixed inset-y-0 left-0 z-40 hidden w-56 flex-col overflow-y-auto border-r border-edge lg:flex" aria-label="Main navigation">
-      <Link href="/" className="flex h-[92px] shrink-0 items-center gap-2 border-b border-edge px-5 font-bold">
+      <Link href="/" className={`flex shrink-0 items-center gap-2 border-b border-edge px-5 font-bold ${desktopHeaderHeight}`}>
         <Image src="/images/arena-logo.svg" width={40} height={40} alt="" />
         <span>AMATYC <span className="text-emerald-400">Arena</span></span>
       </Link>
@@ -172,7 +173,7 @@ export default function Navbar() {
       )}
     </header>
     {/* Reserve the toolbar height; menus overlay content instead of moving it. */}
-    <div aria-hidden="true" className={demo ? "h-[156px] shrink-0 lg:h-[101px]" : "h-[132px] shrink-0 lg:h-[77px]"} />
+    <div aria-hidden="true" className={`${demo ? "h-[156px]" : "h-[132px]"} shrink-0 ${desktopHeaderHeight}`} />
     </>
   );
 }

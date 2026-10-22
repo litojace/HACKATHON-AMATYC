@@ -20,6 +20,11 @@ try {
   await check();
   const sidebar=page.getByRole('complementary',{name:'Main navigation'});
   assert.equal(await sidebar.isVisible(),width>=1024);
+  if(width>=1024){
+   const brand=await sidebar.locator(':scope > a').boundingBox();
+   const toolbar=await page.locator('header').boundingBox();
+   assert(Math.abs(brand.y+brand.height-toolbar.y-toolbar.height)<1,'Sidebar and toolbar borders should align');
+  }
   if(width<1024){
    const description=await page.locator('.hero-description').boundingBox();
    const artwork=await page.locator('.hero-illustration').boundingBox();
