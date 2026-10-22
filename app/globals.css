@@ -517,7 +517,7 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
 .hero-art>img { width:100%; height:auto; mask-image:radial-gradient(ellipse,black 52%,transparent 74%); }
 .orbit-formula { position:absolute; display:block; border:1px solid #3c6778; background:#07182bd9; border-radius:5px; padding:12px 16px; color:#dce9ff; font:italic 22px Georgia,serif; }
 .formula-euler { top:8%; right:2%; }
-.formula-integral { bottom:7%; right:5%; color:var(--gold); border-color:#73602c; }
+.formula-integral { bottom:7%; left:5%; color:var(--gold); border-color:#73602c; }
 @media(max-width:1023px) { .orbit-formula { display:none; } }
 /* Keep the mobile homepage focused; desktop retains the complete sections. */
 .mobile-disclosure { scroll-margin-top:11rem; }
