@@ -5,9 +5,17 @@ import RankedName from "./RankedName";
 import AboutUs from "./AboutUs";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge, Info } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
+const navigation = [
+  {href:"/", label:"Home", icon:House},
+  {href:"/problems", label:"Problems", icon:FileText},
+  {href:"/training", label:"Training", icon:ChartNoAxesColumnIncreasing},
+  {href:"/contests", label:"Contests", icon:Trophy},
+  {href:"/leaderboard", label:"Leaderboard", icon:Users},
+  {href:"/dashboard", label:"Dashboard", icon:Gauge},
+];
 const accountItemClass = "flex min-h-11 w-full items-center px-3 text-left transition-colors duration-200 ease-out hover:text-emerald-400 focus-visible:text-emerald-400 motion-reduce:transition-none";
 export default function Navbar() {
   const path = usePathname(),
@@ -52,9 +60,22 @@ export default function Navbar() {
   }, [open]);
   return (
     <>
-    <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur">
+    <aside className="arena-sidebar fixed inset-y-0 left-0 z-40 hidden w-56 flex-col overflow-y-auto border-r border-edge lg:flex" aria-label="Main navigation">
+      <Link href="/" className="flex h-[92px] shrink-0 items-center gap-2 border-b border-edge px-5 font-bold">
+        <Image src="/images/arena-logo.svg" width={40} height={40} alt="" />
+        <span>AMATYC <span className="text-emerald-400">Arena</span></span>
+      </Link>
+      <nav className="mt-6 shrink-0 space-y-2">
+        {navigation.map(item=><Link key={item.href} href={item.href} className="arena-nav-link" aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={26} aria-hidden="true" />{item.label}</Link>)}
+      </nav>
+      <div className="mx-5 mt-auto shrink-0 border-t border-edge py-5 text-sm">
+        <Link href="/settings" className="flex min-h-12 items-center gap-3 muted"><Settings size={20} aria-hidden="true" />Settings</Link>
+        <div className="flex items-center gap-1"><Info size={20} className="shrink-0 muted" aria-hidden="true" /><AboutUs mobile /></div>
+      </div>
+    </aside>
+    <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
       <nav className="relative mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[76px]">
-        <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold">
+        <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold lg:hidden">
           <Image
             src="/images/arena-logo.svg"
             width={38}
@@ -67,24 +88,11 @@ export default function Navbar() {
             AMATYC <span className="text-emerald-400">Arena</span>
           </span>
         </Link>
-        <div className="hidden items-center gap-3 text-sm lg:flex xl:gap-6">
-          {[
-            ["/problems", "Problems"],
-            ["/training", "Training"],
-            ["/contests", "Contests"],
-            ["/leaderboard", "Leaderboard"],
-          ].map(([href, label]) => (
-            <Link key={href} href={href} aria-current={path.startsWith(href) ? "page" : undefined}
-              className={path.startsWith(href) ? "text-emerald-400" : "muted hover:text-emerald-400"}>
-              {label}
-            </Link>
-          ))}
-          <AboutUs />
-        </div>
+        <div className="hidden items-center gap-3 text-sm muted lg:flex"><House size={20} aria-hidden="true" />{navigation.find(item => item.href === "/" ? path === "/" : path.startsWith(item.href))?.label ?? "AMATYC Arena"}</div>
         <div className="ml-auto flex items-center gap-2 lg:ml-0 lg:gap-3">
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="flex items-center gap-3">
           {user ? (
-            <details ref={accountMenu} className="group relative">
+            <details ref={accountMenu} className="group relative hidden lg:block">
               <summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm">
                 {profile?.avatar_url && (
                   <img
@@ -112,10 +120,10 @@ export default function Navbar() {
             </details>
           ) : (
             <>
-              <Link href="/login" className="btn-secondary !px-3 !py-2">
-                {demo ? "Account setup" : "Log in"}
+              <Link href="/login" className="btn-secondary whitespace-nowrap !px-3 !py-2">
+                Log in
               </Link>
-              <Link href="/signup" className="btn-secondary !px-3 !py-2">
+              <Link href="/signup" className="btn !px-3 !py-2 hidden sm:inline-flex">
                 Sign up
               </Link>
             </>
@@ -129,13 +137,16 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
+      <nav aria-label="Quick navigation" className="grid grid-cols-4 border-t border-edge lg:hidden">
+        {navigation.slice(0,4).map(item=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className="mobile-tab" aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={24} aria-hidden="true" />{item.label}</Link>)}
+      </nav>
       <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}
-        className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">
+        className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">
         <div className="space-y-1">
-          {[["/problems", "Problems"], ["/training", "Training"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"]].map(([href, label]) => (
+          {[["/", "Home"], ["/problems", "Problems"], ["/training", "Training"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"], ["/dashboard", "Dashboard"]].map(([href, label]) => (
             <Link key={href} href={href} onClick={() => setOpen(false)}
-              aria-current={path.startsWith(href) ? "page" : undefined}
-              className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium ${path.startsWith(href) ? "bg-emerald-400/10 text-emerald-400" : "muted hover:bg-ink"}`}>
+              aria-current={(href === "/" ? path === "/" : path.startsWith(href)) ? "page" : undefined}
+              className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium ${(href === "/" ? path === "/" : path.startsWith(href)) ? "bg-emerald-400/10 text-emerald-400" : "muted hover:bg-ink"}`}>
               {label}
             </Link>
           ))}
@@ -148,7 +159,7 @@ export default function Navbar() {
             {profile && <Link className={accountItemClass} href={"/profile/" + profile.username} onClick={() => setOpen(false)}>Public profile</Link>}
             <button className={accountItemClass} onClick={() => { setOpen(false); void supabase?.auth.signOut(); }}>Sign out</button>
           </div> : <div className="grid grid-cols-2 gap-3">
-            <Link href="/login" className="btn-secondary justify-center" onClick={() => setOpen(false)}>{demo ? "Account setup" : "Log in"}</Link>
+            <Link href="/login" className="btn-secondary justify-center" onClick={() => setOpen(false)}>Log in</Link>
             <Link href="/signup" className="btn justify-center" onClick={() => setOpen(false)}>Sign up</Link>
           </div>}
         </div>
@@ -161,7 +172,7 @@ export default function Navbar() {
       )}
     </header>
     {/* Reserve the toolbar height; menus overlay content instead of moving it. */}
-    <div aria-hidden="true" className={demo ? "h-[93px] shrink-0 lg:h-[101px]" : "h-[69px] shrink-0 lg:h-[77px]"} />
+    <div aria-hidden="true" className={demo ? "h-[156px] shrink-0 lg:h-[101px]" : "h-[132px] shrink-0 lg:h-[77px]"} />
     </>
   );
 }

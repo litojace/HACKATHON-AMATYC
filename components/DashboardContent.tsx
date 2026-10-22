@@ -134,14 +134,14 @@ export default function DashboardContent({ activity, problems, profile, demo = f
       </div>
 
       <section className="panel mb-5 overflow-hidden p-5 sm:p-6" aria-labelledby="streak-title">
-        <div className="rounded-2xl border border-orange-400/20 bg-gradient-to-br from-orange-500/15 via-orange-500/5 to-transparent p-5 sm:p-6">
+        <div className="rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-transparent p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-5">
             <div className="flex items-center gap-4">
-              <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-orange-500/15 text-orange-400">
+              <div className="grid size-14 shrink-0 place-items-center rounded-2xl bg-amber-500/15 text-amber-400">
                 <Flame aria-hidden="true" className="size-8" strokeWidth={2.25} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-orange-400">Study streak</p>
+                <p className="text-sm font-semibold text-amber-400">Study streak</p>
                 <h2 id="streak-title" className="mt-0.5 text-3xl font-bold tracking-tight">
                   {currentStreak} <span className="text-lg font-semibold">{currentStreak === 1 ? "day" : "days"} in a row</span>
                 </h2>
@@ -159,7 +159,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
                 <div
                   title={`${dayLabel(date)}: ${active ? "activity recorded" : "no activity"}`}
                   aria-label={`${dayLabel(date)}: ${active ? "activity recorded" : "no activity"}`}
-                  className={`grid size-10 place-items-center rounded-full border sm:size-12 ${active ? "border-orange-400 bg-orange-500 text-white shadow-sm shadow-orange-500/20" : "border-edge bg-panel muted"}`}
+                  className={`grid size-10 place-items-center rounded-full border sm:size-12 ${active ? "border-amber-400 bg-amber-500 text-ink shadow-sm shadow-amber-500/20" : "border-edge bg-panel muted"}`}
                 >
                   {active ? <Flame aria-hidden="true" className="size-5" /> : <span className="text-xs">{date.getDate()}</span>}
                 </div>
@@ -167,8 +167,8 @@ export default function DashboardContent({ activity, problems, profile, demo = f
             ))}
           </div>
 
-          <div className="mt-5 rounded-xl border border-orange-400/15 bg-orange-500/10 px-4 py-3 text-center">
-            <Flame aria-hidden="true" className="mx-auto mb-1 size-5 text-orange-400" />
+          <div className="mt-5 rounded-xl border border-amber-400/15 bg-amber-500/10 px-4 py-3 text-center">
+            <Flame aria-hidden="true" className="mx-auto mb-1 size-5 text-amber-400" />
             <p className="text-sm font-semibold">{currentStreak === 0 ? "Ready to start a streak?" : milestones.includes(currentStreak) ? "Milestone reached—keep it going!" : "Nice work. Keep the momentum going!"}</p>
             <p className="mt-0.5 text-xs muted">{currentStreak === 0 ? "Try a problem today to light your first flame." : "A little practice each day adds up."}</p>
           </div>
@@ -187,7 +187,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
             aria-valuemax={nextMilestone}
             aria-valuenow={Math.min(currentStreak, nextMilestone)}
           >
-            <div data-motion="progress" className="h-full origin-left rounded-full bg-orange-500 transition-[width] duration-500" style={{ width: `${milestoneProgress}%` }} />
+            <div data-motion="progress" className="h-full origin-left rounded-full bg-amber-500 transition-[width] duration-500" style={{ width: `${milestoneProgress}%` }} />
           </div>
           <p className="mt-2 text-xs muted">Practice a problem or finish a mock test to count the day.</p>
         </div>

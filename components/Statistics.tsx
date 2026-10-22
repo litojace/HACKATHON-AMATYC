@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { BookOpen, FileText, Database, CalendarDays } from "lucide-react";
 import { api } from "@/lib/client";
-export default function Statistics() {
+export default function Statistics({ yearRange }: { yearRange: string }) {
   const [data, setData] = useState<{
       problems: number;
       contests: number;
@@ -16,34 +17,14 @@ export default function Statistics() {
       .catch(() => setError("Statistics unavailable"));
   }, []);
   return (
-    <section className="panel my-9 p-6" aria-label="Platform statistics">
-      {error ? (
-        <p className="muted">{error}</p>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-6 text-center md:grid-cols-4">
-            {[
-              ["Available problems", data?.problems],
-              ["Available contests", data?.contests],
-              ["Public competitors", data?.competitors],
-              ["Practice attempts", data?.attempts],
-            ].map(([label, value]) => (
-              <div data-home-entrance className="home-stat rounded-xl p-2" key={label}>
-                <p className="font-mono text-2xl text-emerald-400">
-                  <AnimatedCount value={typeof value === "number" ? value : undefined} />
-                </p>
-                <p className="mt-2 text-xs muted">{label}</p>
-              </div>
-            ))}
-          </div>
-          {data?.demo && (
-            <p className="mt-5 text-center text-xs muted">
-              Historical and sample library counts. No real competitor or submission totals are
-              claimed.
-            </p>
-          )}
-        </>
-      )}
+    <section className="library-statistics" aria-label="Platform statistics">
+      <div className="library-bar panel">
+        <h2><BookOpen size={38} strokeWidth={1.6} aria-hidden="true" /><span className="hidden sm:inline">Historical </span>exam library</h2>
+        <div className="library-stat"><FileText aria-hidden="true" /><p><strong><AnimatedCount value={data?.problems} /></strong><span>questions</span></p></div>
+        <div className="library-stat"><Database aria-hidden="true" /><p><strong><AnimatedCount value={data?.contests} /></strong><span>exams</span></p></div>
+        <div className="library-stat"><CalendarDays aria-hidden="true" /><p><strong>{yearRange}</strong><span className="lg:hidden">years</span></p></div>
+      </div>
+      <p className="sr-only" aria-live="polite">{error || (data ? `${data.competitors.toLocaleString()} public competitors · ${data.attempts.toLocaleString()} practice attempts` : "Loading library statistics…")}</p>
     </section>
   );
 }

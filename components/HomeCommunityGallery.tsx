@@ -128,7 +128,7 @@ export default function HomeCommunityGallery() {
   }
 
   return (
-    <aside className="panel min-w-0 overflow-hidden p-4 sm:p-5" aria-label="MAT Community"
+    <aside className="home-community-gallery panel min-w-0 overflow-hidden p-4 sm:p-5" aria-label="MAT Community"
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -142,7 +142,7 @@ export default function HomeCommunityGallery() {
           />
           <div>
             <p className="text-sm font-semibold">MAT Community</p>
-            <p className="mt-1 text-xs muted">Math, friends, and competition</p>
+            <p className="community-tagline mt-1 text-xs muted">Math, friends, and competition</p>
           </div>
         </div>
         <nav aria-label="MAT social links" className="flex gap-2">
@@ -167,7 +167,7 @@ export default function HomeCommunityGallery() {
         </nav>
       </div>
 
-      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink">
+      <div className="community-photo-stage relative aspect-[4/3] overflow-hidden rounded-xl bg-ink">
         {!authLoading && user && adminUserId === user.id && (
           <Link
             href="/admin/carousel"

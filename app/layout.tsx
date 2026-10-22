@@ -3,6 +3,7 @@ import Image from "next/image";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import "@fontsource-variable/inter";
+import "@fontsource-variable/oswald";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import SiteMotion from "@/components/SiteMotion";
@@ -25,13 +26,14 @@ export default function RootLayout({
         <Providers>
           <SiteMotion />
           <Navbar />
+          <div className="site-content min-w-0">
           <LiveAnnouncements />
           {children}
           <BackToTop />
           <TrainingResultReset />
           <footer className="mx-auto mt-16 max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
+              <div className="footer-brand flex items-center gap-4">
                 <div className="flex shrink-0 items-center gap-3">
                 <span className="block h-16 w-16 overflow-hidden sm:h-20 sm:w-20">
                   <Image
@@ -91,6 +93,7 @@ export default function RootLayout({
             </div>
 
           </footer>
+          </div>
         </Providers>
       </body>
     </html>

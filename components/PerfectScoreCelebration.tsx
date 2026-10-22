@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { Trophy } from "lucide-react";
 
-const colors = ["#f15a29", "#ffdb7a", "#86efac", "#8791ff", "#ff9b71"];
+const colors = ["#f3cb59", "#ffe8a1", "#49d4de", "#8ab4f8", "#f0f5ff"];
 
 export default function PerfectScoreCelebration({ attemptId, total }: { attemptId: string; total: number }) {
   const root = useRef<HTMLElement>(null);
