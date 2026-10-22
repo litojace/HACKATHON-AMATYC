@@ -33,7 +33,9 @@ export default function MathOrbit() {
     </>;
   }
   return <div className="hero-art">
-    <Image className="orbit-rings" src="/images/math-orbits-core.png" alt="Gold and cyan mathematical rings with glowing electrons orbiting around them" width={1536} height={1024} priority sizes="(max-width: 1023px) 46vw, 48vw" />
+    <div className="orbit-rings-frame">
+      <Image className="orbit-rings" src="/images/math-orbits-core.png" alt="Gold and cyan mathematical rings with glowing electrons orbiting around them" width={1536} height={1024} priority sizes="(max-width: 1023px) 46vw, 48vw" />
+    </div>
     <svg className="orbit-electrons" viewBox="0 0 1536 1024" aria-hidden="true" focusable="false">
       <defs>
         <radialGradient id={`${id}-gold`} cx="30%" cy="25%" r="75%"><stop stopColor="#fffce0"/><stop offset=".25" stopColor="#ffe69a"/><stop offset=".6" stopColor="#dba62b"/><stop offset="1" stopColor="#785018"/></radialGradient>
