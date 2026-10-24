@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useId } from "react";
 
 // Native SVG motion keeps the orbit smooth without a React render loop.
@@ -32,12 +32,27 @@ const axes = [
 
 export default function MathOrbit() {
   const id = useId().replace(/:/g, "");
+  const { props: depthImage } = getImageProps({ src:"/images/math-orbits-core.png", alt:"", width:640, height:427 });
+  const depthSource = depthImage.srcSet?.split(", ")[0].split(" ")[0] ?? depthImage.src;
   function sphere(radius: number) {
     return <>
       <circle r={radius * 2.4} fill={`url(#${id}-halo)`} />
       <circle className="electron-core" r={radius} fill={`url(#${id}-gold)`} stroke="#fff1a8" strokeWidth="1" />
       <circle cx={-radius * .3} cy={-radius * .35} r={radius * .2} fill="#fffce2" opacity=".9" />
     </>;
+  }
+  function electronLayer(rear: boolean) {
+    return electrons.map((electron,i)=><g key={i} data-electron={i} opacity={rear ? 0 : 1}>
+      <animate attributeName="opacity" values={rear ? "0;0;1;1;0" : "1;1;0;0;1"} keyTimes="0;.46;.5;.96;1" dur={`${electron.duration}s`} begin={`${-electron.duration * electron.phase}s`} repeatCount="indefinite" />
+      <g opacity=".22">
+        <circle r={electron.radius * .45} fill="#ffdd74" />
+        <animateMotion dur={`${electron.duration}s`} begin={`${-electron.duration * electron.phase + .13}s`} repeatCount="indefinite" path={tracks[electron.track]} calcMode="paced" />
+      </g>
+      <g className="electron-orb">
+        {sphere(electron.radius)}
+        <animateMotion dur={`${electron.duration}s`} begin={`${-electron.duration * electron.phase}s`} repeatCount="indefinite" path={tracks[electron.track]} calcMode="paced" />
+      </g>
+    </g>);
   }
   return <div className="hero-art">
     <div className="orbit-rings-frame">
@@ -47,6 +62,14 @@ export default function MathOrbit() {
       <defs>
         <radialGradient id={`${id}-gold`} cx="30%" cy="25%" r="75%"><stop stopColor="#fffce0"/><stop offset=".25" stopColor="#ffe69a"/><stop offset=".6" stopColor="#dba62b"/><stop offset="1" stopColor="#785018"/></radialGradient>
         <radialGradient id={`${id}-halo`}><stop stopColor="#ffcf58" stopOpacity=".45"/><stop offset=".5" stopColor="#ffcf58" stopOpacity=".12"/><stop offset="1" stopColor="#ffcf58" stopOpacity="0"/></radialGradient>
+        {/* Bright ring surfaces hide rear particles; the dark gaps stay transparent. */}
+        <filter id={`${id}-ring-surface`} colorInterpolationFilters="sRGB" x="0" y="0" width="100%" height="100%">
+          <feColorMatrix type="matrix" values="-2.126 -7.152 -.722 0 1.6  -2.126 -7.152 -.722 0 1.6  -2.126 -7.152 -.722 0 1.6  0 0 0 1 0" />
+        </filter>
+        <mask id={`${id}-ring-depth`} maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="1536" height="1024" style={{maskType:"luminance"}}>
+          <rect width="1536" height="1024" fill="white" />
+          <image className="orbit-ring-occluder" href={depthSource} width="1536" height="1024" preserveAspectRatio="none" filter={`url(#${id}-ring-surface)`} />
+        </mask>
         <radialGradient id={`${id}-axis-depth`} gradientUnits="userSpaceOnUse" cx={axisOrigin.x} cy={axisOrigin.y} r="320">
           <stop stopColor="#edf3ff" stopOpacity=".12" />
           <stop offset=".4" stopColor="#edf3ff" stopOpacity=".14" />
@@ -68,16 +91,8 @@ export default function MathOrbit() {
         {tracks.map((path,i)=><path key={i} d={path} opacity={i===0 ? .55 : .22} strokeDasharray={i===2 ? "5 12" : undefined} />)}
       </g>
       <g className="electrons-moving">
-        {electrons.map((electron,i)=><g key={i}>
-          <g opacity=".22">
-            <circle r={electron.radius * .45} fill="#ffdd74" />
-            <animateMotion dur={`${electron.duration}s`} begin={`${-electron.duration * electron.phase + .13}s`} repeatCount="indefinite" path={tracks[electron.track]} calcMode="paced" />
-          </g>
-          <g className="electron-orb">
-            {sphere(electron.radius)}
-            <animateMotion dur={`${electron.duration}s`} begin={`${-electron.duration * electron.phase}s`} repeatCount="indefinite" path={tracks[electron.track]} calcMode="paced" />
-          </g>
-        </g>)}
+        <g className="electrons-back" mask={`url(#${id}-ring-depth)`}>{electronLayer(true)}</g>
+        <g className="electrons-front">{electronLayer(false)}</g>
       </g>
       <g className="electrons-still">
         {[[837,134],[262,343],[1270,362],[394,670],[1067,729]].map(([x,y],i)=><g key={i} transform={`translate(${x} ${y})`}>{sphere(electrons[i].radius)}</g>)}

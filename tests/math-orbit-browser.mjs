@@ -54,11 +54,14 @@ try {
    if(getComputedStyle(image).transform!==start) throw new Error('Ring motion should loop seamlessly');
    animation.currentTime=3500;
   });
+  await page.locator('.orbit-ring-occluder').evaluate(image=>{
+   const animation=image.getAnimations()[0];animation.pause();animation.currentTime=3500;
+  });
   const positions=async(time)=>page.locator('.orbit-electrons').evaluate(async(svg,t)=>{
    svg.pauseAnimations();svg.setCurrentTime(t);
    await new Promise(requestAnimationFrame);
    await new Promise(requestAnimationFrame);
-   return [...svg.querySelectorAll('.electrons-moving .electron-core')].map(node=>{
+   return [...svg.querySelectorAll('.electrons-front .electron-core')].map(node=>{
     const box=node.getBoundingClientRect();return {x:box.x+box.width/2,y:box.y+box.height/2};
    });
   },time);
@@ -70,6 +73,26 @@ try {
   // Let the existing CSS entrance finish after switching the motion preference.
   await page.evaluate(()=>Promise.all(document.getAnimations().filter(animation=>Number.isFinite(animation.effect?.getComputedTiming().endTime)).map(animation=>animation.finished.catch(()=>{}))));
   await page.screenshot({path:`${output}/orbit-${width}.png`});
+  if(width===1440){
+   // Check rendered pixels: a rear particle disappears on a ring, but not in a gap.
+   for(const sample of [{time:2.75,index:3,hidden:true},{time:7.5,index:2,hidden:false}]){
+    await positions(sample.time);
+    const box=await page.locator(`.electrons-front [data-electron="${sample.index}"] .electron-core`).boundingBox();
+    const clip={x:Math.floor(box.x+box.width/2-1),y:Math.floor(box.y+box.height/2-1),width:2,height:2};
+    const rendered=await page.screenshot({clip});
+    const rear=page.locator('.electrons-back'), moving=page.locator('.electrons-moving');
+    const mask=await rear.getAttribute('mask');
+    await rear.evaluate(node=>node.setAttribute('mask','none'));
+    const unmasked=await page.screenshot({clip});
+    await moving.evaluate(node=>node.style.visibility='hidden');
+    const background=await page.screenshot({clip});
+    await moving.evaluate(node=>node.style.visibility='');
+    await rear.evaluate((node,value)=>node.setAttribute('mask',value),mask);
+    assert(!unmasked.equals(background),'Sample particle must be present before occlusion');
+    assert.equal(rendered.equals(background),sample.hidden,'Only particles behind a ring should disappear');
+   }
+   console.log('PASS: rendered pixels confirm rear occlusion and visibility through open space');
+  }
   await page.emulateMedia({reducedMotion:'reduce'});
   const still=page.locator('.electrons-still .electron-core').first();
   const before=await still.boundingBox();await positions(7);const after=await still.boundingBox();
