@@ -51,7 +51,7 @@ export default function Leaderboard() {
       <PageTitle
         eyebrow="THE COMMUNITY"
         title="Learn together. Reach higher."
-        description="AMATYC Arena Rating — Beta. Rated contest results update after the event review period."
+        description="Grow your rating with daily challenges and work toward your next title."
       />
       {demo && (
         <p className="mb-5 text-sm text-emerald-400">

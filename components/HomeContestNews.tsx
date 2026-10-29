@@ -38,8 +38,8 @@ export default function HomeContestNews({ compact = false }: {compact?: boolean}
     <MobileDisclosure label="Details">
       <h3 className="mt-3 font-semibold">OCC Student Math League · Friday, November 6</h3>
       <RoundOneDetails />
-      <h3 className="mt-5 border-t border-edge pt-4 font-semibold">Every Saturday</h3>
-      <SaturdayDetails />
+      <h3 className="mt-5 border-t border-edge pt-4 font-semibold">Daily Challenge</h3>
+      <DailyDetails />
     </MobileDisclosure>
   </section>;
   return (
@@ -84,14 +84,14 @@ export default function HomeContestNews({ compact = false }: {compact?: boolean}
           <h3 className="mt-4 text-2xl font-bold sm:text-3xl">Round One · Friday, November 6</h3>
           <RoundOneDetails />
         </div>
-        <div className="flex min-w-0 snap-start select-none flex-col items-start p-6 sm:p-8" role="group" aria-label="Every Saturday" aria-roledescription="slide" inert={slide !== 1}>
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-400"><CalendarDays size={16} aria-hidden="true" /> Every Saturday</p>
+        <div className="flex min-w-0 snap-start select-none flex-col items-start p-6 sm:p-8" role="group" aria-label="Daily Challenge" aria-roledescription="slide" inert={slide !== 1}>
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-400"><CalendarDays size={16} aria-hidden="true" /> Daily Challenge</p>
           <h3 className="mt-4 text-2xl font-semibold sm:text-3xl">Solve together. Aim for your next title.</h3>
-          <SaturdayDetails />
+          <DailyDetails />
         </div>
       </div>
       <div className="flex justify-center gap-2 px-6 py-4" aria-label="Choose contest news">
-        {["OCC Round One", "Every Saturday"].map((name, index) => <button key={name} type="button" aria-label={`Show ${name}`} aria-pressed={slide === index} onClick={() => show(index)} className="flex h-8 w-8 items-center justify-center"><span className={`h-2 rounded-full transition-all ${slide === index ? "w-5 bg-emerald-400" : "w-2 bg-edge"}`} /></button>)}
+        {["OCC Round One", "Daily Challenge"].map((name, index) => <button key={name} type="button" aria-label={`Show ${name}`} aria-pressed={slide === index} onClick={() => show(index)} className="flex h-8 w-8 items-center justify-center"><span className={`h-2 rounded-full transition-all ${slide === index ? "w-5 bg-emerald-400" : "w-2 bg-edge"}`} /></button>)}
       </div>
     </section>
   );
@@ -108,8 +108,8 @@ function RoundOneDetails() { return <>
           </dl>
 </>; }
 
-function SaturdayDetails() { return <>
-<p className="mt-4 leading-7 muted">Join our Saturday contests to tackle math problems, challenge yourself alongside other students, and earn a competitive rating. Every contest is a chance to learn and improve.</p>
-          <p className="mt-4 text-sm leading-6 muted">Start at {INITIAL_RATING}. Your performance in rated contests shapes your rating and title. Practice during the week, then put your skills to the test on Saturday.</p>
-          <div className="mt-auto pt-6"><Link href="/contests" className="btn">Join a Saturday contest <ArrowRight size={16} /></Link></div>
+function DailyDetails() { return <>
+<p className="mt-4 leading-7 muted">Take five fresh questions matched to your level. Work at your own pace, save your answers, and earn rating progress when you submit the complete set.</p>
+          <p className="mt-4 text-sm leading-6 muted">Start at {INITIAL_RATING}. Your daily results shape your rating and title. Come back for a fresh set after midnight Pacific, with up to +20 rating for a perfect result.</p>
+          <div className="mt-auto pt-6"><Link href="/daily" className="btn">Take your daily challenge <ArrowRight size={16} /></Link></div>
 </>; }

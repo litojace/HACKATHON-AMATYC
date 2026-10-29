@@ -81,9 +81,9 @@ try {
    };
    await assertPanels();
    await news.getByRole('button',{name:'Next contest news',exact:true}).click();
-   await page.waitForFunction(()=>document.querySelector('.home-desktop-news [aria-label="Show Every Saturday"]')?.getAttribute('aria-pressed')==='true');
+   await page.waitForFunction(()=>document.querySelector('.home-desktop-news [aria-label="Show Daily Challenge"]')?.getAttribute('aria-pressed')==='true');
    await assertPanels();
-   assert(await news.getByRole('link',{name:'Join a Saturday contest'}).isVisible());
+   assert(await news.getByRole('link',{name:'Take your daily challenge'}).isVisible());
    if(width===1440)await page.locator('.home-community-news').screenshot({path:`${output}/matching-community-panels.png`});
    await news.getByRole('button',{name:'Previous contest news',exact:true}).click();
    await page.waitForFunction(()=>document.querySelector('.home-desktop-news [aria-label="Show OCC Round One"]')?.getAttribute('aria-pressed')==='true');

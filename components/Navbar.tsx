@@ -4,13 +4,14 @@ import Image from "next/image";
 import RankedName from "./RankedName";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge, Info, UserRound, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users, Settings, FileText, Gauge, Info, UserRound, LogOut, Sun } from "lucide-react";
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 const navigation = [
   {href:"/", label:"Home", icon:House},
   {href:"/problems", label:"Problems", icon:FileText},
   {href:"/training", label:"Training", icon:ChartNoAxesColumnIncreasing},
+  {href:"/daily", label:"Daily Challenge", icon:Sun},
   {href:"/contests", label:"Contests", icon:Trophy},
   {href:"/leaderboard", label:"Leaderboard", icon:Users},
   {href:"/dashboard", label:"Dashboard", icon:Gauge},
@@ -137,12 +138,12 @@ export default function Navbar() {
         </div>
       </nav>
       <nav aria-label="Quick navigation" className="grid grid-cols-4 border-t border-edge lg:hidden">
-        {navigation.slice(0,4).map(item=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className="mobile-tab" aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={24} aria-hidden="true" />{item.label}</Link>)}
+        {navigation.slice(0,4).map(item=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className="mobile-tab" aria-label={item.label} aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={24} aria-hidden="true" />{item.href==="/daily"?"Daily":item.label}</Link>)}
       </nav>
       <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}
         className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">
         <div className="space-y-1">
-          {[["/", "Home"], ["/problems", "Problems"], ["/training", "Training"], ["/contests", "Contests"], ["/leaderboard", "Leaderboard"], ["/dashboard", "Dashboard"]].map(([href, label]) => (
+          {navigation.map(({href, label}) => (
             <Link key={href} href={href} onClick={() => setOpen(false)}
               aria-current={(href === "/" ? path === "/" : path.startsWith(href)) ? "page" : undefined}
               className={`flex min-h-11 items-center rounded-lg px-3 text-sm font-medium ${(href === "/" ? path === "/" : path.startsWith(href)) ? "bg-emerald-400/10 text-emerald-400" : "muted hover:bg-ink"}`}>

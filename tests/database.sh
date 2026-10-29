@@ -18,5 +18,7 @@ if [ "$ready" != true ]; then echo 'Postgres did not become ready' >&2; exit 1; 
   cat supabase/migrations/022_announcement_archive.sql tests/announcement-archive.sql
   cat supabase/migrations/023_public_dashboard.sql tests/public-dashboard.sql
   cat supabase/migrations/024_delete_confirmation_names.sql tests/delete-confirmation-names.sql tests/bookmarks.sql
+  cat supabase/migrations/025_daily_challenges.sql tests/daily-challenges.sql
 } |
   docker exec -i "$container" psql -U postgres -v ON_ERROR_STOP=1
+node tests/daily-concurrency.mjs "$container"

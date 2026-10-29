@@ -25,7 +25,7 @@ export default function LeaderboardTable({
               "School",
               "Rating",
               "Tier",
-              "Rated events",
+              "Rated contests",
               "Last change",
             ].map((h) => (
               <th key={h} className={`p-4 ${h === "Tier" ? "text-center" : ""}`}>

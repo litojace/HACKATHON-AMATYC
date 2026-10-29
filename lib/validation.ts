@@ -4,6 +4,10 @@ export const practiceSchema = z.object({
   answer: answerSchema,
   request_id: z.uuid(),
 });
+export const dailyAnswerSchema = z.object({
+  problem_id: z.string().min(1).max(100),
+  answer: z.enum(["A", "B", "C", "D", "E"]).nullable(),
+});
 export const saveAnswerSchema = z.object({
   problem_id: z.string().max(100),
   answer: answerSchema,

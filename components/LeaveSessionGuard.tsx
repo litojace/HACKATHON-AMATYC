@@ -9,7 +9,7 @@ export default function LeaveSessionGuard({
   kind,
 }: {
   active: boolean;
-  kind: "training" | "contest";
+  kind: "training" | "contest" | "daily";
 }) {
   const router = useRouter();
   const [destination, setDestination] = useState<string | null>(null);
@@ -44,9 +44,9 @@ export default function LeaveSessionGuard({
 
   if (!active || !destination) return null;
   return (
-    <Dialog title={`Leave this ${kind} session?`} onClose={cancel} closeLabel={kind === "training" ? "Keep training" : "Stay in contest"}>
+    <Dialog title={kind==="daily"?"Leave before your answer is saved?":`Leave this ${kind} session?`} onClose={cancel} closeLabel={kind === "training" ? "Keep training" : kind==="daily"?"Keep solving":"Stay in contest"}>
       <p className="leading-7 muted">
-        {kind === "training"
+        {kind==="daily"?"Your latest answer has not been saved yet. Wait for it to save or retry before leaving. Earlier saved answers will be available when you return.":kind === "training"
           ? "Your current training progress will be lost if you leave. Are you sure you want to go to another page?"
           : "The contest timer will keep running after you leave. Saved answers will remain, but any answers still being saved may be lost. Are you sure you want to go to another page?"}
       </p>
@@ -55,7 +55,7 @@ export default function LeaveSessionGuard({
         setDestination(null);
         router.push(destination);
       }}>
-        Leave {kind}
+        {kind==="daily"?"Leave anyway":`Leave ${kind}`}
       </button>
     </Dialog>
   );

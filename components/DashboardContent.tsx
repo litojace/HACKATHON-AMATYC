@@ -8,6 +8,7 @@ import Chart from "@/components/Charts";
 import AnnouncementArchive from "@/components/AnnouncementArchive";
 import { getCodeforcesTitle, INITIAL_RATING } from "@/lib/rating";
 import { Flame } from "lucide-react";
+import DailyChallengeCard from "./DailyChallengeCard";
 
 function dayKey(date: Date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
@@ -26,6 +27,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
 }) {
 
   const practice = activity.practice;
+  const daily = activity.daily??[];
   const finalizedMocks = activity.contests.filter(
     (attempt) => attempt.status === "finalized" && attempt.score !== null,
   );
@@ -48,6 +50,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
   // A practice attempt or a finalized mock test counts as a study day.
   const activeDays = new Set<string>();
   for (const attempt of practice) activeDays.add(dayKey(new Date(attempt.created_at)));
+  for (const challenge of daily) activeDays.add(dayKey(new Date(challenge.completed_at)));
   for (const attempt of finalizedMocks) {
     const date = attempt.finalized_at ?? attempt.started_at;
     if (date) activeDays.add(dayKey(new Date(date)));
@@ -94,6 +97,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
     : null;
 
   const recent = [
+    ...daily.map(challenge=>({id:`daily-${challenge.id}`,date:challenge.completed_at,label:"Daily challenge completed",href:"/daily",detail:`${challenge.rating_delta>0?"+":""}${challenge.rating_delta} rating`})),
     ...practice.map((attempt) => ({
       id: `practice-${attempt.id}`,
       date: attempt.created_at,
@@ -122,6 +126,7 @@ export default function DashboardContent({ activity, problems, profile, demo = f
           : "Your rating, topic accuracy, study streak, and recent activity."}
       />
 
+      {!publicView&&<DailyChallengeCard />}
       <div className="mb-5 grid gap-4 sm:grid-cols-2">
         <div className="panel p-5">
           <p className="font-mono text-3xl"><RankText rating={profile?.rating ?? INITIAL_RATING}>{profile?.rating ?? INITIAL_RATING}</RankText></p>

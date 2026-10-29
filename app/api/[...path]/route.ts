@@ -15,6 +15,7 @@ import {
   practiceSchema,
   saveAnswerSchema,
   profileSchema,
+  dailyAnswerSchema,
 } from "@/lib/validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -62,7 +63,7 @@ async function handle(
     }
     if (!databaseConfigured) {
       if (resource === "carousel" && method === "GET") return NextResponse.json(defaultCarouselPhotos);
-      if (resource === "practice" || resource === "attempts") {
+      if (resource === "practice" || resource === "attempts" || resource === "daily") {
         return error("Please sign in to continue. Supabase must be configured to enable practice and contests.", 401);
       }
       if (resource === "problem-directory" && !id && method === "GET")
@@ -100,11 +101,11 @@ async function handle(
     async function query<T>(
       operation: PromiseLike<{
         data: T | null;
-        error: { message: string } | null;
+        error: { message: string; code?: string } | null;
       }>,
     ) {
       const { data, error: e } = await operation;
-      if (e) throw new Error(e.message);
+      if (e) throw Object.assign(new Error(e.message),{code:e.code});
       return data;
     }
     if (resource === "carousel" && method === "GET") {
@@ -148,6 +149,25 @@ async function handle(
       return NextResponse.json(data);
     }
     if (!user) return error("Please sign in to continue.", 401);
+    if (resource === "daily") {
+      if (id && id!=="start" && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return error("Invalid challenge ID",422);
+      let operation;
+      if (method==="GET" && !id) operation=db.rpc("daily_challenge_status");
+      else if (method==="POST" && id==="start" && !action) operation=db.rpc("start_daily_challenge");
+      else if (method==="PATCH" && id && id!=="start" && !action) {
+        const body=dailyAnswerSchema.parse(await req.json());
+        operation=db.rpc("save_daily_answer",{challenge_id:id,problem_id:body.problem_id,selected:body.answer});
+      } else if (method==="POST" && id && id!=="start" && action==="finish") operation=db.rpc("finish_daily_challenge",{challenge_id:id});
+      else return error("Operation not found",404);
+      const {data,error:dailyError}=await operation;
+      if(dailyError) {
+        if(dailyError.code==="PGRST202" || dailyError.code==="42P01") return error("Daily Challenge is being set up. Please try again soon.",503);
+        if(["42501","P0002","55000","22023"].includes(dailyError.code)) return error(dailyError.message,dailyError.code==="42501"?403:dailyError.code==="P0002"?404:dailyError.code==="22023"?422:409);
+        throw new Error(dailyError.message);
+      }
+      if(data?.challenge?.breakdown) for(const item of data.challenge.breakdown) item.explanation=addLocalWrittenSolution(item.explanation,item.problem_id);
+      return NextResponse.json(data,{headers:{"Cache-Control":"private, no-store"}});
+    }
     if (resource === "reports" && method === "POST" && id) {
       const body = await req.json();
       if (!["incorrect_answer","unclear_wording","missing_figure","other"].includes(body.category) || typeof body.details !== "string" || !body.details.trim() || body.details.length > 2000) return error("Choose a category and enter details (up to 2000 characters).");
@@ -340,6 +360,7 @@ async function handle(
     }
     return error("Operation not found", 404);
   } catch (e) {
+    if(e instanceof Error && "code" in e && e.code==="55000" && e.message.startsWith("Finish your daily challenge")) return error(e.message,409);
     if (e && typeof e === "object" && "issues" in e)
       return error("Invalid request. Check the supplied fields.", 422);
     console.error(

@@ -34,7 +34,7 @@ On Linux/macOS, `PORT=3001 npm start` selects another port. On Windows PowerShel
 - `/dashboard`: private authenticated analytics in configured mode; actual browser-local demo activity otherwise. Ratings, solved status, accuracy, activity/difficulty/topic charts, recent attempts, and clearly explained rule-based recommendations.
 - `/leaderboard`: public stored profiles (or explicitly sample profiles in demo), search, schools, pagination, ties, current-user ranking, deltas, profile links.
 - `/profile/[username]`: public profile and rating history; private practice/exam answers are excluded.
-- `/login`: optional “Remember me” keeps the Supabase session across browser visits; unchecked logins use tab session storage. Both email and Google login honor this choice, and sign-out clears saved tokens.
+- `/login`: optional “Remember me” keeps the Supabase session across browser visits; unchecked logins use tab session storage. Email login honors this choice, and sign-out clears saved tokens.
 - `/settings`: display name, school, HTTPS avatar URL, profile visibility. The interface uses dark mode throughout.
 - `/login`, `/signup`, `/forgot-password`, `/reset-password`: Supabase email/password auth and recovery; demo explains account setup instead of faking an account.
 - `/api/health`: deployment readiness endpoint.
@@ -49,11 +49,11 @@ Leave both public Supabase settings empty to browse the bundled library: 820 his
 
 Practice and contests require a signed-in Supabase user. Guest submissions, practice session starts, explanations, contest starts, answer saves and finalization are rejected by the API. Without Supabase configured, the library is available for browsing but no guest demo attempts can be created. Existing local demonstration history is not a verified account record.
 
-Both public Supabase settings must be provided before building. Incomplete settings and database failures show service errors rather than substituting demonstration activity. Service-role credentials are never used by the browser or ordinary web API. Google accounts and email/password accounts use the same profile and private attempt storage.
+Both public Supabase settings must be provided before building. Incomplete settings and database failures show service errors rather than substituting demonstration activity. Service-role credentials are never used by the browser or ordinary web API. Email/password accounts use the same profile and private attempt storage.
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 019, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 025, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 For migration 019 deployment, measured query plans, and rollback instructions, see [problem directory performance](docs/database/problem-directory-performance.md). Apply this migration before deploying the updated application.
 
@@ -77,6 +77,12 @@ For migration 019 deployment, measured query plans, and rollback instructions, s
    - `supabase/migrations/017_online_announcements.sql`
    - `supabase/migrations/018_problem_reports.sql`
    - `supabase/migrations/019_problem_directory_performance.sql`
+   - `supabase/migrations/020_admin_data_controls.sql`
+   - `supabase/migrations/021_announcement_expiry.sql`
+   - `supabase/migrations/022_announcement_archive.sql`
+   - `supabase/migrations/023_public_dashboard.sql`
+   - `supabase/migrations/024_delete_confirmation_names.sql`
+   - `supabase/migrations/025_daily_challenges.sql`
 
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set `NEXT_PUBLIC_SITE_URL` in `.env.local` to the public site origin (for example, `https://your-domain.example`) so confirmation links work when opened on another device. Set the same Site URL in Supabase and add the deployed `/email-confirmed`, `/login`, and `/reset-password` URLs plus any local URLs you use to its redirect allowlist. Leaving the variable blank uses the current browser origin, which is suitable for same-device local testing but not a `localhost` link opened on a phone. The confirmation page tells users to return to their original browser and sign in. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
@@ -86,7 +92,11 @@ For migration 019 deployment, measured query plans, and rollback instructions, s
 
 The `problem-images` Storage bucket is public, supports PNG/JPEG/WebP up to 5 MB, and has no client upload policy. Trusted organizers upload via dashboard/service-role. **Do not upload unreleased rated-event diagrams to a public bucket**; use private storage/signed asset delivery before enabling restricted diagram events. The demo semicircle is an original local SVG. Multiple figure records and private signed diagram delivery are extension points, not implemented claims.
 
-Google OAuth and email/password sign-in are supported. Enable the Google provider in the shared Supabase project; see `docs/google-login.md` for callback URLs and setup. Practice and contests require authentication, including when browsing the bundled library without Supabase configuration.
+Email/password sign-in is supported. Google login is no longer offered in the interface. Practice and contests require authentication, including when browsing the bundled library without Supabase configuration.
+
+## Daily Challenge
+
+`/daily` provides five fresh rating-matched questions per account each day, saved progress, server-graded results, and one rating update. Apply migration 025 before deploying. See [daily challenge setup and rules](docs/daily-challenge.md). No scheduler or weekly contest organization is required.
 
 ## Backend architecture and security
 

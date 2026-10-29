@@ -19,6 +19,7 @@ import HomeCommunityGallery from "@/components/HomeCommunityGallery";
 import HomeContestNews from "@/components/HomeContestNews";
 import { RANK_TIERS } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
+import DailyChallengeCard from "@/components/DailyChallengeCard";
 
 const ranks = [...RANK_TIERS].reverse();
 export default function Home() {
@@ -62,10 +63,11 @@ export default function Home() {
         </div>
         <div data-home-entrance className="hero-actions">
           <Link href="/problems" className="btn">Let’s Solve! <ArrowRight size={24} /></Link>
-          <Link href="/contests" className="btn-secondary">Saturday Contests <ArrowRight size={21} className="hidden lg:block" /></Link>
+          <Link href="/daily" className="btn-secondary">Daily Challenge <ArrowRight size={21} className="hidden lg:block" /></Link>
         </div>
       </section>
       <Statistics yearRange={`${Math.min(...libraryContests.map(c=>c.year))}–${Math.max(...libraryContests.map(c=>c.year))}`} />
+      <DailyChallengeCard />
       <h2 className="home-section-label mb-4">Find your next challenge</h2>
       <section className="home-feature-grid grid grid-cols-2 gap-3 xl:grid-cols-4">
         {[
@@ -111,7 +113,7 @@ export default function Home() {
         ))}
       </section>
       <section className="home-highlights panel" aria-label="Contests and rating milestones">
-        <Link href="/contests" className="contest-highlight"><CalendarDays size={42} strokeWidth={1.6} aria-hidden="true" /><div><h2>Saturday contests</h2><p>Solve together. Aim for your next title.</p><span className="highlight-link">View contests <ArrowRight size={18}/></span></div><ChevronRight className="highlight-chevron" aria-hidden="true" /></Link>
+        <Link href="/daily" className="contest-highlight"><CalendarDays size={42} strokeWidth={1.6} aria-hidden="true" /><div><h2>Daily challenge</h2><p>Five questions. One step closer.</p><span className="highlight-link">Earn your next title <ArrowRight size={18}/></span></div><ChevronRight className="highlight-chevron" aria-hidden="true" /></Link>
         <div className="home-mobile-contest"><HomeContestNews compact /></div>
         <Link href="#rating-titles-heading" className="rating-highlight"><Star size={34} strokeWidth={1.6} aria-hidden="true" /><div><h2>Ratings &amp; titles</h2><p>See your next milestone</p></div><div className="rank-medals" aria-hidden="true">{(["bronze","silver","gold"] as const).map(metal=><RankMedal key={metal} metal={metal} />)}</div></Link>
       </section>
@@ -150,7 +152,7 @@ export default function Home() {
           {[
             "Choose a topic and solve a problem.",
             "Review the reasoning and build your toolkit.",
-            "Join a Saturday contest, earn a rating, and work toward your next title.",
+            "Take your daily challenge and work toward your next title.",
           ].map((text, i) => (
             <div data-home-entrance key={text} className="flex gap-3">
               <span className="font-mono text-emerald-400">0{i + 1}</span>

@@ -123,6 +123,7 @@ export interface Activity {
     old_rating: number;
     created_at: string;
     contest_name?: string;
+    daily_challenge_id?: string | null;
   }[];
   bookmarks: string[];
 }
