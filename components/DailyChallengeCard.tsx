@@ -24,6 +24,7 @@ export default function DailyChallengeCard() {
   const completed=challenge?.status==="completed";
   const answered=Object.values(challenge?.answers??{}).filter(Boolean).length;
   return <section className={`panel mb-5 ${styles.card}`} aria-label="Daily challenge">
+    <span className={styles.panelEffects} aria-hidden="true"><DailySparkles /></span>
     <div className={styles.intro}>
       <span className={styles.icon}><Sun size={30} aria-hidden="true" /></span>
       <div><div className={styles.heading}><h2>Daily Challenge</h2><span className={styles.badge}>{completed?"COMPLETED":challenge?"IN PROGRESS":"UP TO +20 RATING"}</span></div><p className={styles.description}>{completed?`${challenge.correct_count}/5 correct · ${(challenge.rating_delta??0)>=0?"+":""}${challenge.rating_delta} rating today`:challenge?`${answered} of 5 answers saved · Finish before midnight Pacific`:"Five fresh questions. One step closer to your next title."}</p></div>
