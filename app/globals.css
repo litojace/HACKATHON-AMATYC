@@ -462,7 +462,7 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
  .hero-description .desktop-description { display:none; }
  .hero-illustration { position:relative; grid-area:art; align-self:stretch; width:100%; min-width:0; min-height:160px; pointer-events:none; }
  .hero-illustration .hero-art { position:absolute; top:50%; width:100%; max-width:none; margin:0; transform:translateY(-50%); }
- .hero-actions { display:grid; grid-template-columns:1fr 1.3fr; gap:10px; margin:8px 0 0; }
+ .hero-actions { gap:10px; margin:8px 0 0; }
  .hero-actions .btn,.hero-actions .btn-secondary { min-width:0; min-height:48px; padding-inline:10px; font-size:14px; }
  .hero-actions .btn svg { width:18px; }
  .library-bar { grid-template-columns:1.25fr .8fr .7fr 1fr; padding:16px 12px; }
@@ -491,6 +491,7 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
  .rank-medal>span { font-size:9px; }
 }
 @media(max-width:599px) {
+ .hero-actions .btn { width:100%; }
  .home-feature-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .library-bar { grid-template-columns:1fr .75fr .65fr 1.1fr; padding:14px 8px; }
  .library-bar h2 { font-size:13px; gap:6px; letter-spacing:0; }
@@ -508,7 +509,6 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
 }
 @media (max-width:380px) {
  .hero-actions .btn,.hero-actions .btn-secondary { font-size:13px; gap:6px; padding-inline:8px; }
- .hero-actions .btn-secondary>svg { width:16px; }
 }
 .hero-art { position:relative; overflow:clip; }
 /* Fade a stationary frame so scaling and tilting cannot reveal the image's edges. */

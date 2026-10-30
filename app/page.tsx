@@ -11,7 +11,6 @@ import {
   CalendarDays,
   ChevronRight,
   Star,
-  Sun,
   Trophy,
 } from "lucide-react";
 import { libraryContests } from "@/lib/server/data";
@@ -21,8 +20,6 @@ import HomeContestNews from "@/components/HomeContestNews";
 import { RANK_TIERS } from "@/lib/rating";
 import RankedName, { RankText } from "@/components/RankedName";
 import DailyChallengeCard from "@/components/DailyChallengeCard";
-import dailyStyles from "@/components/DailyHighlight.module.css";
-import DailySparkles from "@/components/DailySparkles";
 
 const ranks = [...RANK_TIERS].reverse();
 export default function Home() {
@@ -66,7 +63,6 @@ export default function Home() {
         </div>
         <div data-home-entrance className="hero-actions">
           <Link href="/problems" className="btn">Let’s Solve! <ArrowRight size={24} /></Link>
-          <Link href="/daily" className={`btn-secondary ${dailyStyles.heroButton}`}><DailySparkles /><Sun size={20} aria-hidden="true"/>Daily Challenge <ArrowRight size={21} className="hidden lg:block" /></Link>
         </div>
       </section>
       <Statistics yearRange={`${Math.min(...libraryContests.map(c=>c.year))}–${Math.max(...libraryContests.map(c=>c.year))}`} />
