@@ -30,6 +30,10 @@ html {
   scroll-padding-top: 6.5rem;
 }
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--ink);
   color: var(--text);
   font-family: "Inter Variable", Arial, Helvetica, sans-serif;

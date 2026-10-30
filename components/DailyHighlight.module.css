@@ -59,14 +59,15 @@
 .compactSparkles svg:nth-child(1) { top: 9px; left: 18%; width: 7px; height: 7px; }
 .compactSparkles svg:nth-child(2) { top: 16px; right: 15%; width: 5px; height: 5px; }
 .compactSparkles svg:nth-child(3) { bottom: 8px; right: 22%; width: 4px; height: 4px; }
-.navLink.navLink { color: var(--accent-text); background: linear-gradient(90deg, #f3cb5915, #f3cb5903); }
-.navLink.navLink:hover { background: linear-gradient(90deg, #f3cb5926, #f3cb5908); }
-.navLink.navLink[aria-current="page"] { border-left-color: var(--accent); background: linear-gradient(90deg, #f3cb592b, #f3cb5909); }
+.navLink.navLink { color: var(--muted); background: none; }
+.navLink.navLink:hover { color: var(--text); background: #ffffff05; }
+.navLink.navLink[aria-current="page"] { color: var(--gold); border-left-color: var(--accent); background: linear-gradient(90deg, #f3cb5916, transparent); }
+.navLink>svg, .tab>svg, .menuLink>svg { color: var(--accent-text); }
 .navLink svg, .tab svg { filter: drop-shadow(0 0 6px #f3cb5940); }
-.tab.tab { color: var(--accent-text); background: linear-gradient(180deg, #f3cb591a, #f3cb5905); box-shadow: inset 0 2px 0 #f3cb5980; }
-.tab.tab[aria-current="page"] { background: #f3cb5924; border-bottom-color: var(--accent); }
-.menuLink.menuLink { gap: 10px; color: var(--accent-text); border: 1px solid #f3cb5938; background: #f3cb590e; }
-.menuLink.menuLink[aria-current="page"] { background: #f3cb5924; border-color: #f3cb5980; }
+.tab.tab { color: var(--muted); background: transparent; }
+.tab.tab[aria-current="page"] { color: var(--gold); border-bottom-color: var(--accent); }
+.menuLink.menuLink { gap: 10px; color: var(--muted); }
+.menuLink.menuLink[aria-current="page"] { color: var(--accent-text); background: #f3cb591a; }
 .cta:focus-visible, .navLink:focus-visible, .tab:focus-visible, .menuLink:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 4px; }
 
 @keyframes daily-glow {

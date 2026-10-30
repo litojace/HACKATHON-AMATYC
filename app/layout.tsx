@@ -27,12 +27,12 @@ export default function RootLayout({
         <Providers>
           <SiteMotion />
           <Navbar />
-          <div className="site-content min-w-0">
+          <div className="site-content flex min-w-0 flex-1 flex-col">
           <LiveAnnouncements />
-          {children}
+          <div className="min-w-0 flex-1">{children}</div>
           <BackToTop />
           <TrainingResultReset />
-          <footer className="mx-auto mt-16 max-w-7xl border-t border-edge px-5 py-6">
+          <footer className="mx-auto mt-16 w-full max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="footer-brand flex items-center gap-4">
                 <div className="flex shrink-0 items-center gap-3">
