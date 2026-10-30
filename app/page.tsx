@@ -8,7 +8,6 @@ import {
   BookOpen,
   Clock3,
   ChartNoAxesColumnIncreasing,
-  CalendarDays,
   ChevronRight,
   Star,
   Trophy,
@@ -111,13 +110,11 @@ export default function Home() {
           </Link>
         ))}
       </section>
-      <section className="home-highlights panel" aria-label="Contests and rating milestones">
-        <Link href="/daily" className="contest-highlight"><CalendarDays size={42} strokeWidth={1.6} aria-hidden="true" /><div><h2>Daily challenge</h2><p>Five questions. One step closer.</p><span className="highlight-link">Earn your next title <ArrowRight size={18}/></span></div><ChevronRight className="highlight-chevron" aria-hidden="true" /></Link>
-        <div className="home-mobile-contest"><HomeContestNews compact /></div>
+      <section className="home-highlights panel" aria-label="Rating milestones">
         <Link href="#rating-titles-heading" className="rating-highlight"><Star size={34} strokeWidth={1.6} aria-hidden="true" /><div><h2>Ratings &amp; titles</h2><p>See your next milestone</p></div><div className="rank-medals" aria-hidden="true">{(["bronze","silver","gold"] as const).map(metal=><RankMedal key={metal} metal={metal} />)}</div></Link>
       </section>
       <p className="project-note">Independent educational project</p>
-      <section className="home-community-news mt-10 grid items-stretch gap-6 lg:grid-cols-2" aria-label="Community and contest news"><HomeCommunityGallery /><div className="home-desktop-news flex min-w-0"><HomeContestNews /></div></section>
+      <section className="home-community-news mt-10 grid items-stretch gap-6 lg:grid-cols-2" aria-label="Community and contest news"><div className="home-mobile-contest panel mb-5 p-4"><HomeContestNews compact /></div><HomeCommunityGallery /><div className="home-desktop-news flex min-w-0"><HomeContestNews /></div></section>
       <section className="home-rank-section mt-10" aria-labelledby="rating-titles-heading">
         <MobileDisclosure label="View all ranks" anchorId="rating-titles-heading" className="home-rank-disclosure">
         <div data-home-entrance className="panel overflow-hidden" aria-labelledby="rating-titles-heading">
