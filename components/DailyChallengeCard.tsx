@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Sun } from "lucide-react";
 import { useApp } from "./Providers";
 import { api } from "@/lib/client";
-import type { DailyStatus } from "@/lib/daily";
+import { DAILY_QUESTION_COUNT, DAILY_DURATION_MINUTES, type DailyStatus } from "@/lib/daily";
 import styles from "./DailyHighlight.module.css";
 import DailySparkles from "./DailySparkles";
 
@@ -15,7 +15,7 @@ export default function DailyChallengeCard() {
   useEffect(()=>{
     let active=true;
     let timer:ReturnType<typeof setTimeout>;
-    const refresh=()=>{if(userId)api<DailyStatus>("daily").then(data=>{if(active){setDaily({owner:userId,status:data});clearTimeout(timer);timer=setTimeout(refresh,Math.max(0,Date.parse(data.resets_at)-Date.parse(data.server_now))+150);}}).catch(()=>{});};
+    const refresh=()=>{if(userId)api<DailyStatus>("daily").then(data=>{if(active){setDaily({owner:userId,status:data});clearTimeout(timer);timer=setTimeout(refresh,Math.max(0,Math.min(Date.parse(data.resets_at),data.challenge?.status==="active"&&data.challenge.expires_at?Date.parse(data.challenge.expires_at):Infinity)-Date.parse(data.server_now))+150);}}).catch(()=>{});};
     const visible=()=>{if(document.visibilityState==="visible")refresh();};
     refresh();document.addEventListener("visibilitychange",visible);
     return()=>{active=false;clearTimeout(timer);document.removeEventListener("visibilitychange",visible);};
@@ -27,7 +27,7 @@ export default function DailyChallengeCard() {
     <span className={styles.panelEffects} aria-hidden="true"><DailySparkles /></span>
     <div className={styles.intro}>
       <span className={styles.icon}><Sun size={30} aria-hidden="true" /></span>
-      <div><div className={styles.heading}><h2>Daily Challenge</h2><span className={styles.badge}>{completed?"COMPLETED":challenge?"IN PROGRESS":"UP TO +20 RATING"}</span></div><p className={styles.description}>{completed?`${challenge.correct_count}/5 correct · ${(challenge.rating_delta??0)>=0?"+":""}${challenge.rating_delta} rating today`:challenge?`${answered} of 5 answers saved · Finish before midnight Pacific`:"Five fresh questions. One step closer to your next title."}</p></div>
+      <div><div className={styles.heading}><h2>Daily Challenge</h2><span className={styles.badge}>{completed?"COMPLETED":challenge?"IN PROGRESS":"UP TO +40 RATING"}</span></div><p className={styles.description}>{completed?`${challenge.correct_count}/${challenge.questions.length} correct · ${(challenge.rating_delta??0)>=0?"+":""}${challenge.rating_delta} rating today`:challenge?`${answered} of ${challenge.questions.length} answers saved · ${challenge.expires_at?"Resume before time runs out":"Finish before midnight Pacific"}`:`${DAILY_QUESTION_COUNT} fresh questions · ${DAILY_DURATION_MINUTES} minutes · One step closer to your next title.`}</p></div>
     </div>
     <Link href="/daily" className={`btn ${styles.cta}`}><DailySparkles />{completed?"View results":challenge?"Resume challenge":"Daily Challenge"}<ArrowRight size={18} aria-hidden="true" /></Link>
   </section>;

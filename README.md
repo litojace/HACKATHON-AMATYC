@@ -53,7 +53,7 @@ Both public Supabase settings must be provided before building. Incomplete setti
 
 ## Supabase setup
 
-For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 025, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
+For a new installation use a fresh Supabase project. Existing v2 installations apply missing migrations through 026, then rerun the seed. Migration 006 adds public practice submission counts. Migration 004 resets only unused default-1500 profiles without rating history to 800. The old `supabase/schema.sql` and `hardening.sql` describe the v1 schema and are retained only as history; **do not run them for v2**. The new migration explicitly rejects the legacy answer-in-problems schema to prevent accidental data loss. Existing users/data need a separately reviewed migration; no automatic table deletion is performed.
 
 For migration 019 deployment, measured query plans, and rollback instructions, see [problem directory performance](docs/database/problem-directory-performance.md). Apply this migration before deploying the updated application.
 
@@ -83,6 +83,7 @@ For migration 019 deployment, measured query plans, and rollback instructions, s
    - `supabase/migrations/023_public_dashboard.sql`
    - `supabase/migrations/024_delete_confirmation_names.sql`
    - `supabase/migrations/025_daily_challenges.sql`
+   - `supabase/migrations/026_timed_daily_challenges.sql`
 
 2. Copy `.env.example` to `.env.local` and set the project URL and public anon key. Keep any service-role key in a trusted shell only.
 3. Enable email authentication. Set `NEXT_PUBLIC_SITE_URL` in `.env.local` to the public site origin (for example, `https://your-domain.example`) so confirmation links work when opened on another device. Set the same Site URL in Supabase and add the deployed `/email-confirmed`, `/login`, and `/reset-password` URLs plus any local URLs you use to its redirect allowlist. Leaving the variable blank uses the current browser origin, which is suitable for same-device local testing but not a `localhost` link opened on a phone. The confirmation page tells users to return to their original browser and sign in. Supabase's implicit browser auth flow restores sessions from confirmation/recovery links. Configure email delivery/rate limits before a public launch.
@@ -96,7 +97,7 @@ Email/password sign-in is supported. Google login is no longer offered in the in
 
 ## Daily Challenge
 
-`/daily` provides five fresh rating-matched questions per account each day, saved progress, server-graded results, and one rating update. Apply migration 025 before deploying. See [daily challenge setup and rules](docs/daily-challenge.md). No scheduler or weekly contest organization is required.
+`/daily` provides ten fresh rating-matched questions per account each day, a 40-minute server-enforced timer, saved progress, and one rating update of up to +40. Apply migrations 025 and 026 before deploying; existing five-question sets retain their original rules. See [daily challenge setup and rules](docs/daily-challenge.md). No scheduler or weekly contest organization is required.
 
 ## Backend architecture and security
 

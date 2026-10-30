@@ -1,11 +1,14 @@
 import {test} from "node:test";
 import assert from "node:assert/strict";
-import {DAILY_RATING_CHANGES,ratingMilestone} from "../lib/daily";
+import {DAILY_QUESTION_COUNT,DAILY_DURATION_MINUTES,DAILY_RATING_CHANGES,LEGACY_DAILY_RATING_CHANGES,ratingMilestone} from "../lib/daily";
 import {dailyAnswerSchema} from "../lib/validation";
 import {dashboardActivity} from "../lib/dashboard";
 
 test("daily rewards encourage progress while limiting losses",()=>{
-  assert.deepEqual([...DAILY_RATING_CHANGES],[-8,-5,-2,3,12,20]);
+  assert.equal(DAILY_QUESTION_COUNT,10);
+  assert.equal(DAILY_DURATION_MINUTES,40);
+  assert.deepEqual([...DAILY_RATING_CHANGES],[-8,-6,-5,-3,-2,0,6,15,24,32,40]);
+  assert.deepEqual([...LEGACY_DAILY_RATING_CHANGES],[-8,-5,-2,3,12,20]);
   assert(DAILY_RATING_CHANGES.every((reward,i)=>i===0||reward>DAILY_RATING_CHANGES[i-1]));
 });
 test("daily milestone progress crosses title boundaries and handles the highest title",()=>{

@@ -1,13 +1,17 @@
 import { RANK_TIERS, getCodeforcesTitle } from "./rating";
 import type { Explanation, PublicProblem } from "@/types/problem";
 
-export const DAILY_QUESTION_COUNT = 5;
-export const DAILY_RATING_CHANGES = [-8, -5, -2, 3, 12, 20] as const;
+export const DAILY_QUESTION_COUNT = 10;
+export const DAILY_DURATION_MINUTES = 40;
+export const DAILY_RATING_CHANGES = [-8, -6, -5, -3, -2, 0, 6, 15, 24, 32, 40] as const;
+export const LEGACY_DAILY_RATING_CHANGES = [-8, -5, -2, 3, 12, 20] as const;
 export const DAILY_TIME_ZONE = "America/Los_Angeles";
 export interface DailyChallenge {
   id: string;
   challenge_date: string;
   started_at: string;
+  expires_at?: string | null;
+  timed_out?: boolean;
   status: "active" | "completed";
   rating_at_start: number;
   answers: Record<string, string | null>;
@@ -17,7 +21,7 @@ export interface DailyChallenge {
   old_rating: number | null;
   new_rating: number | null;
   rating_delta: number | null;
-  breakdown?: { problem_id: string; selected_answer: string; is_correct: boolean; explanation: Explanation }[];
+  breakdown?: { problem_id: string; selected_answer: string | null; is_correct: boolean; explanation: Explanation }[];
 }
 export interface DailyStatus {
   challenge_date: string;

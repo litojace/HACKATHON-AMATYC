@@ -109,7 +109,7 @@ function RoundOneDetails() { return <>
 </>; }
 
 function DailyDetails() { return <>
-<p className="mt-4 leading-7 muted">Take five fresh questions matched to your level. Work at your own pace, save your answers, and earn rating progress when you submit the complete set.</p>
-          <p className="mt-4 text-sm leading-6 muted">Start at {INITIAL_RATING}. Your daily results shape your rating and title. Come back for a fresh set after midnight Pacific, with up to +20 rating for a perfect result.</p>
+<p className="mt-4 leading-7 muted">Take ten fresh questions matched to your level. You have up to 40 minutes, with answers saved as you go. Submit early or let the timer finish your set.</p>
+          <p className="mt-4 text-sm leading-6 muted">Start at {INITIAL_RATING}. Your daily results shape your rating and title. Come back for a fresh set after midnight Pacific, with up to +40 rating for a perfect result.</p>
           <div className="mt-auto pt-6"><Link href="/daily" className="btn">Take your daily challenge <ArrowRight size={16} /></Link></div>
 </>; }

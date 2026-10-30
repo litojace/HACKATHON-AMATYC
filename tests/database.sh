@@ -7,7 +7,7 @@ docker run -d --name "$container" --network none -e POSTGRES_HOST_AUTH_METHOD=tr
 trap 'docker rm -f "$container" >/dev/null' EXIT
 ready=false
 for attempt in {1..30}; do
-  if docker exec "$container" pg_isready -U postgres >/dev/null 2>&1; then ready=true; break; fi
+  if docker exec "$container" pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; then ready=true; break; fi
   sleep 1
 done
 if [ "$ready" != true ]; then echo 'Postgres did not become ready' >&2; exit 1; fi
@@ -18,7 +18,7 @@ if [ "$ready" != true ]; then echo 'Postgres did not become ready' >&2; exit 1; 
   cat supabase/migrations/022_announcement_archive.sql tests/announcement-archive.sql
   cat supabase/migrations/023_public_dashboard.sql tests/public-dashboard.sql
   cat supabase/migrations/024_delete_confirmation_names.sql tests/delete-confirmation-names.sql tests/bookmarks.sql
-  cat supabase/migrations/025_daily_challenges.sql tests/daily-challenges.sql
+  cat supabase/migrations/025_daily_challenges.sql tests/daily-challenges.sql tests/daily-legacy-fixture.sql supabase/migrations/026_timed_daily_challenges.sql tests/timed-daily-challenges.sql
 } |
   docker exec -i "$container" psql -U postgres -v ON_ERROR_STOP=1
 node tests/daily-concurrency.mjs "$container"

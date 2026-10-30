@@ -153,7 +153,7 @@ async function handle(
       if (id && id!=="start" && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return error("Invalid challenge ID",422);
       let operation;
       if (method==="GET" && !id) operation=db.rpc("daily_challenge_status");
-      else if (method==="POST" && id==="start" && !action) operation=db.rpc("start_daily_challenge");
+      else if (method==="POST" && id==="start" && !action) operation=db.rpc("start_timed_daily_challenge");
       else if (method==="PATCH" && id && id!=="start" && !action) {
         const body=dailyAnswerSchema.parse(await req.json());
         operation=db.rpc("save_daily_answer",{challenge_id:id,problem_id:body.problem_id,selected:body.answer});
