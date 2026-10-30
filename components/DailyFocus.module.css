@@ -23,6 +23,7 @@
 .workspace { max-width:960px; margin:0 auto; padding:28px 24px 36px; animation:arrive .2s ease-out; }
 .overview { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
 .overview h2 { font-size:18px; font-weight:600; letter-spacing:-.02em; }
+.overview h2:focus { outline:none; }
 .overview p { margin-top:5px; font-size:12px; color:var(--muted); }
 .saveStatus { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); }
 .questionNav { display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); gap:8px; margin-bottom:26px; }
