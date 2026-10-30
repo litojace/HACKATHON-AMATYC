@@ -582,3 +582,10 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
  .electrons-moving { display:none; }
  .electrons-still { display:block; }
 }
+
+/* Daily focus is scoped to the mounted session, so navigation restores on exit. */
+body:has([data-daily-focus="true"]) [data-site-chrome] { display:none; }
+body:has([data-daily-focus="true"]) .site-content { margin-left:0; }
+body:has([data-daily-focus="true"]) .daily-page { max-width:none; padding:0; }
+body:has([data-daily-focus="true"]) .daily-page-intro { display:none; }
+html:has([data-daily-focus="true"]) { scroll-padding-top:0; }

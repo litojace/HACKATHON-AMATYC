@@ -28,11 +28,11 @@ export default function RootLayout({
           <SiteMotion />
           <Navbar />
           <div className="site-content flex min-w-0 flex-1 flex-col">
-          <LiveAnnouncements />
+          <div data-site-chrome><LiveAnnouncements /></div>
           <div className="min-w-0 flex-1">{children}</div>
-          <BackToTop />
+          <div data-site-chrome><BackToTop /></div>
           <TrainingResultReset />
-          <footer className="mx-auto mt-16 w-full max-w-7xl border-t border-edge px-5 py-6">
+          <footer data-site-chrome className="mx-auto mt-16 w-full max-w-7xl border-t border-edge px-5 py-6">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="footer-brand flex items-center gap-4">
                 <div className="flex shrink-0 items-center gap-3">

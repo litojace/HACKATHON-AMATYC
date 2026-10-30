@@ -63,7 +63,7 @@ export default function Navbar() {
   }, [open]);
   return (
     <>
-    <aside className="arena-sidebar fixed inset-y-0 left-0 z-40 hidden w-56 flex-col overflow-y-auto border-r border-edge lg:flex" aria-label="Main navigation">
+    <aside data-site-chrome className="arena-sidebar fixed inset-y-0 left-0 z-40 hidden w-56 flex-col overflow-y-auto border-r border-edge lg:flex" aria-label="Main navigation">
       <Link href="/" className={`flex shrink-0 items-center gap-2 border-b border-edge px-5 font-bold ${desktopHeaderHeight}`}>
         <Image src="/images/arena-logo.svg" width={40} height={40} alt="" />
         <span>AMATYC <span className="text-emerald-400">Arena</span></span>
@@ -75,7 +75,7 @@ export default function Navbar() {
         <Link href="/about" aria-current={path === "/about" ? "page" : undefined} className={`flex min-h-12 items-center gap-3 hover:text-emerald-400 ${path === "/about" ? "text-emerald-400" : "muted"}`}><Info size={20} aria-hidden="true" className="shrink-0" />About us</Link>
       </div>
     </aside>
-    <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
+    <header data-site-chrome className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
       <nav className="relative mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[76px]">
         <Link href="/" onClick={() => setOpen(false)} className="arena-mobile-brand flex shrink-0 items-center gap-2 font-semibold lg:hidden">
           <Image
@@ -173,7 +173,7 @@ export default function Navbar() {
       )}
     </header>
     {/* Reserve the toolbar height; menus overlay content instead of moving it. */}
-    <div aria-hidden="true" className={`${demo ? "h-[156px]" : "h-[132px]"} shrink-0 ${desktopHeaderHeight}`} />
+    <div data-site-chrome aria-hidden="true" className={`${demo ? "h-[156px]" : "h-[132px]"} shrink-0 ${desktopHeaderHeight}`} />
     </>
   );
 }

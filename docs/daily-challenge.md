@@ -22,6 +22,12 @@ Ratings stop at 1. Grading uses immutable answer-key snapshots, while the change
 
 The daily reset is midnight **America/Los_Angeles**, including daylight-saving transitions. A set started less than 40 minutes before reset closes at that midnight. The deadline is set by the database; changing the device clock or refreshing cannot extend it. The client countdown uses server time and resynchronizes when returning to the tab. If fewer than ten fresh eligible questions remain near the matching level, starting fails without consuming the day.
 
+## Focus mode
+
+Starting or resuming an active set opens a focused exam view. Site navigation, announcements, footer and the back-to-top shortcut are hidden while the session is mounted. A sticky toolbar keeps the timer and saved-answer progress visible. Question buttons and previous/next controls remain available, with A–E answer keys and left/right arrows for question navigation. A warning appears in the final five minutes.
+
+Exiting focus mode asks for confirmation and restores the website navigation without changing the deadline or saved progress. Users can re-enter focus mode, and reloading an active set opens it again. Submitting or timing out restores the normal site automatically. Focus mode reduces accidental navigation; it does not lock the browser or prevent users from switching tabs. No database migration is required for this interface change.
+
 ## Existing five-question sets
 
 Migration 026 preserves all existing question IDs, answer snapshots, saved answers, ratings and completed results. An already-started five-question set remains untimed until its original midnight reset. Its rewards stay +20 / +12 / +3 / −2 / −5 / −8 for 5 through 0 correct. An unfinished legacy set closes without a rating change. New sets use the ten-question timed rules.
@@ -35,5 +41,7 @@ The app uses the public anon key and the signed-in user's bearer token. No servi
 ## Verification
 
 `npm test` covers reward tables, title boundaries, request validation and daily dashboard activity. `npm run test:db` applies the entire migration chain to isolated PostgreSQL. It verifies legacy sets created before 026, all eleven new reward tiers, deadlines, timeout and blank grading, late saves, rollover, snapshot privacy, frozen keys, ownership, rating floors, and concurrent start/finish requests. Repeated or concurrent grading must produce exactly one history row and one rating change.
+
+`tests/daily-focus-browser.mjs` checks focus entry, exit confirmation, resume, saved progress, failed-save recovery, keyboard navigation, timeout and restoration of site navigation at 320, 390, 768 and 1440 pixels. Point `TEST_BASE_URL` at a running preview configured with `NEXT_PUBLIC_SUPABASE_URL`; Auth and API requests are intercepted, so this UI test makes no backend writes.
 
 Regular practice remains unrated. Historical mock contests remain available. Daily challenges replace inactive Saturday-contest promotions without requiring an organizer-run event.
