@@ -1,5 +1,4 @@
-import MobileDisclosure from "@/components/MobileDisclosure";
-import RankMedal from "@/components/RankMedal";
+import RatingsPanel from "@/components/RatingsPanel";
 import MathOrbit from "@/components/MathOrbit";
 import HomeEntrance from "@/components/HomeEntrance";
 import Link from "next/link";
@@ -9,7 +8,6 @@ import {
   Clock3,
   ChartNoAxesColumnIncreasing,
   ChevronRight,
-  Star,
   Trophy,
 } from "lucide-react";
 import { libraryContests } from "@/lib/server/data";
@@ -110,18 +108,8 @@ export default function Home() {
           </Link>
         ))}
       </section>
-      <section className="home-highlights panel" aria-label="Rating milestones">
-        <Link href="#rating-titles-heading" className="rating-highlight"><Star size={34} strokeWidth={1.6} aria-hidden="true" /><div><h2>Ratings &amp; titles</h2><p>See your next milestone</p></div><div className="rank-medals" aria-hidden="true">{(["bronze","silver","gold"] as const).map(metal=><RankMedal key={metal} metal={metal} />)}</div></Link>
-      </section>
-      <p className="project-note">Independent educational project</p>
-      <section className="home-community-news mt-10 grid items-stretch gap-6 lg:grid-cols-2" aria-label="Community and contest news"><div className="home-mobile-contest panel mb-5 p-4"><HomeContestNews compact /></div><HomeCommunityGallery /><div className="home-desktop-news flex min-w-0"><HomeContestNews /></div></section>
-      <section className="home-rank-section mt-10" aria-labelledby="rating-titles-heading">
-        <MobileDisclosure label="View all ranks" anchorId="rating-titles-heading" className="home-rank-disclosure">
-        <div data-home-entrance className="panel overflow-hidden" aria-labelledby="rating-titles-heading">
-          <div className="border-b border-edge p-6">
-            <h2 id="rating-titles-heading" className="flex items-center gap-2 text-xl font-semibold"><Trophy size={20} className="text-amber-400" aria-hidden="true" /> Ratings &amp; titles</h2>
-            <p className="mt-2 text-sm muted">See your next milestone. Sample names show the colors and effects for each rank.</p>
-          </div>
+      <RatingsPanel>
+          <p className="p-5 text-sm muted sm:p-6">Sample names show the colors and effects for each rank.<span className="mt-1 block text-xs sm:hidden">Swipe sideways to see every column.</span></p>
           <div className="overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="region" aria-label="Rating, sample name previews, and titles" tabIndex={0}>
           <table className="w-full min-w-[520px] text-center text-sm [&_td]:align-middle [&_th]:align-middle">
             <caption className="sr-only">Competitive rating ranges, sample name effects, and titles</caption>
@@ -139,9 +127,9 @@ export default function Home() {
             </tbody>
           </table>
           </div>
-        </div>
-        </MobileDisclosure>
-      </section>
+      </RatingsPanel>
+      <p className="project-note">Independent educational project</p>
+      <section className="home-community-news mt-10 grid items-stretch gap-6 lg:grid-cols-2" aria-label="Community and contest news"><div className="home-mobile-contest panel mb-5 p-4"><HomeContestNews compact /></div><HomeCommunityGallery /><div className="home-desktop-news flex min-w-0"><HomeContestNews /></div></section>
       <section className="home-how-it-works mt-12 border-t border-edge pt-8">
         <h2 data-home-entrance className="text-2xl font-semibold">How it works</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">

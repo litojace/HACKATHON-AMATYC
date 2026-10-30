@@ -6,7 +6,7 @@ const output=process.env.TEST_SCREENSHOT_DIR ?? '/tmp/arena-redesign';
 await mkdir(output,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.BROWSER_EXECUTABLE ?? '/usr/bin/chromium',headless:true});
 try {
- for (const width of [360,390,768,1024,1440]) {
+ for (const width of [320,360,390,768,1024,1440]) {
   const page=await browser.newPage({viewport:{width,height:1000},reducedMotion:'reduce'});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'networkidle'});
@@ -40,26 +40,26 @@ try {
    assert(second.x>=first.x+first.width && Math.abs(first.y-second.y)<1,'Phone cards should follow desktop columns');
   }
   if(width>=1024)assert(!(await page.locator('.library-stat').last().innerText()).includes('years'),'Unwanted year caption');
-  const guide=page.locator('.home-rank-disclosure');
+  const guide=page.locator('.ratings-panel');
+  const toggle=guide.getByRole('button',{name:'Ratings & titles',exact:true});
+  assert.equal(await page.getByRole('table',{includeHidden:true}).count(),1,'Keep one rank table inside its panel');
+  assert(!(await guide.getByRole('table').isVisible()),'Ranks should start collapsed on every screen');
+  assert.equal(await toggle.getAttribute('aria-expanded'),'false');
+  assert(await toggle.getAttribute('aria-controls'));
+  await toggle.click();assert(await guide.getByRole('table').isVisible());
+  assert.equal(await guide.locator('tbody tr').count(),10);
+  assert.equal(await toggle.getAttribute('aria-expanded'),'true');await check();
+  if(width===390||width===1440)await guide.screenshot({path:`${output}/ratings-expanded-${width===390?'mobile':'desktop'}.png`});
+  await toggle.focus();await page.keyboard.press('Space');assert(!(await guide.getByRole('table').isVisible()));
+  await page.keyboard.press('Enter');assert(await guide.getByRole('table').isVisible());
+  await toggle.click();assert(!(await guide.getByRole('table').isVisible()));
   if(width<1024){
-   assert(!(await guide.getByRole('table').isVisible()),'Rank table should start collapsed');
    assert(!(await page.getByLabel('Choose a photo',{exact:true}).isVisible()),'Mobile thumbnails should be hidden');
    assert(!(await page.locator('.home-how-it-works').isVisible()));
    const details=page.locator('.compact-contest-news').getByRole('button',{name:'Details',exact:true});
    await details.click();assert.equal(await details.getAttribute('aria-expanded'),'true');
    assert(await page.locator('.compact-contest-news').getByText('Cash prizes',{exact:true}).isVisible());
    await check();await details.click();
-   const toggle=guide.getByRole('button',{name:'View all ranks',exact:true});
-   await toggle.click();assert(await guide.getByRole('table').isVisible());
-   assert.equal(await guide.locator('tbody tr').count(),10);
-   await toggle.click();assert(!(await guide.getByRole('table').isVisible()));
-   // Both initial and repeated anchor clicks must open the guide, and it must close afterward.
-   for(let attempt=0;attempt<2;attempt++){
-    await page.locator('.rating-highlight').click();
-    await page.waitForFunction(()=>document.querySelector('.home-rank-disclosure')?.dataset.expanded==='true');
-    assert(await guide.getByRole('table').isVisible());
-    await toggle.click();assert(!(await guide.getByRole('table').isVisible()));
-   }
    const pause=page.getByRole('button',{name:'Pause slideshow',exact:true});
    if(await pause.isVisible()){
     await pause.click();assert(await page.getByRole('button',{name:'Play slideshow',exact:true}).isVisible());
@@ -70,7 +70,6 @@ try {
     assert(height<2500,'Mobile homepage exceeds the compact height budget');
    }
   }else{
-   assert(await guide.getByRole('table').isVisible(),'Desktop should retain the full rank table');
    assert(await page.getByLabel('Choose a photo',{exact:true}).isVisible());
    const news=page.locator('.home-desktop-news>section');
    const assertPanels=async()=>{
@@ -130,5 +129,5 @@ try {
   }
   assert.deepEqual(errors,[],`Browser errors at ${width}`);await page.close();
  }
- console.log('PASS: 5 viewport widths; no page overflow; fixed header; desktop sidebar; mobile menu/Escape/focus; homepage and 8 other page previews. Demo data only.');
+ console.log('PASS: 6 viewport widths; inline rank table toggles by mouse and keyboard; no page overflow; fixed header; desktop sidebar; mobile menu/Escape/focus; homepage and 8 other page previews. Demo data only.');
 } finally {await browser.close();}
