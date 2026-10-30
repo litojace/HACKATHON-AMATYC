@@ -15,7 +15,7 @@ import LeaveSessionGuard from "@/components/LeaveSessionGuard";
 
 export default function DailyPage() {
   const {user}=useApp();
-  return <main className="mx-auto max-w-6xl px-5 py-10">
+  return <main className="mx-auto max-w-6xl px-4 py-7 sm:px-5 sm:py-10">
     <PageTitle eyebrow="ONE SMALL CHALLENGE, EVERY DAY" title="Your daily step toward the next title." description="Five fresh questions matched to your rating. Solve at your own pace and earn progress through your answers." />
     <AccountGate requireAuth title="Sign in for your daily challenge." description="Your questions, saved answers, and rating progress are linked to your account.">
       <DailyContent key={user?.id} />
@@ -83,9 +83,9 @@ function DailyContent() {
       <p className="mt-4 text-sm leading-7 muted">Your set includes a warm-up, three questions around your level, and a gentle stretch. The mix adapts to fresh questions available near your rating.</p>
       <p className="mt-2 text-sm leading-7 muted">Answers save to your account. Complete all five before the daily reset at midnight Pacific. Your rating changes once when you submit, then solutions unlock.</p>
       <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-6" aria-label="Daily rating rewards">
-        {[5,4,3,2,1,0].map(correct=><div key={correct} className="rounded-lg border border-edge p-3 text-center"><p className="text-xs muted">{correct}/5 correct</p><p className={`mt-2 font-mono text-lg font-semibold ${DAILY_RATING_CHANGES[correct]>0?"text-emerald-400":"muted"}`}>{DAILY_RATING_CHANGES[correct]>0?"+":""}{DAILY_RATING_CHANGES[correct]}</p></div>)}
+        {[5,4,3,2,1,0].map(correct=><div key={correct} className="rounded-lg border border-edge p-2 text-center sm:p-3"><p className="text-xs muted">{correct}/5 correct</p><p className={`mt-2 font-mono text-lg font-semibold ${DAILY_RATING_CHANGES[correct]>0?"text-emerald-400":"muted"}`}>{DAILY_RATING_CHANGES[correct]>0?"+":""}{DAILY_RATING_CHANGES[correct]}</p></div>)}
       </div>
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5"><p className="text-sm muted">Starting level: <RankText rating={rating}>{rating}</RankText> · Previously seen questions are skipped.</p><button type="button" className="btn" disabled={busy||!daily} onClick={()=>void start()}>{busy?"Preparing your set…":"Start daily challenge"}<ArrowRight size={16}/></button></div>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-edge pt-5"><p className="text-sm muted">Starting level: <RankText rating={rating}>{rating}</RankText> · Previously seen questions are skipped.</p><button type="button" className="btn w-full sm:w-auto" disabled={busy||!daily} onClick={()=>void start()}>{busy?"Preparing your set…":"Start daily challenge"}<ArrowRight size={16}/></button></div>
     </section>:<>
       {completed?<section className="panel mb-5 p-5 sm:p-8" aria-labelledby="daily-result-title">
         {challenge.correct_count===5&&<PerfectScoreCelebration attemptId={`daily-${challenge.id}`} total={5}/>}

@@ -6,6 +6,7 @@ import { useApp } from "./Providers";
 import { api } from "@/lib/client";
 import type { DailyStatus } from "@/lib/daily";
 import styles from "./DailyHighlight.module.css";
+import DailySparkles from "./DailySparkles";
 
 export default function DailyChallengeCard() {
   const {user,profile}=useApp();
@@ -27,6 +28,6 @@ export default function DailyChallengeCard() {
       <span className={styles.icon}><Sun size={30} aria-hidden="true" /></span>
       <div><div className={styles.heading}><h2>Daily Challenge</h2><span className={styles.badge}>{completed?"COMPLETED":challenge?"IN PROGRESS":"UP TO +20 RATING"}</span></div><p className={styles.description}>{completed?`${challenge.correct_count}/5 correct · ${(challenge.rating_delta??0)>=0?"+":""}${challenge.rating_delta} rating today`:challenge?`${answered} of 5 answers saved · Finish before midnight Pacific`:"Five fresh questions. One step closer to your next title."}</p></div>
     </div>
-    <Link href="/daily" className={`btn ${styles.cta}`}>{completed?"View results":challenge?"Resume challenge":"Daily Challenge"}<ArrowRight size={18} aria-hidden="true" /></Link>
+    <Link href="/daily" className={`btn ${styles.cta}`}><DailySparkles />{completed?"View results":challenge?"Resume challenge":"Daily Challenge"}<ArrowRight size={18} aria-hidden="true" /></Link>
   </section>;
 }

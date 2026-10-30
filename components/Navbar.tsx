@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown, House, ChartNoAxesColumnIncreasing, Trophy, Users
 import { useApp } from "./Providers";
 import { supabase } from "@/lib/supabaseClient";
 import dailyStyles from "./DailyHighlight.module.css";
+import DailySparkles from "./DailySparkles";
 const navigation = [
   {href:"/", label:"Home", icon:House},
   {href:"/problems", label:"Problems", icon:FileText},
@@ -68,7 +69,7 @@ export default function Navbar() {
         <span>AMATYC <span className="text-emerald-400">Arena</span></span>
       </Link>
       <nav className="mt-6 shrink-0 space-y-2">
-        {navigation.map(item=><Link key={item.href} href={item.href} className={`arena-nav-link ${item.href==="/daily"?dailyStyles.navLink:""}`} aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={26} aria-hidden="true" />{item.label}</Link>)}
+        {navigation.map(item=><Link key={item.href} href={item.href} className={`arena-nav-link ${item.href==="/daily"?dailyStyles.navLink:""}`} aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}>{item.href==="/daily"&&<DailySparkles compact />}<item.icon size={26} aria-hidden="true" />{item.label}</Link>)}
       </nav>
       <div className="mx-5 mt-auto shrink-0 border-t border-edge py-5 text-sm">
         <Link href="/about" aria-current={path === "/about" ? "page" : undefined} className={`flex min-h-12 items-center gap-3 hover:text-emerald-400 ${path === "/about" ? "text-emerald-400" : "muted"}`}><Info size={20} aria-hidden="true" className="shrink-0" />About us</Link>
@@ -76,7 +77,7 @@ export default function Navbar() {
     </aside>
     <header className="fixed inset-x-0 top-0 z-30 border-b border-edge bg-ink/95 backdrop-blur lg:left-56">
       <nav className="relative mx-auto flex h-[68px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-5 lg:h-[76px]">
-        <Link href="/" onClick={() => setOpen(false)} className="flex shrink-0 items-center gap-2 font-semibold lg:hidden">
+        <Link href="/" onClick={() => setOpen(false)} className="arena-mobile-brand flex shrink-0 items-center gap-2 font-semibold lg:hidden">
           <Image
             src="/images/arena-logo.svg"
             width={38}
@@ -139,7 +140,7 @@ export default function Navbar() {
         </div>
       </nav>
       <nav aria-label="Quick navigation" className="grid grid-cols-4 border-t border-edge lg:hidden">
-        {navigation.slice(0,4).map(item=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={`mobile-tab ${item.href==="/daily"?dailyStyles.tab:""}`} aria-label={item.label} aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}><item.icon size={24} aria-hidden="true" />{item.href==="/daily"?"Daily":item.label}</Link>)}
+        {navigation.slice(0,4).map(item=><Link key={item.href} href={item.href} onClick={()=>setOpen(false)} className={`mobile-tab ${item.href==="/daily"?dailyStyles.tab:""}`} aria-label={item.label} aria-current={(item.href === "/" ? path === "/" : path.startsWith(item.href)) ? "page" : undefined}>{item.href==="/daily"&&<DailySparkles compact />}<item.icon size={24} aria-hidden="true" />{item.href==="/daily"?"Daily":item.label}</Link>)}
       </nav>
       <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}
         className="max-h-[calc(100dvh-10rem)] overflow-y-auto border-t border-edge bg-panel px-4 py-4 lg:!hidden">

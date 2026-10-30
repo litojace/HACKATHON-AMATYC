@@ -210,7 +210,7 @@ export default function ProblemArena({
           )}
         </div>
       </div>
-      <div className="panel p-5 sm:p-8">
+      <div className="panel p-4 sm:p-8">
         <p className="text-xs muted">
           {problem.contest_name} · Question {problem.question_number}
         </p>
@@ -250,7 +250,7 @@ export default function ProblemArena({
           </button>
         )}
         {problem.source_image_path && <p className="mb-3 text-sm muted">{problem.answer_format === "short_answer" ? "Enter your answer below." : "Select your answer from the choices in the image."}</p>}
-        <div className={printedOptions ? "grid grid-cols-3 gap-3 sm:grid-cols-5" : "space-y-3"}>
+        <div className={printedOptions ? "grid grid-cols-5 gap-1 max-[359px]:gap-0.5 sm:gap-3" : "space-y-3"}>
           {problem.answer_format === "short_answer" && <label className="block text-sm">Your answer<input className="field mt-2 w-full" aria-label="Your answer" value={value ?? ""} maxLength={80} disabled={locked || busy || !!result} onChange={e => choose(e.target.value || null)} placeholder="Enter a number, time, or text response" /></label>}
           {problem.options.map((o, i) => (
             <button
@@ -259,7 +259,7 @@ export default function ProblemArena({
               aria-pressed={value === o.label}
               disabled={locked || busy || !!result}
               onClick={() => choose(o.label)}
-              className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center" : "gap-4"} rounded-xl border p-4 text-left transition ${solution?.correct_answer === o.label ? "answer-correct" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
+              className={`flex min-h-14 w-full items-center ${printedOptions ? "justify-center px-1 py-3 sm:p-4" : "gap-4 p-4"} rounded-xl border text-left transition ${solution?.correct_answer === o.label ? "answer-correct" : result && value === o.label && !result.is_correct ? "border-red-400 bg-red-500/10" : value === o.label ? "border-emerald-500 bg-emerald-500/5" : "border-edge hover:border-emerald-500/40"}`}
             >
               <span className="flex h-8 w-8 shrink-0 items-center justify-center font-bold">
                 {o.label}

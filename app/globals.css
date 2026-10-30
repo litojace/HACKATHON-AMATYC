@@ -394,6 +394,15 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
 .arena-nav-link[aria-current="page"] { color:var(--gold); border-left-color:var(--gold); background:linear-gradient(90deg,#f3cb5916,transparent); }
 .mobile-tab { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; min-height:62px; border-bottom:3px solid transparent; color:var(--muted); font-size:12px; }
 .mobile-tab[aria-current="page"] { color:var(--gold); border-bottom-color:var(--gold); }
+/* Keep narrow phone headers readable and avoid Safari zooming into form fields. */
+@media (max-width: 767px) {
+ input.field, textarea.field, select.field { font-size:16px; }
+}
+@media (max-width: 380px) {
+ .arena-mobile-brand { gap:6px; }
+ .arena-mobile-brand>img { width:30px; height:30px; }
+ .arena-mobile-brand>span { font-size:16px; }
+}
 .home-banner { position:relative; isolation:isolate; display:grid; grid-template-columns:1.05fr 1fr; grid-template-areas:"copy art" "actions art"; align-items:center; column-gap:8px; padding-block:32px 24px; }
 .home-hero { grid-area:copy; align-self:end; }
 .home-hero h1 { font-family:"Oswald Variable",sans-serif; font-size:clamp(2.4rem,4.5vw,5.5rem); line-height:1.12; font-weight:700; letter-spacing:-.035em; text-transform:uppercase; }
@@ -496,6 +505,10 @@ body { background-image: radial-gradient(ellipse at 80% 0%, #102e482e, transpare
  .home-feature { grid-template-columns:1fr; gap:12px; }
  .hero-description { font-size:13px; }
  footer .footer-brand { flex-wrap:wrap; }
+}
+@media (max-width:380px) {
+ .hero-actions .btn,.hero-actions .btn-secondary { font-size:13px; gap:6px; padding-inline:8px; }
+ .hero-actions .btn-secondary>svg { width:16px; }
 }
 .hero-art { position:relative; overflow:clip; }
 /* Fade a stationary frame so scaling and tilting cannot reveal the image's edges. */

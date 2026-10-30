@@ -21,7 +21,7 @@ export function AccountGate({ children, requireAuth = false, title, description 
   if (authLoading) return <Loading />;
   if (!user && (requireAuth || !demo))
     return (
-      <div className="panel mx-auto my-10 max-w-lg p-8">
+      <div className="panel mx-auto my-6 max-w-lg p-5 sm:my-10 sm:p-8">
         <h1 className="text-2xl">{title ?? (requireAuth ? "Sign in to practice." : "Your personal progress awaits.")}</h1>
         <p className="my-5 muted">
           {description ?? (requireAuth ? "Log in with your email to solve problems and take contests." : "Sign in to access your private account data.")}
@@ -47,12 +47,12 @@ export function PageTitle({
   description?: string;
 }) {
   return (
-    <div className="mb-8" data-motion="heading">
+    <div className="mb-6 sm:mb-8" data-motion="heading">
       <p className="text-xs font-medium tracking-widest text-emerald-400">
         {eyebrow}
       </p>
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight">{title}</h1>
-      {description && <p className="mt-3 muted">{description}</p>}
+      <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
+      {description && <p className="mt-3 text-sm leading-relaxed muted sm:text-base">{description}</p>}
     </div>
   );
 }
